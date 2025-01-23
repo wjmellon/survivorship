@@ -6,40 +6,59 @@ library(cowplot)
 # Load the dataset
 data <- read.csv("records.csv")
 
-# Filter for Class Mammalia and calculate proportion lifespan
-cutdata <- filter(data, Class == "Mammalia")
-cutdata<-cutdata[,c(3,24,48)]
+
+cutdata <- filter(data, Necropsy == 1)
+
+# Filter for Class Mammalia and relevant columns
+cutdata <- filter(cutdata, Class == "Mammalia")
+
+
+cutdata <- filter(cutdata, Infant == 0)
+
+
+#cutdata <- filter(cutdata, com == "Mammalia")
+
+cutdata <- cutdata[, c(3, 24,48)]  # Assuming columns 3 and 24 are `age_months` and `max_longevity`
 cutdata$age_months[cutdata$age_months <= 0] <- NA
-cutdata$max_longevity[cutdata$max_longevity <= 0] <- NA
 cutdata <- na.omit(cutdata)
-cutdata$proportion_lifespan <- cutdata$age_months / cutdata$max_longevity
 
-# Remove invalid or extreme values
-cutdata <- cutdata %>%
-  filter(!is.na(proportion_lifespan), proportion_lifespan <= 2) # Remove NAs and values > 2
+# Define time steps (e.g., ages to check survival at)
+time_steps <- seq(0, max(cutdata$age_months, na.rm = TRUE), by = 1)  # 1-month intervals
 
-# Data Preparation: Count occurrences of each proportion lifespan (binned)
-lifespan_counts <- cutdata %>%
-  mutate(lifespan_bin = cut(proportion_lifespan,                 # Bin proportion lifespan
-                            breaks = seq(0, 2, by = 0.05),       # Bins of 0.05
-                            right = FALSE)) %>%
-  group_by(lifespan_bin) %>%                                    # Group by bins
-  summarize(count = n(), .groups = 'drop') %>%                  # Count occurrences in each bin
-  mutate(
-    bin_midpoint = as.numeric(sub("\\[|\\)", "",                # Calculate bin midpoints
-                                  gsub(",.*", "", lifespan_bin))) + 0.025
-  )
+# Calculate the number of individuals alive at each time step
+alive_counts <- sapply(time_steps, function(x) {
+  sum(cutdata$age_months > x)  # Count individuals with age > x
+})
 
-# Plot: Count of Proportion Lifespan (Log Scale)
-ggplot(lifespan_counts, aes(x = bin_midpoint, y = count)) +
-  geom_point(color = "red", size = 2) +                         # Add points for each bin
-  geom_smooth(method = "gam",                                  # Use GAM for smooth fit
-              formula = y ~ s(x, bs = "cs"),                   # Cubic splines for flexibility
-              color = "blue", size = 1, se = FALSE) +          # Add smooth line, no CI
-  scale_y_log10() +                                            # Use log scale for y-axis
-  ggtitle("Count of Proportion Lifespan (Log Scale) Mammals") +
-  xlab("Proportion of Lifespan (midpoint of 0.05 bins)") +
-  ylab("Log(Count)") +
+# Prepare a dataframe for plotting
+alive_data <- data.frame(
+  age = time_steps,
+  count_alive = alive_counts
+)
+# Normalize counts to a proportion of the original population
+alive_data <- alive_data %>%
+  mutate(proportion_alive = count_alive / max(count_alive))  # Divide by initial population size
+
+max_age <- max(cutdata$max_longevity, na.rm = TRUE)
+
+#step line
+ggplot(alive_data, aes(x = age, y = log(proportion_alive))) +
+  geom_point(color = "green", size = 2) +
+  geom_line(color = "blue", size = 1) +
+  ggtitle("Survivorship Curve for Mammals") +
+  xlab("Age (months)") +
+  ylab("log(Proportion Alive)") +
+  scale_x_continuous(limits = c(0, max_age)) +  # Set x-axis limits
   theme_cowplot(12)
 
+
+#smooth line
+ggplot(alive_data, aes(x = age, y = log(proportion_alive))) +
+  geom_point(color = "green", size = 1) +  # Keep points for individual data
+  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), color = "blue", size = 1, se = FALSE) +
+  ggtitle("Survivorship Curve for Mammals") +
+  xlab("Age (months)") +
+  ylab("log(Proportion Alive)") +
+  scale_x_continuous(limits = c(0, max_age)) +  # Set x-axis limits
+  theme_cowplot(12)
 
