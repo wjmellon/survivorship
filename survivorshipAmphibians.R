@@ -16,7 +16,7 @@ cutdata <- filter(cutdata, Class == "Amphibia")
 cutdata <- filter(cutdata, Infant == 0)
 
 
-#cutdata <- filter(cutdata, com == "Mammalia")
+#cutdata <- filter(cutdata, com == "Amphibia")
 
 cutdata <- cutdata[, c(3, 24,48)]  # Assuming columns 3 and 24 are `age_months` and `max_longevity`
 cutdata$age_months[cutdata$age_months <= 0] <- NA

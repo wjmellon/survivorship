@@ -54,9 +54,9 @@ ggplot(alive_data, aes(x = age, y = log(proportion_alive))) +
 
 #smooth line
 ggplot(alive_data, aes(x = age, y = log(count_alive))) +
-  geom_point(color = "green", size = 1) +  # Keep points for individual data
+  geom_point(color = "purple", size = 1) +  # Keep points for individual data
   geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), color = "blue", size = 1, se = FALSE) +
-  ggtitle("Survivorship Curve for Mammals") +
+  ggtitle("Survivorship Curve for Aves") +
   xlab("Age (C)") +
   ylab("log(Count Alive)") +
   scale_x_continuous(limits = c(0, max_age)) +  # Set x-axis limits
