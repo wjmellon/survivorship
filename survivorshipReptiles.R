@@ -39,6 +39,9 @@ alive_data <- data.frame(
 alive_data <- alive_data %>%
   mutate(proportion_alive = count_alive / max(count_alive))  # Divide by initial population size
 
+
+
+
 max_age <- max(cutdata$max_longevity, na.rm = TRUE)
 
 #step line
@@ -61,4 +64,6 @@ ggplot(alive_data, aes(x = age, y = log(count_alive))) +
   ylab("log(Count Alive)") +
   scale_x_continuous(limits = c(0, max_age)) +  # Set x-axis limits
   theme_cowplot(12)
-
+summary(cutdata$age_months)
+head(alive_data)
+tail(alive_data)
