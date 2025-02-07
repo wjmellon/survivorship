@@ -53,7 +53,7 @@ ggplot(alive_data, aes(x = age, y = log(proportion_alive))) +
 
 
 #smooth line
-ggplot(alive_data, aes(x = age, y = log(count_alive))) +
+ggplot(alive_data, aes(x = age, y = (count_alive))) +
   geom_point(color = "brown", size = 1) +  # Keep points for individual data
   geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), color = "blue", size = 1, se = FALSE) +
   ggtitle("Survivorship Curve for Amphibians") +
