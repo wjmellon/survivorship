@@ -42,13 +42,13 @@ alive_data <- alive_data %>%
 max_age <- max(cutdata$max_longevity, na.rm = TRUE)
 
 #step line
-ggplot(alive_data, aes(x = age, y = log(proportion_alive))) +
+ggplot(alive_data, aes(x = age, y = (proportion_alive))) +
   geom_point(color = "green", size = 2) +
   geom_line(color = "blue", size = 1) +
   ggtitle("Survivorship Curve for Amphibians") +
   xlab("Age (months)") +
   ylab("log(Proportion Alive)") +
-  scale_x_continuous(limits = c(0, max_age)) +  # Set x-axis limits
+  scale_y_log10() +  # Set x-axis limits
   theme_cowplot(12)
 
 
@@ -59,6 +59,6 @@ ggplot(alive_data, aes(x = age, y = (count_alive))) +
   ggtitle("Survivorship Curve for Amphibians") +
   xlab("Age (C)") +
   ylab("log(Count Alive)") +
-  scale_x_continuous(limits = c(0, max_age)) +  # Set x-axis limits
+  scale_y_log10() +  # Set x-axis limits
   theme_cowplot(12)
 
