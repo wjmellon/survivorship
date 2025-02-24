@@ -17,7 +17,7 @@ malignant_types <- c(
   "multiple myeloma", "medulloblastoma", "astrocytoma", "plasmacytoma",
   "Adenocarcinoma", "Leiomyosarcoma", "Fibrosarcoma", "Carcinoma",
   "Leukemia/Lymphoma", "Lymphoma", "Neoplasia", "Sarcoma", "Melanoma",
-  "squamous cell carcinoma", "soft tissue sarcoma", "glioblastoma",
+  "squamous cell carcinoma", "soft tissue sarcoma", "",
   "round cell sarcoma", "undifferentiated sarcoma", "fibroadenocarcinoma",
   "round cell tumor", "carinoma"
 )
