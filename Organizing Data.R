@@ -3,7 +3,7 @@ library(ggplot2)
 library(cowplot)
 
 # Load the dataset (adjust the path and sheet name as needed)
-data <- read.csv("records.csv")
+data <- read.csv("survivorship/records.csv")
 
 # Malignant Tumors
 malignant_types <- c(
