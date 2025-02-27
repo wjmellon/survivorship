@@ -9,14 +9,14 @@ data <- read.csv("records.csv")
 
 cutdata <- filter(data, Necropsy == 1)
 
-# Filter for Class Mammalia and relevant columns
-cutdata <- filter(cutdata, Class == "Mammalia")
+# Filter for Class Amphibians and relevant columns
+cutdata <- filter(cutdata, Class == "Amphibia")
 
 
 cutdata <- filter(cutdata, Infant == 0)
 
 
-#cutdata <- filter(cutdata, com == "Mammalia")
+#cutdata <- filter(cutdata, com == "Amphibia")
 
 cutdata <- cutdata[, c(3, 24,48)]  # Assuming columns 3 and 24 are `age_months` and `max_longevity`
 cutdata$age_months[cutdata$age_months <= 0] <- NA
@@ -45,19 +45,18 @@ max_age <- max(cutdata$max_longevity, na.rm = TRUE)
 ggplot(alive_data, aes(x = age, y = (proportion_alive))) +
   geom_point(color = "green", size = 2) +
   geom_line(color = "blue", size = 1) +
-  ggtitle("Survivorship Curve for Mammals") +
+  ggtitle("Survivorship Curve for Amphibians") +
   xlab("Age (months)") +
   ylab("log(Proportion Alive)") +
   scale_y_log10() +  # Set x-axis limits
-  
   theme_cowplot(12)
 
 
 #smooth line
 ggplot(alive_data, aes(x = age, y = (count_alive))) +
-  geom_point(color = "green", size = 1) +  # Keep points for individual data
+  geom_point(color = "brown", size = 1) +  # Keep points for individual data
   geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), color = "blue", size = 1, se = FALSE) +
-  ggtitle("Survivorship Curve for Mammals") +
+  ggtitle("Survivorship Curve for Amphibians") +
   xlab("Age (C)") +
   ylab("log(Count Alive)") +
   scale_y_log10() +  # Set x-axis limits
