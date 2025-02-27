@@ -4,7 +4,7 @@ library(dplyr)
 library(cowplot)
 
 # Load the dataset
-data <- read.csv("records.csv")
+data <- malignant_data
 
 
 cutdata <- filter(data, Necropsy == 1)
@@ -14,6 +14,8 @@ cutdata <- filter(cutdata, Class == "Reptilia")
 
 
 cutdata <- filter(cutdata, Infant == 0)
+
+
 
 
 #cutdata <- filter(cutdata, com == "Reptilia")
@@ -48,7 +50,7 @@ max_age <- max(cutdata$max_longevity, na.rm = TRUE)
 ggplot(alive_data, aes(x = age, y = (proportion_alive))) +
   geom_point(color = "green", size = 2) +
   geom_line(color = "blue", size = 1) +
-  ggtitle("Survivorship Curve for Reptiles") +
+  ggtitle("Survivorship Curve for Reptiles with Malignancy") +
   xlab("Age (months)") +
   ylab("log(Proportion Alive)") +
   scale_y_log10() + # Set x-axis limits
@@ -59,7 +61,7 @@ ggplot(alive_data, aes(x = age, y = (proportion_alive))) +
 ggplot(alive_data, aes(x = age, y = (count_alive))) +
   geom_point(color = "pink", size = 1) +  # Keep points for individual data
   geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), color = "blue", size = 1, se = FALSE) +
-  ggtitle("Survivorship Curve for Reptiles") +
+  ggtitle("Survivorship Curve for Reptiles with Malignancy") +
   xlab("Age (C)") +
   ylab("log(Count Alive)") +
   scale_y_log10() +  # Set x-axis limits
