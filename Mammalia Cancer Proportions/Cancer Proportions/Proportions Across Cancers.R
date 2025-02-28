@@ -38,7 +38,7 @@ for (cancer_type in cancer_types) {
     filter(grepl(cancer_type, Type, ignore.case = TRUE))
   
   # Count cases per species
-  total_cases <- mammal_data %>% count(Species, name = "total_count") %>% filter(total_count > 20)
+  total_cases <- mammal_data %>% count(Species, name = "total_count") %>% filter(total_count > 70)
   cancer_cases <- cancer_data %>% count(Species, name = "cancer_count")
   
   # Compute proportions
