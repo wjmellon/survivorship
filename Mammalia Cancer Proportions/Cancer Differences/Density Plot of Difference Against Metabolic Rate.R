@@ -30,12 +30,16 @@ benign_types <- c(
   "osteoma", "chondroma", "schwannoma", "ganglioneuroma", "myelolipoma",
   "rhabdomyoma", "adenomas", "fibrolipoma", "osteochondroma", "neurilemmoma"
 )
-
-# Filter for mammals only and species with more than 30 recorded cases
-mammal_data <- data %>% 
-  filter(Class == "Mammalia", metabolic_rate != -1) %>% 
-  group_by(Species) %>% 
-  filter(n() > 60) %>% 
+# Apply identical filters to all analyses
+mammal_data <- data %>%
+  filter(
+    Class == "Mammalia",
+    Necropsy == 1,    # Keep only deceased
+    Infant == 0,      # Exclude infants
+    metabolic_rate != -1
+  ) %>%
+  group_by(Species) %>%
+  filter(n() > 50) %>%  # Consistent threshold
   ungroup()
 
 # Count malignant and benign cases per species
