@@ -11,7 +11,7 @@ ucfirst <- function(s) {
 data <- read_csv("records.csv")
 
 # Define cancer type to filter
-cancer_type <- "rhabdomyosarcoma"  # Change this to desired cancer type
+cancer_type <- "osteosarcoma"  # Change this to desired cancer type
 
 # Filter for mammals and deceased individuals (Necropsy == 1, not infants)
 mammal_data <- data %>% 
@@ -22,7 +22,7 @@ cancer_data <- mammal_data %>%
   filter(grepl(cancer_type, Type, ignore.case = TRUE))
 
 # Count cases per species
-total_cases <- mammal_data %>% count(Species, name = "total_count") %>% filter(total_count > 50)
+total_cases <- mammal_data %>% count(Species, name = "total_count") %>% filter(total_count > 70)
 cancer_cases <- cancer_data %>% count(Species, name = "cancer_count")
 
 # Compute proportions

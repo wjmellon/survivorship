@@ -29,7 +29,7 @@ top_species <- proportions %>% top_n(20, wt = proportion) %>%
   filter(!is.na(common_name))
 
 # Save to CSV
-write_csv(proportions, "Cancer Proportions/Proportion Excel Sheets/lymphoma_proportions.csv")
+write_csv(proportions, "Mammalia Cancer Proportions/Cancer Proportions/Proportion Excel Sheets/lymphoma_proportions.csv")
 
 # Plot top species with common names
 ggplot(top_species, aes(x = reorder(common_name, proportion), y = proportion)) +
@@ -51,7 +51,7 @@ proportion_vs_gestation <- proportions %>%
   filter(!is.na(Gestation))
 
 # Save to CSV
-write_csv(proportion_vs_gestation, "Cancer Proportions/Proportion Excel Sheets/lymphoma_vs_gestation.csv")
+write_csv(proportion_vs_gestation, "Mammalia Cancer Proportions/Cancer Proportions/Proportion Excel Sheets/lymphoma_vs_gestation.csv")
 
 # Select top 12 species with the most cases for labeling
 label_species <- proportion_vs_gestation %>% top_n(12, wt = total_count)
