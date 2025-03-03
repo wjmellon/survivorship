@@ -113,3 +113,9 @@ ggplot(mammal_data, aes(x = log_metabolic_rate, y = CancerDifference)) +
   ) +
   # Axis labels
   labs(x = "Log(Metabolic Rate)", y = "Malignant-Benign Cancer Proportion Difference")
+
+
+cor(mammal_data$log_metabolic_rate, mammal_data$CancerDifference, use = "complete.obs")
+
+nrow(mammal_data)
+
