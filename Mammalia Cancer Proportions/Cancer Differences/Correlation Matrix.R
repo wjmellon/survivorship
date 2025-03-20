@@ -3,6 +3,7 @@
   library(ggplot2)
   library(corrplot)
   library(readr)
+  library(tidyr)
   
   # Define cancer categories
   malignant_types <- c(
@@ -91,7 +92,7 @@
            male_maturity, growth_rate, max_longevity, metabolic_rate, Weaning)
   
   # Compute the correlation matrix for selected variables
-  correlation_matrix <- cor(selected_data, use = "complete.obs")
+  correlation_matrix <- cor(selected_data, use = "pairwise.complete.obs")
   
   # Plot the correlation heatmap using 'corrplot'
   corrplot(correlation_matrix, method = "color", 
@@ -104,12 +105,30 @@
   # Compute correlation for each biological variable with cancer metrics
   correlations <- sapply(selected_data[, -1], function(x) cor(x, selected_data$cancer_difference, use = "complete.obs"))
   correlations_df <- data.frame(Variable = names(correlations), Correlation = correlations)
+  
+
+
+
+# Create bar plot of correlation strengths
+ggplot(correlations_df, aes(x = reorder(Variable, Correlation), y = Correlation, fill = Correlation < 0)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("TRUE" = "red", "FALSE" = "steelblue")) +  # Red for negative, blue for positive
+  coord_flip() +
+  labs(title = "Correlation Strength Between Cancer Metrics and Biological Variables",
+       x = "Biological Variables", y = "Correlation with Cancer Difference") +
+  theme_minimal()
+
+  nrow(selected_data)
   # 
-  # # Create bar plot of correlation strengths
-  # ggplot(correlations_df, aes(x = reorder(Variable, Correlation), y = Correlation, fill = Correlation < 0)) +
-  #   geom_bar(stat = "identity") +
-  #   scale_fill_manual(values = c("TRUE" = "red", "FALSE" = "steelblue")) +  # Red for negative, blue for positive
-  #   coord_flip() +
-  #   labs(title = "Correlation Strength Between Cancer Metrics and Biological Variables",
-  #        x = "Biological Variables", y = "Correlation with Cancer Difference") +
+  # ggplot(selected_data, aes(x = metabolic_rate, y = cancer_difference)) +
+  #   geom_point() +
+  #   labs(title = "Relationship between Metabolic Rate and Cancer Difference",
+  #        x = "Metabolic Rate", y = "Cancer Difference") +
   #   theme_minimal()
+  # # Summarize the data for the variables used in the correlation plot
+  # summary(selected_data)
+  
+  # Calculate the correlation between metabolic_rate and cancer_difference
+  cor(selected_data$metabolic_rate, selected_data$cancer_difference, use = "complete.obs")
+  
+  

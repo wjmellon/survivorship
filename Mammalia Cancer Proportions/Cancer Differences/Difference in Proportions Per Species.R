@@ -36,7 +36,7 @@ mammal_data <- data %>%
   filter(Class == "Mammalia", Necropsy == 1, Infant == 0)
 
 # Count total cancer cases per species
-total_cases <- mammal_data %>% count(Species, name = "total_count") %>% filter(total_count > 30)
+total_cases <- mammal_data %>% count(Species, name = "total_count") %>% filter(total_count > 20)
 
 # Count malignant and benign cases per species
 malignant_cases <- mammal_data %>%
@@ -65,7 +65,7 @@ cancer_proportions <- full_join(malignant_proportions, benign_proportions, by = 
 # Filter for species with at least 30 cases and calculate differences
 cancer_differences <- cancer_proportions %>%
   left_join(total_cases, by = "Species") %>%  # Include total_count for filtering
-  filter(total_count >= 30) %>%  # Only species with at least 30 cases
+  filter(total_count >= 20) %>%  # Only species with at least 30 cases
   mutate(cancer_difference = malignant_proportion - benign_proportion,
          absolute_difference = abs(cancer_difference))  # Absolute difference for bubble size
 
