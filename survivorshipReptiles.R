@@ -1,91 +1,82 @@
+# Load required libraries
 library(ggplot2)
 library(dplyr)
-library(ggrepel)  # For non-overlapping labels
+library(cowplot)
 
 # Load the dataset
-data <- malignant_data
-
-# Filter data for Mammalia class
-cutdata <- filter(data, Necropsy == 1)
-cutdata <- filter(cutdata, Class == "Mammalia")  # Filter for Mammalia
-cutdata <- filter(cutdata, Infant == 0)  # Remove infants
-
-<<<<<<< HEAD
-# Ensure columns used for lymphoma deaths are correct
-# Assuming lymphoma deaths data is in a column named "Lymphoma_Deaths"
-cutdata <- cutdata[, c(3, 24, 48)]  # Assuming these columns contain age_months, max_longevity, lymphoma deaths
-=======
-# Filter for Class Reptilia and relevant columns
-cutdata <- filter(cutdata, Class == "Reptilia")
+data <- read.csv("records.csv")
 
 
-cutdata <- filter(cutdata, Infant == 0)
+# Filter the dataset for Reptiles with Necropsy data and exclude infants
+cutdata <- data %>%
+  filter(Necropsy == 1) %>%
+  filter(Class == "Reptilia") %>%
+  filter(Infant == 0)
+
+cutdata <- cutdata %>%
+  mutate(
+    age_months = as.numeric(age_months),
+    max_longevity = as.numeric(max_longevity)
+  )
 
 
+# Select relevant columns (assuming columns 3 = Species, 24 = age_months, 48 = max_longevity)
+cutdata <- cutdata[, c(3, 28, 48)]
+colnames(cutdata) <- c("age_months", "Species", "max_longevity")
 
 
-#cutdata <- filter(cutdata, com == "Reptilia")
-
-cutdata <- cutdata[, c(3, 24,48)]  # Assuming columns 3 and 24 are `age_months` and `max_longevity`
->>>>>>> 2af795a5e2cd2eddb802c707ab84d6a42064ad1d
+# Clean data: remove individuals with invalid ages
 cutdata$age_months[cutdata$age_months <= 0] <- NA
 cutdata <- na.omit(cutdata)
 
-# Check if Lymphoma_Deaths is a valid column (modify if needed)
-colnames(cutdata)  # Verify the names of the columns (adjust accordingly)
+# Clean data: remove individuals with invalid ages
+cutdata$max_longevity[cutdata$max_longevity <= 0] <- NA
+cutdata <- na.omit(cutdata)
 
-<<<<<<< HEAD
-# Scatterplot with lymphoma deaths for Mammalia species
-ggplot(cutdata, aes(x = Lymphoma_Deaths)) +
-  geom_jitter(aes(y = 0), width = 0.2, height = 0, size = 3, alpha = 0.7, color = "red") +
-  geom_text_repel(aes(y = 0, label = Species), size = 3, nudge_y = 0.1) +  # Label all species
-  theme_minimal(base_size = 14) +
-  labs(title = "Lymphoma Death Frequency Across Mammal Species",
-       x = "Number of Lymphoma Deaths", y = "") +
-  theme(axis.text.y = element_blank(), 
-        axis.ticks.y = element_blank(),
-        panel.grid.major.y = element_blank())
-=======
-# Calculate the number of individuals alive at each time step
+
+# Create a relative_age column: individual age divided by species-specific maximum longevity
+cutdata <- cutdata %>%
+  mutate(relative_age = age_months / max_longevity)
+
+# Define relative age time steps (0 to 1 by increments of 0.01)
+time_steps <- seq(0, 1, by = 0.01)  # 1% increments of lifespan
+
+# Calculate the number of individuals alive at each relative age step
 alive_counts <- sapply(time_steps, function(x) {
-  sum(cutdata$age_months > x)  # Count individuals with age > x
+  sum(cutdata$relative_age > x)  # Count individuals alive beyond time step x
 })
 
 # Prepare a dataframe for plotting
 alive_data <- data.frame(
-  age = time_steps,
+  relative_age = time_steps,
   count_alive = alive_counts
 )
+
 # Normalize counts to a proportion of the original population
 alive_data <- alive_data %>%
   mutate(proportion_alive = count_alive / max(count_alive))  # Divide by initial population size
 
 
+# ----------- PLOTS -----------
 
-
-max_age <- max(cutdata$max_longevity, na.rm = TRUE)
-
-#step line
-ggplot(alive_data, aes(x = age, y = (proportion_alive))) +
+# 1. Step line plot using relative age (proportion of lifespan)
+ggplot(alive_data, aes(x = relative_age, y = proportion_alive)) +
   geom_point(color = "green", size = 2) +
   geom_line(color = "blue", size = 1) +
-  ggtitle("Survivorship Curve for Reptiles with Malignancy") +
-  xlab("Age (months)") +
-  ylab("log(Proportion Alive)") +
-  scale_y_log10() + # Set x-axis limits
+  ggtitle("Normalized Survivorship Curve for Reptiles") +
+  xlab("Proportion of Maximum Lifespan") +
+  ylab("Proportion Alive") +
+  scale_y_log10() +  # Optional: log scale on y-axis for better visualization
   theme_cowplot(12)
 
 
-#smooth line
-ggplot(alive_data, aes(x = age, y = (count_alive))) +
-  geom_point(color = "pink", size = 1) +  # Keep points for individual data
+# 2. Smoothed line plot using relative age and count_alive
+ggplot(alive_data, aes(x = relative_age, y = count_alive)) +
+  geom_point(color = "brown", size = 1) +  # Points show raw data
   geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), color = "blue", size = 1, se = FALSE) +
-  ggtitle("Survivorship Curve for Reptiles with Malignancy") +
-  xlab("Age (C)") +
-  ylab("log(Count Alive)") +
-  scale_y_log10() +  # Set x-axis limits
+  ggtitle("Normalized Survivorship Curve (Smoothed) for Reptiles") +
+  xlab("Proportion of Maximum Lifespan") +
+  ylab("Count Alive") +
+  scale_y_log10() +  # Optional: log scale on y-axis
+  scale_x_continuous(limits = c(0, 1)) +
   theme_cowplot(12)
-summary(cutdata$age_months)
-head(alive_data)
-tail(alive_data)
->>>>>>> 2af795a5e2cd2eddb802c707ab84d6a42064ad1d
