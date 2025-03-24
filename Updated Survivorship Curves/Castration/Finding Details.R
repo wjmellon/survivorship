@@ -4,7 +4,7 @@ library(survival)
 library(survminer)
 data <- read.csv("records.csv")
 
-plot_class_survival <- function(class_name, max_relative_age = 1.5) {
+plot_class_survival <- function(class_name, max_relative_age = 1.5, smooth = FALSE) {
   # Data Preparation
   prep_data <- data %>%
     filter(Necropsy == 1, Infant == 0, Class == class_name) %>%
@@ -17,14 +17,15 @@ plot_class_survival <- function(class_name, max_relative_age = 1.5) {
     ) %>%
     na.omit() %>%
     mutate(relative_age = age_months / max_longevity) %>%
-    filter(relative_age <= max_relative_age)  # Critical addition
+    filter(relative_age <= max_relative_age)
   
-  # Create comparison groups
+  # Create comparison groups (now 5 groups)
   groups <- list(
     "All Individuals" = prep_data,
     "Malignant Cancer" = filter(prep_data, Malignant == 1),
     "Castrated" = filter(prep_data, Castrated == 1),
-    "Malignant & Castrated" = filter(prep_data, Malignant == 1, Castrated == 1)
+    "Malignant & Castrated" = filter(prep_data, Malignant == 1, Castrated == 1),
+    "Malignant & Not Castrated" = filter(prep_data, Malignant == 1, Castrated == 0)
   )
   
   # Create survival objects
@@ -36,8 +37,8 @@ plot_class_survival <- function(class_name, max_relative_age = 1.5) {
   # Remove empty groups
   fits <- fits[!sapply(fits, is.null)]
   
-  # Generate plot
-  ggsurvplot_combine(
+  # Generate plot with adjusted palette
+  plot <- ggsurvplot_combine(
     fits,
     data = prep_data,
     title = paste("Survivorship Curves for", class_name, "\n(Max Relative Age:", max_relative_age, ")"),
@@ -45,15 +46,22 @@ plot_class_survival <- function(class_name, max_relative_age = 1.5) {
     ylab = "Survival Probability",
     legend.title = "Group",
     legend.labs = names(fits),
-    palette = "jco",
+    palette = c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"), # 5-color palette
     risk.table = TRUE,
-    xlim = c(0, max_relative_age),  # Ensures axis limit
-    break.x.by = 0.25,             # Better axis ticks
+    xlim = c(0, max_relative_age),
+    break.x.by = 0.25,
     risk.table.height = 0.25,
     ggtheme = theme_minimal(),
     tables.theme = theme_cleantable()
   )
+  
+  if (smooth) {
+    plot$plot <- plot$plot + geom_smooth(aes(color = strata), method = "loess", se = FALSE)
+    plot$plot <- plot$plot + ggtitle(paste("Smoothed Survivorship Curves for", class_name, "\n(Max Relative Age:", max_relative_age, ")")) # changes the title.
+  }
+  
+  print(plot)
 }
 
 # Example usage:
-plot_class_survival("Mammalia")                   # Default 1.5 cutoff
+plot_class_survival("Mammalia") # unsmoothed plot

@@ -29,8 +29,8 @@ cutdata <- cutdata %>%
 time_steps <- seq(0, 1, by = 0.01)  # 1% increments of lifespan
 
 # Filter for malignant and benign groups based on Malignancy column
-malignant_mammals <- cutdata %>% filter(Malignancy == 1)
-benign_mammals <- cutdata %>% filter(Malignancy == 0)
+malignant_mammals <- cutdata %>% filter(Malignant == 1)
+benign_mammals <- cutdata %>% filter(Malignant == 0)
 all_mammals <- cutdata  # All mammals (with or without malignancy)
 
 # Calculate survival for each group (number of individuals alive at each time step)
