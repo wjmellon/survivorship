@@ -12,7 +12,9 @@ species_cancer_prevalence <- data %>%
   summarise(
     total_individuals = n(),
     malignant_cases = sum(Malignant == 1, na.rm = TRUE),
-    cancer_prevalence = malignant_cases / total_individuals
+    benign_cases = sum(Malignant == 0, na.rm = TRUE),
+    malignant_prevalence = malignant_cases / total_individuals,
+    benign_prevalence = benign_cases / total_individuals
   )
 
 # Merge back to main dataset
@@ -20,13 +22,21 @@ data <- data %>%
   left_join(species_cancer_prevalence, by = "Species")
 
 # Function to plot survival based on cancer prevalence groups with threshold
-plot_prevalence_survival <- function(class_name, max_relative_age = 1.5, smooth = FALSE, threshold = 0.1) {
-  # Classify species based on cancer prevalence threshold
-  data <- data %>%
-    mutate(prevalence_group = factor(
-      ifelse(cancer_prevalence >= threshold, "High Cancer Prevalence", "Low Cancer Prevalence"),
-      levels = c("Low Cancer Prevalence", "High Cancer Prevalence")
-    ))
+plot_prevalence_survival <- function(class_name, max_relative_age = 1.5, smooth = FALSE, threshold = 0.1, type = "malignant") {
+  # Choose classification type
+  if (type == "malignant") {
+    data <- data %>%
+      mutate(prevalence_group = factor(
+        ifelse(malignant_prevalence >= threshold, "High Malignant Prevalence", "Low Malignant Prevalence"),
+        levels = c("Low Malignant Prevalence", "High Malignant Prevalence")
+      ))
+  } else if (type == "benign") {
+    data <- data %>%
+      mutate(prevalence_group = factor(
+        ifelse(benign_prevalence >= threshold, "High Benign Prevalence", "Low Benign Prevalence"),
+        levels = c("Low Benign Prevalence", "High Benign Prevalence")
+      ))
+  }
   
   # Filter the data for the specific class and remove NA values
   prep_data <- data %>%
@@ -52,23 +62,19 @@ plot_prevalence_survival <- function(class_name, max_relative_age = 1.5, smooth 
   # Remove empty groups
   fits <- fits[!sapply(fits, is.null)]
   
-  # Generate plot
+  # Generate plot without risk table
   plot <- ggsurvplot_combine(
     fits,
     data = prep_data,
-    title = paste("Survivorship Curves by Cancer Prevalence for", class_name),
+    title = paste("Survivorship Curves by", type, "Prevalence for", class_name),
     xlab = "Relative Age (Age/Max Longevity)",
     ylab = "Survival Probability",
-    legend.title = "Cancer Prevalence Group",
+    legend.title = "Prevalence Group",
     legend.labs = names(fits),
     palette = c("#1f77b4", "#ff7f0e"), # Two-color palette for high/low prevalence
-    risk.table = TRUE,
     xlim = c(0, max_relative_age),
     break.x.by = 0.25,
-    risk.table.height = 0.25,
-    
-    ggtheme = theme_minimal(),
-    tables.theme = theme_cleantable()
+    ggtheme = theme_minimal()
   )
   
   if (smooth) {
@@ -79,5 +85,5 @@ plot_prevalence_survival <- function(class_name, max_relative_age = 1.5, smooth 
   print(plot)
 }
 
-# Example usage with a different threshold (e.g., 0.01):
-plot_prevalence_survival("Mammalia", threshold = 0.1)
+# Example usage:
+plot_prevalence_survival("Mammalia", threshold = 0.1, type = "malignant")

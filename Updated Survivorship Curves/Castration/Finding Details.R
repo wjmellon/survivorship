@@ -19,7 +19,7 @@ plot_class_survival <- function(class_name, max_relative_age = 1.5, smooth = FAL
     mutate(relative_age = age_months / max_longevity) %>%
     filter(relative_age <= max_relative_age)
   
-  # Create comparison groups (now 5 groups)
+  # Create comparison groups (now 5 groups)aq
   groups <- list(
     "All Individuals" = prep_data,
     "Malignant Cancer" = filter(prep_data, Malignant == 1),
