@@ -2,6 +2,14 @@
 library(ggplot2)
 library(dplyr)
 library(cowplot)
+library(devtools)
+
+# 3. Install rage from GitHub (part of the RCompadre project)
+install_github("jonesor/rage")
+
+# 4. Load rage
+library(Rage)
+
 
 # Load the dataset
 data <- read.csv("records.csv")
@@ -80,3 +88,31 @@ ggplot(alive_data, aes(x = relative_age, y = count_alive)) +
   scale_y_log10() +  # Optional: log scale on y-axis
   scale_x_continuous(limits = c(0, 1)) +
   theme_cowplot(12)
+
+# Survivorship vector (proportion_alive from your plot data)
+lx <- alive_data$proportion_alive
+lx <- lx / max(lx)  # Ensure normalization
+
+# Load rage just to be sure
+
+
+shape_type <- shape_surv(lx)
+cat("Standardized AUC (Type I to III scale):", round(shape_type, 3), "\n")
+
+
+surv_type <- case_when(
+  shape_type >= 0.3 ~ "Type I (late mortality, senescence)",
+  shape_type >= 0.1 & shape_type < 0.3 ~ "Trending toward Type I",
+  shape_type > -0.1 & shape_type < 0.1 ~ "Type II (constant mortality)",
+  shape_type > -0.3 & shape_type <= -0.1 ~ "Trending toward Type III",
+  shape_type <= -0.3 ~ "Type III (early mortality)"
+)
+
+print(surv_type)
+
+# Entropy (Demetrius' H)
+
+H <- entropy_k(lx)
+cat("Entropy (H):", round(H, 3), "\n")cat("Entropy (H):", round(H, 3), "\n")
+
+
