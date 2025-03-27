@@ -80,3 +80,48 @@ ggplot(alive_data, aes(x = relative_age, y = count_alive)) +
   scale_y_log10() +  # Optional: log scale on y-axis
   scale_x_continuous(limits = c(0, 1)) +
   theme_cowplot(12)
+
+
+loess_fit <- loess(proportion_alive ~ relative_age, data = alive_data, span = 0.2)
+
+# Predict values
+alive_data$smoothed <- predict(loess_fit)
+
+# Plot to visualize trend
+ggplot(alive_data, aes(x = relative_age)) +
+  geom_line(aes(y = proportion_alive), color = "grey", linetype = "dashed") +
+  geom_line(aes(y = smoothed), color = "red", size = 1) +
+  ggtitle("Survivorship Curve for Birds") +
+  xlab("Proportion of Maximum Lifespan") +
+  ylab("Proportion Alive") +
+  theme_cowplot(12)
+
+
+# Survivorship vector (proportion_alive from your plot data)
+lx <- alive_data$proportion_alive
+lx <- lx / max(lx)  # Ensure normalization
+
+# Load rage just to be sure
+
+
+shape_type <- shape_surv(lx)
+cat("Standardized AUC (Type I to III scale):", round(shape_type, 3), "\n")
+
+
+surv_type <- case_when(
+  shape_type >= 0.3 ~ "Type I (late mortality, senescence)",
+  shape_type >= 0.1 & shape_type < 0.3 ~ "Trending toward Type I",
+  shape_type > -0.1 & shape_type < 0.1 ~ "Type II (constant mortality)",
+  shape_type > -0.3 & shape_type <= -0.1 ~ "Trending toward Type III",
+  shape_type <= -0.3 ~ "Type III (early mortality)"
+)
+
+print(surv_type)
+
+# Entropy (Demetrius' H)
+
+H <- entropy_k(lx)
+cat("Entropy (H):", round(H, 3), "\n")cat("Entropy (H):", round(H, 3), "\n")
+
+
+
