@@ -1,7 +1,6 @@
 library(ggplot2)
 library(dplyr)
 library(survival)
-library(survminer)
 
 data <- read.csv("records.csv")
 
@@ -62,24 +61,38 @@ plot_prevalence_survival <- function(class_name, max_relative_age = 1.5, smooth 
   # Remove empty groups
   fits <- fits[!sapply(fits, is.null)]
   
-  # Generate plot without risk table
-  plot <- ggsurvplot_combine(
-    fits,
-    data = prep_data,
-    title = paste("Survivorship Curves by", type, "Prevalence for", class_name),
-    xlab = "Relative Age (Age/Max Longevity)",
-    ylab = "Survival Probability",
-    legend.title = "Prevalence Group",
-    legend.labs = names(fits),
-    palette = c("#1f77b4", "#ff7f0e"), # Two-color palette for high/low prevalence
-    xlim = c(0, max_relative_age),
-    break.x.by = 0.25,
-    ggtheme = theme_minimal()
-  )
+  # Combine the results into a single data frame
+  surv_data <- lapply(names(fits), function(group) {
+    fit <- fits[[group]]
+    data.frame(
+      relative_age = fit$time,
+      survival_probability = fit$surv,
+      group = group
+    )
+  }) %>%
+    bind_rows()
+  
+  # Plot the survival curves using ggplot2
+  plot <- ggplot(surv_data, aes(x = relative_age, y = survival_probability, color = group)) +
+    geom_step() +
+    labs(
+      title = paste("Survivorship Curves by", type, "Prevalence for", class_name),
+      x = "Relative Age (Age/Max Longevity)",
+      y = "Survival Probability",
+      color = "Prevalence Group"
+    ) +
+    scale_color_manual(values = c("red", "darkblue")) +  # Two-color palette for high/low prevalence
+    theme_minimal() +
+    theme(
+      
+    ) +
+    scale_x_continuous(
+      breaks = seq(0, max_relative_age, by = 0.25),  # Adjust x-axis breaks
+      limits = c(0, max_relative_age)  # Set the x-axis limits
+    )
   
   if (smooth) {
-    plot$plot <- plot$plot + geom_smooth(aes(color = strata), method = "loess", se = FALSE)
-    plot$plot <- plot$plot + ggtitle(paste("Smoothed Survivorship Curves for", class_name, "\n(Max Relative Age:", max_relative_age, ")"))
+    plot <- plot + geom_smooth(method = "loess", se = FALSE, aes(color = group))
   }
   
   print(plot)
