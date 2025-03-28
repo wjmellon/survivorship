@@ -21,7 +21,7 @@ data <- data %>%
   left_join(species_cancer_prevalence, by = "Species")
 
 # Function to plot survival based on cancer prevalence groups with threshold
-plot_prevalence_survival <- function(class_name, max_relative_age = 1.5, smooth = FALSE, threshold = 0.1, type = "malignant") {
+plot_prevalence_survival <- function(class_name, max_relative_age = 1.25, smooth = TRUE, threshold = 0.001, type = "malignant") {
   # Choose classification type
   if (type == "malignant") {
     data <- data %>%
@@ -29,12 +29,14 @@ plot_prevalence_survival <- function(class_name, max_relative_age = 1.5, smooth 
         ifelse(malignant_prevalence >= threshold, "High Malignant Prevalence", "Low Malignant Prevalence"),
         levels = c("Low Malignant Prevalence", "High Malignant Prevalence")
       ))
+    type_label <- "Malignant"
   } else if (type == "benign") {
     data <- data %>%
       mutate(prevalence_group = factor(
         ifelse(benign_prevalence >= threshold, "High Benign Prevalence", "Low Benign Prevalence"),
         levels = c("Low Benign Prevalence", "High Benign Prevalence")
       ))
+    type_label <- "Benign"
   }
   
   # Filter the data for the specific class and remove NA values
@@ -76,27 +78,34 @@ plot_prevalence_survival <- function(class_name, max_relative_age = 1.5, smooth 
   plot <- ggplot(surv_data, aes(x = relative_age, y = survival_probability, color = group)) +
     geom_step() +
     labs(
-      title = paste("Survivorship Curves by", type, "Prevalence for", class_name),
+      title = paste("Survivorship Curves by", type_label, "Prevalence for", class_name),
       x = "Relative Age (Age/Max Longevity)",
       y = "Survival Probability",
       color = "Prevalence Group"
     ) +
-    scale_color_manual(values = c("red", "darkblue")) +  # Two-color palette for high/low prevalence
+    scale_color_manual(values = c("red", "darkblue")) +  # High/Low prevalence colors
     theme_minimal() +
     theme(
-      
+      panel.grid.major = element_blank(),  # Remove major grid lines
+      panel.grid.minor = element_blank(),  # Remove minor grid lines
+      axis.line = element_line(color = "black")  # Keep solid axis lines
     ) +
     scale_x_continuous(
-      breaks = seq(0, max_relative_age, by = 0.25),  # Adjust x-axis breaks
-      limits = c(0, max_relative_age)  # Set the x-axis limits
+      breaks = seq(0, max_relative_age, by = 0.25),
+      limits = c(0, max_relative_age)
     )
   
   if (smooth) {
-    plot <- plot + geom_smooth(method = "loess", se = FALSE, aes(color = group))
+    # **Background smooth line (faded)**
+    plot <- plot + 
+      geom_smooth(method = "loess", se = FALSE, aes(color = group), size = 1, alpha = 0.3) + 
+      
+      # **GAM line (bold and distinct)**
+      geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), size = 1.5, se = FALSE, aes(color = group))
   }
   
   print(plot)
+  
 }
-
 # Example usage:
 plot_prevalence_survival("Mammalia", threshold = 0.1, type = "malignant")
