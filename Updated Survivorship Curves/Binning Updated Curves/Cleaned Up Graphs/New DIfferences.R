@@ -20,7 +20,6 @@ species_cancer_prevalence <- data %>%
 data <- data %>%
   left_join(species_cancer_prevalence, by = "Species")
 
-# Function to plot survival based on cancer prevalence groups with threshold
 plot_prevalence_survival <- function(class_name, max_relative_age = 1.25, smooth = TRUE, threshold = 0.001, type = "malignant") {
   # Choose classification type
   if (type == "malignant") {
@@ -75,35 +74,37 @@ plot_prevalence_survival <- function(class_name, max_relative_age = 1.25, smooth
     bind_rows()
   
   # Plot the survival curves using ggplot2
-  plot <- ggplot(surv_data, aes(x = relative_age, y = survival_probability, color = group)) +
-    geom_step() +
+  plot <- ggplot(surv_data, aes(x = relative_age, y = survival_probability)) +
+    # Survival line (with smoothing)
+    geom_smooth(
+      method = "gam",
+      formula = y ~ s(x, bs = "cs"),
+      size = 1.2,
+      se = FALSE,
+      aes(group = group, color = paste0(group, "_line")), #group and different color aesthetic
+      linetype = "solid"
+    ) +
+    # Points directly on the line
+    geom_point(aes(color = group), size = 0.5, alpha = 0.2, shape = 16) + 
     labs(
       title = paste("Survivorship Curves by", type_label, "Prevalence for", class_name),
       x = "Relative Age (Age/Max Longevity)",
       y = "Survival Probability",
       color = "Prevalence Group"
     ) +
-    scale_color_manual(values = c("red", "darkblue")) +  # High/Low prevalence colors
+    scale_color_manual(values = c("red", "pink"), name = "Points") + # Explicit name for points
     theme_minimal() +
     theme(
-      panel.grid.major = element_blank(),  # Remove major grid lines
-      panel.grid.minor = element_blank(),  # Remove minor grid lines
-      axis.line = element_line(color = "black")  # Keep solid axis lines
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.line = element_line(color = "black")
     ) +
     scale_x_continuous(
       breaks = seq(0, max_relative_age, by = 0.25),
       limits = c(0, max_relative_age)
-    )
-  
-  if (smooth) {
-    # **Background smooth line (faded)**
-    plot <- plot + 
-      geom_smooth(method = "loess", se = FALSE, aes(color = group), size = 1, alpha = 0.3) + 
-      
-      # **GAM line (bold and distinct)**
-      geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), size = 1.5, se = FALSE, aes(color = group))
-  }
-  
+    ) +
+    scale_color_manual(values = c("orange", "darkblue", "darkgreen", "red"), name = "Colors") +
+    guides(color = guide_legend(override.aes = list(linetype = c(0,0,1,1), shape=c(16,16,NA,NA))))
   print(plot)
   
 }
