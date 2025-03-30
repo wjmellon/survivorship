@@ -75,7 +75,8 @@ ggplot(alive_data, aes(x = relative_age, y = proportion_alive)) +
   xlab("Proportion of Maximum Lifespan") +
   ylab("Proportion Alive") +
   scale_y_log10() +  # Optional: log scale on y-axis for better visualization
-  theme_cowplot(12)
+  theme_cowplot(12) +
+  theme(plot.title = element_text(size = 12))
 
 
 # 2. Smoothed line plot using relative age and count_alive
@@ -87,7 +88,9 @@ ggplot(alive_data, aes(x = relative_age, y = count_alive)) +
   ylab("Count Alive") +
   scale_y_log10() +  # Optional: log scale on y-axis
   scale_x_continuous(limits = c(0, 1)) +
-  theme_cowplot(12)
+  theme_cowplot(12) +
+  theme(plot.title = element_text(size = 12))
+
 
 # Survivorship vector (proportion_alive from your plot data)
 lx <- alive_data$proportion_alive
