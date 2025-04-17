@@ -1,130 +1,158 @@
-# Load required libraries
 library(ggplot2)
 library(dplyr)
-library(cowplot)
+library(survival)
+library(survminer)
+library(devtools)
+install_github("jonesor/rage")
+
+library(Rage) # Load the Rage library
 
 # Load the dataset
+
 data <- read.csv("records.csv")
 
-
-# Filter the dataset for Reptiles with Necropsy data and exclude infants
-cutdata <- data %>%
-  filter(Necropsy == 1) %>%
-  filter(Class == "Reptilia") %>%
-  filter(Infant == 0)
-
-cutdata <- cutdata %>%
-  mutate(
-    age_months = as.numeric(age_months),
-    max_longevity = as.numeric(max_longevity)
+# Compute cancer prevalence by species
+species_cancer_prevalence <- data %>%
+  filter(Necropsy == 1, Infant == 0) %>%
+  group_by(Species) %>%
+  summarise(
+    total_individuals = n(),
+    malignant_cases = sum(Malignant == 1, na.rm = TRUE),
+    benign_cases = sum(Malignant == 0, na.rm = TRUE),
+    neoplasia_cases = malignant_cases + benign_cases,
+    malignant_prevalence = malignant_cases / total_individuals,
+    benign_prevalence = benign_cases / total_individuals,
+    neoplasia_prevalence = neoplasia_cases / total_individuals
   )
 
+# Merge back to main dataset
+data <- data %>%
+  left_join(species_cancer_prevalence, by = "Species")
 
-# Select relevant columns (assuming columns 3 = Species, 24 = age_months, 48 = max_longevity)
-cutdata <- cutdata[, c(3, 28, 48)]
-colnames(cutdata) <- c("age_months", "Species", "max_longevity")
+# Function to calculate survivorship type using RAGE
+get_surv_type_rage <- function(relative_age_vector) {
+  if (length(relative_age_vector) < 2) {
+    return(NA)
+  }
+  time_steps <- seq(0, 1, by = 0.01)
+  alive_counts <- sapply(time_steps, function(x) {
+    sum(relative_age_vector > x, na.rm = TRUE)
+  })
+  lx_raw <- alive_counts / max(alive_counts, na.rm = TRUE)
+  
+  # Ensure that lx values are finite and replace zeroes
+  lx <- ifelse(lx_raw == 0, min(lx_raw[lx_raw > 0], na.rm = TRUE) / 2, lx_raw)
+  if (all(is.na(lx)) || any(!is.finite(lx))) {
+    return(NA)
+  }
+  
+  # Calculate survivorship shape type
+  shape_type <- tryCatch({
+    shape_surv(lx)
+  }, error = function(e) {
+    message(paste("Error in shape_surv:", e$message))
+    return(NA)
+  })
+  
+  # Determine survivorship type based on the shape type
+  surv_type <- case_when(
+    !is.na(shape_type) & shape_type >= 0.3 ~ "Type I",
+    !is.na(shape_type) & shape_type >= 0.1 & shape_type < 0.3 ~ "Trending I",
+    !is.na(shape_type) & shape_type > -0.1 & shape_type < 0.1 ~ "Type II",
+    !is.na(shape_type) & shape_type > -0.3 & shape_type <= -0.1 ~ "Trending III",
+    !is.na(shape_type) & shape_type <= -0.3 ~ "Type III",
+    TRUE ~ NA_character_
+  )
+  return(surv_type)
+}
 
+# Function to plot survival based on cancer prevalence groups with threshold and RAGE type
+plot_prevalence_survival_rage <- function(class_name, max_relative_age = 1.5, smooth = FALSE, threshold = 0.1, type = "malignant", risk_table = TRUE) {
+  # Choose classification type
+  if (type == "malignant") {
+    data <- data %>%
+      mutate(prevalence_group = factor(
+        ifelse(malignant_prevalence >= threshold, "High Malignant Prevalence", "Low Malignant Prevalence"),
+        levels = c("Low Malignant Prevalence", "High Malignant Prevalence")
+      ))
+  } else if (type == "benign") {
+    data <- data %>%
+      mutate(prevalence_group = factor(
+        ifelse(benign_prevalence >= threshold, "High Benign Prevalence", "Low Benign Prevalence"),
+        levels = c("Low Benign Prevalence", "High Benign Prevalence")
+      ))
+  } else if (type == "neoplasia") {
+    data <- data %>%
+      mutate(prevalence_group = factor(
+        ifelse(neoplasia_prevalence >= threshold, "High Neoplasia Prevalence", "Low Neoplasia Prevalence"),
+        levels = c("Low Neoplasia Prevalence", "High Neoplasia Prevalence")
+      ))
+  }
+  
+  # Filter the data for the specific class and remove NA values
+  prep_data <- data %>%
+    filter(Necropsy == 1, Infant == 0, Class == class_name) %>%
+    select(age_months, Species, max_longevity, prevalence_group) %>%
+    mutate(
+      across(c(age_months, max_longevity), ~ ifelse(.x <= 0, NA, .x))
+    ) %>%
+    na.omit() %>%
+    group_by(Species) %>%
+    mutate(relative_age = age_months / max_longevity) %>%
+    ungroup() %>%
+    filter(relative_age <= max_relative_age)
+  
+  # Calculate RAGE survivorship type for each prevalence group
+  rage_types <- prep_data %>%
+    group_by(prevalence_group) %>%
+    summarise(relative_ages = list(relative_age)) %>%
+    mutate(rage_type = sapply(relative_ages, get_surv_type_rage))
+  
+  # Create survival objects for prevalence groups
+  fits <- prep_data %>%
+    group_by(prevalence_group) %>%
+    group_split() %>%
+    setNames(unique(prep_data$prevalence_group)) %>%
+    lapply(function(df) {
+      if (nrow(df) == 0) return(NULL)
+      survfit(Surv(relative_age, rep(1, nrow(df))) ~ 1, data = df)
+    })
+  
+  # Remove empty groups
+  fits <- fits[!sapply(fits, is.null)]
+  
+  # Generate plot
+  plot <- ggsurvplot_combine(
+    fits,
+    data = prep_data,
+    title = paste("Survivorship Curves by", type, "Prevalence for", class_name),
+    xlab = "Relative Age (Age / Max Longevity)",
+    ylab = "Survival Probability",
+    legend.title = "Prevalence Group",
+    legend.labs = names(fits),
+    palette = c("#1f77b4", "#ff7f0e"),
+    risk.table = risk_table,
+    pval = TRUE,
+    xlim = c(0, max_relative_age),
+    break.x.by = 0.25,
+    risk.table.height = 0.25,
+    ggtheme = theme_minimal(),
+    tables.theme = theme_cleantable()
+  )
+  
+  if (smooth) {
+    plot$plot <- plot$plot + geom_smooth(aes(color = strata), method = "loess", se = FALSE)
+    plot$plot <- plot$plot + ggtitle(paste("Smoothed Survivorship Curves for", class_name, "\n(Max Relative Age:", max_relative_age, ")"))
+  }
+  
+  print(plot)
+  
+  # Print RAGE survivorship types
+  cat(paste("\nRAGE Survivorship Curve Types for", class_name, "by", tools::toTitleCase(type), "Prevalence:\n"))
+  for (i in 1:nrow(rage_types)) {
+    cat(paste0(rage_types$prevalence_group[i], ": ", rage_types$rage_type[i], "\n"))
+  }
+}
 
-# Clean data: remove individuals with invalid ages
-cutdata$age_months[cutdata$age_months <= 0] <- NA
-cutdata <- na.omit(cutdata)
-
-# Clean data: remove individuals with invalid ages
-cutdata$max_longevity[cutdata$max_longevity <= 0] <- NA
-cutdata <- na.omit(cutdata)
-
-
-# Create a relative_age column: individual age divided by species-specific maximum longevity
-cutdata <- cutdata %>%
-  mutate(relative_age = age_months / max_longevity)
-
-# Define relative age time steps (0 to 1 by increments of 0.01)
-time_steps <- seq(0, 1, by = 0.01)  # 1% increments of lifespan
-
-# Calculate the number of individuals alive at each relative age step
-alive_counts <- sapply(time_steps, function(x) {
-  sum(cutdata$relative_age > x)  # Count individuals alive beyond time step x
-})
-
-# Prepare a dataframe for plotting
-alive_data <- data.frame(
-  relative_age = time_steps,
-  count_alive = alive_counts
-)
-
-# Normalize counts to a proportion of the original population
-alive_data <- alive_data %>%
-  mutate(proportion_alive = count_alive / max(count_alive))  # Divide by initial population size
-
-
-# ----------- PLOTS -----------
-
-# 1. Step line plot using relative age (proportion of lifespan)
-ggplot(alive_data, aes(x = relative_age, y = proportion_alive)) +
-  geom_point(color = "green", size = 2) +
-  geom_line(color = "blue", size = 1) +
-  ggtitle("Normalized Survivorship Curve for Reptiles") +
-  xlab("Proportion of Maximum Lifespan") +
-  ylab("Proportion Alive") +
-  scale_y_log10() +  # Optional: log scale on y-axis for better visualization
-  theme_cowplot(12) +
-  theme(plot.title = element_text(size = 12))
-
-
-# 2. Smoothed line plot using relative age and count_alive
-ggplot(alive_data, aes(x = relative_age, y = count_alive)) +
-  geom_point(color = "brown", size = 1) +  # Points show raw data
-  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), color = "blue", size = 1, se = FALSE) +
-  ggtitle("Normalized Survivorship Curve (Smoothed) for Reptiles") +
-  xlab("Proportion of Maximum Lifespan") +
-  ylab("Count Alive") +
-  scale_y_log10() +  # Optional: log scale on y-axis
-  scale_x_continuous(limits = c(0, 1)) +
-  theme_cowplot(12) +
-  theme(plot.title = element_text(size = 12))
-
-
-
-loess_fit <- loess(proportion_alive ~ relative_age, data = alive_data, span = 0.2)
-
-# Predict values
-alive_data$smoothed <- predict(loess_fit)
-
-# Plot to visualize trend
-ggplot(alive_data, aes(x = relative_age)) +
-  geom_line(aes(y = proportion_alive), color = "grey", linetype = "dashed") +
-  geom_line(aes(y = smoothed), color = "red", size = 1) +
-  ggtitle("Survivorship curve for Reptiles") +
-  xlab("Proportion of Maximum Lifespan") +
-  ylab("Proportion Alive") +
-  theme_cowplot(12)
-
-
-# Survivorship vector (proportion_alive from your plot data)
-lx <- alive_data$proportion_alive
-lx <- lx / max(lx)  # Ensure normalization
-
-# Load rage just to be sure
-
-
-shape_type <- shape_surv(lx)
-cat("Standardized AUC (Type I to III scale):", round(shape_type, 3), "\n")
-
-
-surv_type <- case_when(
-  shape_type >= 0.3 ~ "Type I (late mortality, senescence)",
-  shape_type >= 0.1 & shape_type < 0.3 ~ "Trending toward Type I",
-  shape_type > -0.1 & shape_type < 0.1 ~ "Type II (constant mortality)",
-  shape_type > -0.3 & shape_type <= -0.1 ~ "Trending toward Type III",
-  shape_type <= -0.3 ~ "Type III (early mortality)"
-)
-
-print(surv_type)
-
-# Entropy (Demetrius' H)
-
-H <- entropy_k(lx)
-cat("Entropy (H):", round(H, 3), "\n")cat("Entropy (H):", round(H, 3), "\n")
-
-
-
+# Example usage:
+plot_prevalence_survival_rage("Mammalia", max_relative_age = 1, threshold = 0.1, type = "neoplasia")

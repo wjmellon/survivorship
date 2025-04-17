@@ -93,4 +93,4 @@ plot_prevalence_survival <- function(class_name, max_relative_age = 1.25, thresh
 }
 
 # Example usage:
-plot_prevalence_survival("Mammalia", threshold = 0.1, type = "malignant")
+plot_prevalence_survival("Aves", threshold = 0.1, type = "malignant")
