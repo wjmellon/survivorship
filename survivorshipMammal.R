@@ -42,6 +42,16 @@ cutdata <- cutdata %>%
 # Define relative age time steps (0 to 1 by increments of 0.01)
 time_steps <- seq(0, 1, by = 0.01)  # 1% increments of lifespan
 
+# Filter to only species with at least 20 individuals
+species_counts <- cutdata %>%
+  group_by(Species) %>%
+  tally() %>%
+  filter(n >= 20)
+
+# Keep only those species in your main dataset
+cutdata <- cutdata %>%
+  filter(Species %in% species_counts$Species)
+
 # Calculate the number of individuals alive at each relative age step
 alive_counts <- sapply(time_steps, function(x) {
   sum(cutdata$relative_age > x)  # Count individuals alive beyond time step x
