@@ -5,7 +5,7 @@ library(cowplot)
 library(Rage)
 
 # Load the dataset
-data <- read.csv("records.csv")
+data <- read.csv("survivorship/records.csv")
 
 
 # Filter the dataset for Mammals with Necropsy data and exclude infants
@@ -112,3 +112,44 @@ print(surv_type)
 # Entropy (Demetrius' H)
 H <- entropy_k(lx)
 cat("Entropy (H):", round(H, 3), "\n")
+
+
+# Create a directory to store plots (optional)
+if (!dir.exists("species_plots")) dir.create("species_plots")
+
+# Loop through each unique species
+for (spec in unique(cutdata$Species)) {
+  
+  # Filter data for the current species
+  species_data <- cutdata %>% filter(Species == spec)
+  
+  # Recalculate survivorship curve for that species
+  time_steps <- seq(0, 1, by = 0.01)
+  alive_counts <- sapply(time_steps, function(x) {
+    sum(species_data$relative_age > x)
+  })
+  
+  alive_data <- data.frame(
+    relative_age = time_steps,
+    count_alive = alive_counts
+  ) %>% mutate(proportion_alive = count_alive / max(count_alive))
+  
+  # Create ggplot
+  p <- ggplot(alive_data, aes(x = relative_age, y = proportion_alive)) +
+    geom_line(color = "blue", size = 1) +
+    ggtitle(paste("Survivorship Curve -", spec)) +
+    xlab("Proportion of Maximum Lifespan") +
+    ylab("Proportion Alive") +
+    theme_cowplot(12) +
+    theme(plot.title = element_text(size = 10)) +
+    scale_y_log10()
+  
+  # Save the plot
+  ggsave(
+    filename = paste0("species_plots/", gsub(" ", "_", spec), "_curve.png"),
+    plot = p,
+    width = 6,
+    height = 4,
+    dpi = 300
+  )
+}
