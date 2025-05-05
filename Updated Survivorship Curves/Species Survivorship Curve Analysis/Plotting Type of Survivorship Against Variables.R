@@ -79,5 +79,5 @@ create_survivorship_plot <- function(y_variable) {
   
   print(p)
 }
-create_survivorship_plot("Gestation")
+create_survivorship_plot("birth_weight")
 

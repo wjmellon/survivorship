@@ -5,13 +5,13 @@ library(cowplot)
 library(Rage)
 
 # Load the dataset
-data <- read.csv("survivorship/records.csv")
+data <- read.csv("records.csv")
 
 
 # Filter the dataset for Mammals with Necropsy data and exclude infants
 cutdata <- data %>%
   filter(Necropsy == 1) %>%
-  filter(Class == "Mammalia") %>%
+  filter(Class == "Aves") %>%
   filter(Infant == 0)
 
 cutdata <- cutdata %>%
@@ -128,7 +128,14 @@ cat("Entropy (H):", round(H, 3), "\n")
 if (!dir.exists("species_plots")) dir.create("species_plots")
 
 # Loop through each unique species
-for (spec in unique(cutdata$Species)) {
+valid_species <- cutdata %>%
+  group_by(Species) %>%
+  summarize(n = n()) %>%
+  filter(n > 20) %>%
+  pull(Species)
+
+
+for (spec in unique(valid_species)) {
   
   # Filter data for the current species
   species_data <- cutdata %>% filter(Species == spec)
@@ -156,7 +163,7 @@ for (spec in unique(cutdata$Species)) {
   
   # Save the plot
   ggsave(
-    filename = paste0("species_plots/", gsub(" ", "_", spec), "_curve.png"),
+    filename = paste0("species_plots_Aves/", gsub(" ", "_", spec), "_curve.png"),
     plot = p,
     width = 6,
     height = 4,
