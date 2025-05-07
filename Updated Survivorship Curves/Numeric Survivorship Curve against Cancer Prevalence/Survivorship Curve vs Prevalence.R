@@ -15,6 +15,7 @@ prevalence_data <- data %>%
     Total = n(),
     Malignant = sum(Malignant == 1),
     Benign = sum(Malignant == 0),
+    Malignant_Prev = Malignant / Total,
     Neoplasia_Prev = (Malignant + Benign) / Total,
     .groups = 'drop'
   )
@@ -87,7 +88,7 @@ weight_data <- data %>%
 merged_data_plot <- merge(merged_data_plot, weight_data, by = "Species")
 
 # 5. Linear regression
-regression_model <- lm(Neoplasia_Prev ~ RAGE, data = merged_data_plot)
+regression_model <- lm(Malignant_Prev ~ RAGE, data = merged_data_plot)
 r_squared <- summary(regression_model)$r.squared
 p_value <- summary(regression_model)$coefficients[2, 4]
 intercept <- coef(regression_model)[1]
@@ -95,12 +96,12 @@ slope <- coef(regression_model)[2]
 equation_string <- paste("Neoplasia_Prev = ", round(slope, 3), " * RAGE + ", round(intercept, 3), sep = "")
 
 # 6. Plot
-ggplot(merged_data_plot, aes(x = RAGE, y = Neoplasia_Prev, color = log_adult_weight)) +
+ggplot(merged_data_plot, aes(x = RAGE, y = log(Malignant_Prev), color = log_adult_weight)) +
   geom_point(size = 3, alpha = 0.7) +
   geom_smooth(method = "lm", se = TRUE, color = "blue") +
   scale_color_gradient(low = "lightblue", high = "darkred", name = "Log Adult Weight") +
   labs(
-    title = "RAGE Number vs. Neoplasia Prevalence",
+    title = "RAGE Number vs. Malignant Prevalence",
     x = "RAGE Number",
     y = "Neoplasia Prevalence",
     caption = paste("R-squared = ", round(r_squared, 3), ", p-value = ", round(p_value, 3), "\n", equation_string)
