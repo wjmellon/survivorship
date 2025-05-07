@@ -96,12 +96,12 @@ slope <- coef(regression_model)[2]
 equation_string <- paste("Neoplasia_Prev = ", round(slope, 3), " * RAGE + ", round(intercept, 3), sep = "")
 
 # 6. Plot
-ggplot(merged_data_plot, aes(x = RAGE, y = log(Malignant_Prev), color = log_adult_weight)) +
+ggplot(merged_data_plot, aes(x = RAGE, y = log(Neoplasia_Prev), color = log_adult_weight)) +
   geom_point(size = 3, alpha = 0.7) +
   geom_smooth(method = "lm", se = TRUE, color = "blue") +
   scale_color_gradient(low = "lightblue", high = "darkred", name = "Log Adult Weight") +
   labs(
-    title = "RAGE Number vs. Malignant Prevalence",
+    title = "RAGE Number vs. Neoplasia Prevalence",
     x = "RAGE Number",
     y = "Neoplasia Prevalence",
     caption = paste("R-squared = ", round(r_squared, 3), ", p-value = ", round(p_value, 3), "\n", equation_string)
