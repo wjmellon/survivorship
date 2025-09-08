@@ -52,38 +52,35 @@ library(dplyr)
       )
     
     cancer_prevalence
-    
-  
-  library(ggplot2)
-    
-    ggplot(cancer_prevalence, aes(x = 'Curve Type', y = prevalence)) +
-      geom_bar(stat = "identity", fill = "steelblue") +
-      labs(
-        title = "Cancer Prevalence by Type",
-        x = "Type",
-        y = "Proportion with Cancer"
-      ) +
-      ylim(0,1) +  # since prevalence is a proportion
-      theme_minimal()
-    
+
     
     library(ggplot2)
     library(dplyr)
     
-    # Filter only Type 1, Type 2, Type 3
-    cancer_prevalence_filtered <- cancer_prevalence %>%
-      filter(`Curve Type` %in% c("Type I", "Type II", "Type III")) %>%
-      mutate(prevalence = as.numeric(prevalence))  # ensure numeric
-    
-    # Plot
-    ggplot(cancer_prevalence_filtered, aes(x = `Curve Type`, y = prevalence)) +
+ # Filter only Type 1, Type 2, Type 3
+cancer_prevalence_filtered <- cancer_prevalence %>%
+   filter(`Curve Type` %in% c("Type I", "Type II", "Type III")) %>%
+   mutate(prevalence = as.numeric(prevalence))  # convert to numeric
+              
+cancer_prevalence_filtered
+              
+
+# Plot
+    ggplot(cancer_prevalence_filtered, aes(x = `Curve Type`, y = mean_prev)) +
       geom_bar(stat = "identity", fill = "steelblue") +
-      geom_text(aes(label = round(prevalence, 2)), vjust = -0.5) +
+      geom_text(aes(label = round(mean_prev, 3)), vjust = -0.5) +  # use mean_prev here
       labs(
         title = "Cancer Prevalence by Survivorship Type",
         x = "Survivorship Type",
         y = "Proportion with Cancer"
-      ) +
-      ylim(0,1) +
+      ) + ylim(0, 1) +
       theme_minimal()
+    
+    
+# Perform one-way ANOVA
+    anova_result <- aov(prevalence ~ `Curve Type`, data = cancer_prevalence_filtered)
+    
+# View summary
+    summary(anova_result)
+    
     
