@@ -1,0 +1,631 @@
+"Species","Class","neoplasia_prevalence","cancer_prevalence","survivorship_type","shape_value","n"
+"Aceros cassidix","Aves",0.15,0.15,"Type II",0.0830255600942754,20
+"Acinonyx jubatus","Mammalia",0.466981132075472,0.160377358490566,"Type I",0.308207688887054,212
+"Acrantophis dumerili","Reptilia",0.348837209302326,0.209302325581395,"Type II",0.0994306796826405,43
+"Acryllium vulturinum","Aves",0.195121951219512,0.0975609756097561,"Type II",0.0188847942760343,41
+"Actinemys marmorata","Reptilia",0.0344827586206897,0.00862068965517241,"Trending toward Type III",-0.171546840218006,116
+"Addax nasomaculatus","Mammalia",0.236842105263158,0.105263157894737,"Trending toward Type I",0.170295520462327,76
+"Aepyceros melampus","Mammalia",0.414141414141414,0.292929292929293,"Trending toward Type I",0.204035463826542,99
+"Afropavo congensis","Aves",0.0303030303030303,0.0303030303030303,"Type II",0.0487350558861828,33
+"Agalychnis callidryas","Amphibia",0.0652173913043478,0.0434782608695652,"Type II",-0.0779520003852395,46
+"Agapornis fischeri","Aves",0.423220973782772,0.247191011235955,"Trending toward Type I",0.140942271912116,267
+"Agapornis roseicollis","Aves",0.616666666666667,0.433333333333333,"Trending toward Type I",0.107198057024434,60
+"Agkistrodon contortrix","Reptilia",0.411764705882353,0.117647058823529,"Type II",0.0994572776014032,34
+"Agkistrodon piscivorus","Reptilia",0.5,0.433333333333333,"Trending toward Type I",0.175794010068965,30
+"Aidemosyne modesta","Aves",0.142857142857143,0.142857142857143,"Trending toward Type III",-0.19112019414274,21
+"Ailurus fulgens","Mammalia",0.374149659863946,0.0884353741496599,"Trending toward Type I",0.193373677568612,147
+"Aix galericulata","Aves",0.160714285714286,0.125,"Type II",-0.0623330281861683,56
+"Aix sponsa","Aves",0.145454545454545,0.0727272727272727,"Trending toward Type I",0.124932380888549,55
+"Aldabrachelys gigantea","Reptilia",0.025,0.025,"Type I",0.326097261233077,40
+"Allenopithecus nigroviridis","Mammalia",0.285714285714286,0.0357142857142857,"Trending toward Type I",0.143439807509847,28
+"Alligator mississippiensis","Reptilia",0.077720207253886,0,"Type II",-0.0866147201475183,193
+"Alopochen aegyptiaca","Aves",0.371428571428571,0.285714285714286,"Trending toward Type I",0.171830724711939,35
+"Alouatta caraya","Mammalia",0.283018867924528,0.169811320754717,"Trending toward Type I",0.103121920165813,53
+"Alouatta seniculus","Mammalia",0.111111111111111,0.0740740740740741,"Trending toward Type I",0.259924125934825,27
+"Amadina fasciata","Aves",0.05,0,"Type II",-0.0368480338132695,20
+"Amazona aestiva","Aves",0.471264367816092,0.258620689655172,"Trending toward Type I",0.137648762671811,174
+"Amazona albifrons","Aves",0.761904761904762,0.285714285714286,"Type II",-0.0189965624845967,21
+"Amazona amazonica","Aves",0.735632183908046,0.413793103448276,"Trending toward Type III",-0.221259632537012,87
+"Amazona auropalliata","Aves",0.535031847133758,0.331210191082803,"Trending toward Type I",0.104088602505245,157
+"Amazona autumnalis","Aves",0.696969696969697,0.5,"Trending toward Type I",0.134813668246288,66
+"Amazona finschi","Aves",0.794117647058823,0.617647058823529,"Type I",0.322491551313027,34
+"Amazona ochrocephala","Aves",0.793478260869565,0.467391304347826,"Trending toward Type I",0.170934818203502,92
+"Amazona oratrix","Aves",0.428104575163399,0.225490196078431,"Trending toward Type I",0.163268038183182,306
+"Amazona viridigenalis","Aves",0.75,0.568181818181818,"Trending toward Type I",0.155276318901953,44
+"Ambystoma mexicanum","Amphibia",0.246575342465753,0.136986301369863,"Type II",0.0124474871422715,73
+"Ambystoma tigrinum","Amphibia",0.278688524590164,0.163934426229508,"Trending toward Type I",0.138492076657116,61
+"Ameiva lineolaia","Reptilia",0.0303030303030303,0,"Trending toward Type III",-0.294329119414521,33
+"Ammodramus savannarum","Aves",0,0,"Trending toward Type III",-0.258060315336929,20
+"Ammotragus lervia","Mammalia",0.428571428571429,0.163265306122449,"Trending toward Type I",0.226436223204578,49
+"Anas acuta","Aves",0.0816326530612245,0.0612244897959184,"Type II",0.0228463615870241,49
+"Anas bahamensis","Aves",0.0909090909090909,0.0909090909090909,"Trending toward Type I",0.170490528173208,22
+"Anas capensis","Aves",0.037037037037037,0,"Type II",0.0185995899819438,27
+"Anas carolinensis","Aves",0,0,"Type II",0.0801614716649577,23
+"Anas clypeata","Aves",0.0476190476190476,0,"Type II",0.0742965400183592,21
+"Anas platyrhynchos","Aves",0.442176870748299,0.312925170068027,"Trending toward Type I",0.133661542959853,147
+"Anaxyrus baxteri","Amphibia",0.207446808510638,0.0478723404255319,"Trending toward Type I",0.143837155599683,188
+"Anaxyrus boreas","Amphibia",0.44,0.2,"Type II",-0.0298236508895794,25
+"Anaxyrus hemiophrys","Amphibia",0.937062937062937,0.314685314685315,"Type III",-0.378853390496562,143
+"Anaxyrus houstonensis","Amphibia",0.307692307692308,0.230769230769231,"Trending toward Type I",0.187928910131973,26
+"Anodorhynchus hyacinthinus","Aves",0.316666666666667,0.225,"Trending toward Type I",0.117156739555055,120
+"Anolis equestris","Reptilia",0.125,0.0416666666666667,"Trending toward Type I",0.148680339801278,24
+"Anser anser","Aves",0.384615384615385,0.346153846153846,"Type II",0.0037511323277189,26
+"Anseranas semipalmata","Aves",0.0909090909090909,0,"Type II",-0.0918777230344398,22
+"Antilocapra americana","Mammalia",0.229508196721311,0.131147540983607,"Type II",0.0174153886366133,61
+"Antilope cervicapra","Mammalia",0.227272727272727,0.163636363636364,"Trending toward Type I",0.125495548122093,110
+"Anurolimnas fasciatus","Aves",0.032258064516129,0,"Trending toward Type III",-0.135985265474326,31
+"Aonyx cinereus","Mammalia",0.340425531914894,0.148936170212766,"Trending toward Type I",0.273193202128571,47
+"Aotus trivirgatus","Mammalia",0.19047619047619,0.142857142857143,"Type II",0.0869487690679808,21
+"Aquila chrysaetos","Aves",0.137931034482759,0.103448275862069,"Trending toward Type I",0.147049857622602,29
+"Ara ambiguus","Aves",0.308219178082192,0.157534246575342,"Type II",0.0339147966825017,146
+"Ara ararauna","Aves",0.312785388127854,0.148401826484018,"Type II",-0.00950359099821252,438
+"Ara chloropterus","Aves",0.36241610738255,0.181208053691275,"Type II",0.0805311903644855,149
+"Ara glaucogularis","Aves",0.117647058823529,0.0784313725490196,"Type II",0.060569426640731,51
+"Ara macao","Aves",0.269230769230769,0.0923076923076923,"Type II",0.02548073358645,130
+"Ara militaris","Aves",0.246153846153846,0.138461538461538,"Type II",0.0280979060906702,65
+"Ara rubrogenys","Aves",0.179487179487179,0.102564102564103,"Type II",-0.0649633610223883,39
+"Ara severus","Aves",0.318181818181818,0.242424242424242,"Type II",0.0717172007558914,66
+"Aratinga acuticaudata","Aves",0.482142857142857,0.178571428571429,"Type II",0.0417221082074186,56
+"Aratinga auricapillus","Aves",0.0625,0.0208333333333333,"Type II",0.0800411300258791,48
+"Aratinga nenday","Aves",0.527777777777778,0.388888888888889,"Trending toward Type I",0.244047633172449,36
+"Aratinga solstitialis","Aves",0.179012345679012,0.123456790123457,"Type II",-0.00882471126764894,162
+"Arctictis binturong","Mammalia",0.703703703703704,0.574074074074074,"Trending toward Type I",0.220025129982972,54
+"Ardeola speciosa","Aves",0.212121212121212,0.0606060606060606,"Trending toward Type III",-0.134588384005041,33
+"Ardeotis kori","Aves",0.0444444444444444,0.0222222222222222,"Type II",-0.0324895141303756,45
+"Argusianus argus","Aves",0,0,"Type II",-0.0473689613330223,28
+"Artibeus jamaicensis","Mammalia",0.142857142857143,0.0595238095238095,"Trending toward Type I",0.118248272556151,84
+"Asarcornis scutulata","Aves",0.0652173913043478,0.0652173913043478,"Type II",0.0887386057664715,46
+"Astrochelys radiata","Reptilia",0.0816326530612245,0.0816326530612245,"Type II",0.0115445998146771,49
+"Atelerix albiventris","Mammalia",0.754874651810585,0.558960074280409,"Trending toward Type III",-0.1349918281603,1077
+"Ateles geoffroyi","Mammalia",0.576923076923077,0.307692307692308,"Trending toward Type I",0.240395468532392,52
+"Ateles paniscus","Mammalia",0.581632653061224,0.13265306122449,"Trending toward Type I",0.141136880840622,98
+"Atelopus zeteki","Amphibia",0.0805369127516778,0.0201342281879195,"Type II",-0.0466119288908707,149
+"Athene cunicularia","Aves",0.464285714285714,0.339285714285714,"Type II",0.0139895614315374,56
+"Atheris ceratophora","Reptilia",0.196428571428571,0.125,"Trending toward Type I",0.153822569717313,56
+"Axis axis","Mammalia",0.433333333333333,0.166666666666667,"Trending toward Type I",0.10901744808221,30
+"Aythya americana","Aves",0.178571428571429,0.0714285714285714,"Type II",0.0666778243717228,28
+"Babyrousa babyrussa","Mammalia",0.5,0.3,"Trending toward Type I",0.129187817996805,20
+"Balearica pavonina","Aves",0.140350877192982,0.0526315789473684,"Type II",-0.0493757323830175,57
+"Balearica regulorum","Aves",0,0,"Type II",-0.0693102317345491,23
+"Bassariscus sumichrasti","Mammalia",0.65,0.35,"Trending toward Type I",0.192802708825343,20
+"Bison bison","Mammalia",0.476190476190476,0.333333333333333,"Trending toward Type I",0.245498595019345,21
+"Bitis gabonica","Reptilia",0.233333333333333,0.133333333333333,"Type II",0.0809767312608862,30
+"Bitis nasicornis","Reptilia",0.348837209302326,0.162790697674419,"Trending toward Type III",-0.17744812089691,43
+"Boa constrictor","Reptilia",0.492273730684327,0.364238410596026,"Type II",0.0960146617673832,453
+"Bogertophis subocularis","Reptilia",0.765625,0.640625,"Trending toward Type I",0.120302797616195,64
+"Bos taurus","Mammalia",0.333333333333333,0.125,"Type II",-0.00466486792944043,24
+"Boselaphus tragocamelus","Mammalia",0.289473684210526,0.0789473684210526,"Trending toward Type I",0.162189863180712,38
+"Bostrychia hagedash","Aves",0,0,"Type II",0.00101483929053731,28
+"Bothriechis schlegelii","Reptilia",0.13953488372093,0.116279069767442,"Trending toward Type I",0.106284527660317,43
+"Brachylagus idahoensis","Mammalia",0.0905349794238683,0.00823045267489712,"Type II",0.0109588573057471,243
+"Branta ruficollis","Aves",0,0,"Type II",0.0382204979961759,33
+"Brotogeris pyrrhoptera","Aves",0.5,0.35,"Trending toward Type I",0.247688974646808,20
+"Bubo scandiacus","Aves",0.142857142857143,0.107142857142857,"Type II",0.0385216896493585,28
+"Bubo virginianus","Aves",0.219512195121951,0.0975609756097561,"Type II",-0.0211011481365405,41
+"Bubulcus ibis","Aves",0.0689655172413793,0.0344827586206897,"Type II",0.0647168850820908,29
+"Bucephala albeola","Aves",0.0303030303030303,0.0303030303030303,"Type II",-0.0304939761491012,33
+"Buceros bicornis","Aves",0.593220338983051,0.525423728813559,"Type I",0.338854461767977,59
+"Buceros rhinoceros","Aves",0.0476190476190476,0.0476190476190476,"Type II",0.0158167491451214,21
+"Bucorvus leadbeateri","Aves",0.105263157894737,0.0263157894736842,"Type II",-0.0760374138652836,38
+"Buteo jamaicensis","Aves",0.346938775510204,0.244897959183673,"Type II",0.0757966262493356,49
+"Cacatua alba","Aves",0.213114754098361,0.0819672131147541,"Type II",0.0737699698594684,244
+"Cacatua ducorpsii","Aves",0,0,"Trending toward Type III",-0.111601374380026,21
+"Cacatua galerita","Aves",0.583333333333333,0.25,"Trending toward Type I",0.154750754186768,60
+"Cacatua goffiniana","Aves",0.193877551020408,0.112244897959184,"Type II",-0.0225009668005585,98
+"Cacatua leadbeateri","Aves",0.297297297297297,0.108108108108108,"Type II",0.00349628710631356,37
+"Cacatua moluccensis","Aves",0.334117647058824,0.138823529411765,"Trending toward Type III",-0.250690768605629,425
+"Cacatua sulphurea","Aves",0.244444444444444,0.0555555555555556,"Type II",0.0681088816114386,90
+"Cacicus cela","Aves",0,0,"Type II",-0.0115702967109705,23
+"Cairina moschata","Aves",0.45,0.45,"Type II",0.0246740072076163,20
+"Callimico goeldii","Mammalia",0.243243243243243,0.027027027027027,"Type II",0.03082748644223,37
+"Callipepla gambelii","Aves",0.147058823529412,0,"Type II",0.06498021784754,34
+"Callithrix geoffroyi","Mammalia",0.107142857142857,0.0357142857142857,"Trending toward Type I",0.197405508725468,28
+"Callithrix jacchus","Mammalia",0.285714285714286,0.114285714285714,"Type II",0.0711436003654515,35
+"Callosciurus prevostii","Mammalia",0.341463414634146,0.146341463414634,"Type II",0.0376748366054326,41
+"Calyptomena viridis","Aves",0.05,0,"Type II",0.0377348719660416,20
+"Camelus bactrianus","Mammalia",0.476190476190476,0.0952380952380952,"Trending toward Type I",0.271364723726644,21
+"Camelus dromedarius","Mammalia",0.507042253521127,0.23943661971831,"Trending toward Type I",0.220939285684853,71
+"Canis latrans","Mammalia",0.434782608695652,0.282608695652174,"Trending toward Type I",0.241020652700459,46
+"Canis lupus","Mammalia",0.640909090909091,0.370454545454545,"Trending toward Type I",0.278469252680069,440
+"Canis lupus familiaris","Mammalia",0.655882352941176,0.182352941176471,"Trending toward Type I",0.180712791913277,340
+"Capra falconeri","Mammalia",0.153846153846154,0.0384615384615385,"Type II",-0.0535357038660577,26
+"Capra hircus","Mammalia",0.545212765957447,0.284574468085106,"Trending toward Type I",0.263646409660889,376
+"Capra nubiana","Mammalia",0.166666666666667,0.0833333333333333,"Trending toward Type I",0.254018055815817,36
+"Caracal caracal","Mammalia",0.342105263157895,0.0789473684210526,"Trending toward Type I",0.188694736767804,38
+"Carollia perspicillata","Mammalia",0.35,0.15,"Type II",0.0592618009818027,40
+"Castor canadensis","Mammalia",0.148148148148148,0.0740740740740741,"Trending toward Type III",-0.206725246922067,54
+"Catagonus wagneri","Mammalia",0.517241379310345,0.413793103448276,"Trending toward Type I",0.159553421737357,29
+"Cavia fulgida","Mammalia",0.718456725755996,0.307612095933264,"Trending toward Type I",0.156943983813099,959
+"Cavia porcellus","Mammalia",0.895138226882745,0.516682554814109,"Type III",-0.41587957439753,1049
+"Cebuella pygmaea","Mammalia",0.115107913669065,0.0287769784172662,"Type II",0.05558996868483,139
+"Cebus apella","Mammalia",0.383561643835616,0.136986301369863,"Trending toward Type I",0.123952527521035,73
+"Centrochelys sulcata","Reptilia",0.475609756097561,0.207317073170732,"Type II",-0.0800890903146834,82
+"Cephalophus niger","Mammalia",0.0833333333333333,0.0277777777777778,"Type II",-0.0288148935508341,36
+"Cephalophus rufilatus","Mammalia",0.0975609756097561,0,"Type II",0.0134379031153385,41
+"Cephalophus silvicultor","Mammalia",0.388888888888889,0.361111111111111,"Trending toward Type I",0.158544986340471,36
+"Ceratophrys ornata","Amphibia",0.125,0.125,"Type II",0.00747469677338919,32
+"Ceratotherium simum","Mammalia",0.290909090909091,0.2,"Trending toward Type I",0.221449648246078,55
+"Cercocebus torquatus","Mammalia",0.0416666666666667,0.0416666666666667,"Trending toward Type I",0.218944017863597,24
+"Cercopithecus diana","Mammalia",0.344827586206897,0.206896551724138,"Trending toward Type I",0.269315577484567,29
+"Cercopithecus hamlyni","Mammalia",0.264705882352941,0.0588235294117647,"Trending toward Type I",0.196705755494956,34
+"Cercopithecus neglectus","Mammalia",0.28125,0,"Trending toward Type I",0.142220700853309,32
+"Cervus canadensis","Mammalia",0.605263157894737,0.263157894736842,"Type II",0.0193858711518441,76
+"Cervus nippon","Mammalia",0.363636363636364,0.242424242424242,"Trending toward Type I",0.112842932415999,33
+"Chalcophaps indica","Aves",0.0333333333333333,0.0333333333333333,"Type II",0.00486107908890759,30
+"Chamaeleo calyptratus","Reptilia",0.329896907216495,0.237113402061856,"Type II",-0.00245663462261103,97
+"Chauna torquata","Aves",0.0175438596491228,0,"Trending toward Type III",-0.235715830221914,57
+"Cheirogaleus medius","Mammalia",0.184615384615385,0.153846153846154,"Trending toward Type III",-0.12291265913216,65
+"Chelonia mydas","Reptilia",0.260869565217391,0.0869565217391304,"Type II",-0.0370521358362511,23
+"Chelonoidis carbonaria","Reptilia",0.0869565217391304,0,"Type II",0.0174308468531365,23
+"Chelus fimbriatus","Reptilia",0.0909090909090909,0.0606060606060606,"Type II",0.075669337495606,33
+"Chilabothrus granti","Reptilia",0.44,0.44,"Trending toward Type I",0.114940475316071,25
+"Chinchilla brevicaudata","Mammalia",0.123287671232877,0.0616438356164384,"Trending toward Type I",0.105820484076229,146
+"Chinchilla chinchilla","Mammalia",0.981818181818182,0.454545454545455,"Trending toward Type I",0.285650723015056,55
+"Chlamydosaurus kingii","Reptilia",0.171428571428571,0.0571428571428571,"Trending toward Type I",0.133541990871738,35
+"Chloebia gouldiae","Aves",0.137096774193548,0.120967741935484,"Type II",-0.0116383731480806,248
+"Choloepus didactylus","Mammalia",0.245283018867925,0.169811320754717,"Type II",0.0399270384588953,53
+"Choloepus hoffmanni","Mammalia",0.565217391304348,0.391304347826087,"Type II",-0.0532593263391814,23
+"Chrotopterus auritus","Mammalia",0.0517241379310345,0.0172413793103448,"Type II",0.0291078558847068,58
+"Chrysemys picta","Reptilia",0.25,0.1875,"Trending toward Type III",-0.18683527558287,32
+"Chrysocyon brachyurus","Mammalia",0.524193548387097,0.379032258064516,"Trending toward Type I",0.291200583072254,124
+"Chrysolophus pictus","Aves",0.387096774193548,0.129032258064516,"Trending toward Type I",0.145746321408563,31
+"Ciconia ciconia","Aves",0.25,0.05,"Trending toward Type I",0.14613190054956,20
+"Clangula hyemalis","Aves",0,0,"Type III",-0.316986897635084,22
+"Clemmys guttata","Reptilia",0.169811320754717,0.0943396226415094,"Type II",0.0106605791798732,53
+"Cochlearius cochlearius","Aves",0.0188679245283019,0,"Type II",-0.011905182995413,53
+"Coendou rothschildi","Mammalia",0.310344827586207,0.0689655172413793,"Type II",-0.0842405985273486,29
+"Colinus virginianus","Aves",0.173913043478261,0.108695652173913,"Trending toward Type I",0.147435242180044,46
+"Colius striatus","Aves",0.185185185185185,0.0864197530864197,"Type II",0.0290226154387561,81
+"Colobus guereza","Mammalia",0.201298701298701,0.0649350649350649,"Trending toward Type I",0.118189920657561,154
+"Columba livia","Aves",0.488549618320611,0.312977099236641,"Type II",0.031930839204576,131
+"Conepatus semistriatus","Mammalia",0.473684210526316,0.184210526315789,"Type II",0.0954262988078671,38
+"Connochaetes taurinus","Mammalia",0.0416666666666667,0.0208333333333333,"Trending toward Type I",0.119417482803153,48
+"Copsychus malabaricus","Aves",0,0,"Trending toward Type III",-0.280139811783786,35
+"Coracias cyanogaster","Aves",0.0833333333333333,0.0277777777777778,"Type II",-0.0734178530658975,36
+"Corallus annulatus","Reptilia",0.0384615384615385,0.0384615384615385,"Type II",0.0436078313203825,52
+"Corallus caninus","Reptilia",0.114583333333333,0.0625,"Trending toward Type I",0.109834714267817,96
+"Corallus hortulanus","Reptilia",0.2,0.12,"Type II",-0.0622923891831463,25
+"Cornufer guentheri","Amphibia",0.0925925925925926,0.0740740740740741,"Trending toward Type I",0.127030057700843,54
+"Cosmopsarus regius","Aves",0.0447761194029851,0.0149253731343284,"Type II",-0.00465064790021941,67
+"Cossypha niveicapilla","Aves",0.0357142857142857,0,"Trending toward Type III",-0.165120188823163,28
+"Cricetulus longicaudatus","Mammalia",0.784232365145228,0.556016597510373,"Type III",-0.472652368760081,241
+"Crinifer piscator","Aves",0,0,"Type II",0.0105886111064717,20
+"Crocuta crocuta","Mammalia",0.709677419354839,0.483870967741935,"Trending toward Type I",0.251772759069485,31
+"Crotalus adamanteus","Reptilia",0.292682926829268,0.292682926829268,"Trending toward Type I",0.230960227312803,41
+"Crotalus atrox","Reptilia",0.486486486486487,0.459459459459459,"Type III",-0.328827489830022,111
+"Crotalus cerastes","Reptilia",0.25,0.166666666666667,"Trending toward Type I",0.185972680885937,24
+"Crotalus durissus","Reptilia",0.384615384615385,0.384615384615385,"Trending toward Type I",0.111510858001872,26
+"Crotalus horridus","Reptilia",0.236842105263158,0.210526315789474,"Trending toward Type I",0.249917822989135,76
+"Crotalus lepidus","Reptilia",0.1,0.0666666666666667,"Trending toward Type I",0.118527516367966,60
+"Crotalus mitchellii","Reptilia",0.333333333333333,0.285714285714286,"Trending toward Type I",0.179872001366422,21
+"Crotalus molossus","Reptilia",0.355555555555556,0.288888888888889,"Type II",0.0276961172695783,45
+"Crotalus polystictus","Reptilia",0.0227272727272727,0,"Type II",-0.0509678287374132,44
+"Crotalus willardi","Reptilia",0.208333333333333,0,"Type II",0.0369817316813181,24
+"Crotaphytus collaris","Reptilia",0.128205128205128,0.0769230769230769,"Type II",-0.0855073981124755,39
+"Cryptobranchus alleganiensis","Amphibia",0.032258064516129,0.032258064516129,"Trending toward Type III",-0.140718473372928,31
+"Cyanocorax chrysops","Aves",0,0,"Type II",-0.0953472772982532,25
+"Cyclura cornuta","Reptilia",0.434782608695652,0.347826086956522,"Trending toward Type I",0.191308358928726,23
+"Cyclura lewisi","Reptilia",0.1,0,"Trending toward Type III",-0.199091866305436,20
+"Cygnus buccinator","Aves",0.08,0.04,"Type II",-0.0716083181904021,25
+"Cygnus melancoryphus","Aves",0.076271186440678,0.076271186440678,"Type II",0.069080835470767,118
+"Cygnus olor","Aves",0.0909090909090909,0.0454545454545455,"Type II",-0.0375731346442661,22
+"Cynomys ludovicianus","Mammalia",0.628272251308901,0.403141361256544,"Type III",-0.420689000411113,191
+"Dacelo leachii","Aves",0.236363636363636,0.163636363636364,"Trending toward Type I",0.125863832129981,55
+"Dacnis lineata","Aves",0.0140845070422535,0,"Type II",-0.0329114536332014,71
+"Dama dama","Mammalia",0.886792452830189,0.650943396226415,"Type I",0.369885372490775,106
+"Damaliscus pygargus","Mammalia",0.527777777777778,0.416666666666667,"Type I",0.315822406241802,36
+"Dasyprocta punctata","Mammalia",0.440677966101695,0.288135593220339,"Trending toward Type I",0.181564663301208,59
+"Dasypus novemcinctus","Mammalia",0.38,0.04,"Trending toward Type III",-0.230808554735124,50
+"Daubentonia madagascariensis","Mammalia",0,0,"Type II",-0.0131295077347664,20
+"Dendrobates tinctorius","Amphibia",0.062043795620438,0.00364963503649635,"Type II",-0.024021167151164,274
+"Dendrocygna autumnalis","Aves",0.143478260869565,0.0782608695652174,"Trending toward Type I",0.122169900963696,230
+"Dendrolagus goodfellowi","Mammalia",0.234042553191489,0.0851063829787234,"Trending toward Type I",0.110236234309167,47
+"Diceros bicornis","Mammalia",0.219178082191781,0.10958904109589,"Trending toward Type I",0.11696787881838,73
+"Didelphis marsupialis","Mammalia",0.701923076923077,0.4375,"Type II",-0.0311495252919436,416
+"Dinemellia dinemelli","Aves",0,0,"Type II",0.0361719180344305,23
+"Dipsosaurus dorsalis","Reptilia",0.0731707317073171,0.0487804878048781,"Trending toward Type III",-0.227637081686049,41
+"Dracaena guianensis","Reptilia",0.0416666666666667,0.0416666666666667,"Type II",-0.0787341816662614,24
+"Dromaius novaehollandiae","Aves",0.25,0.0681818181818182,"Trending toward Type I",0.100533765897389,44
+"Drymarchon couperi","Reptilia",0.194029850746269,0.119402985074627,"Trending toward Type I",0.114079490276181,67
+"Dryophytes versicolor","Amphibia",0.184210526315789,0.105263157894737,"Type II",-0.0713741749794424,38
+"Ducula forsteni","Aves",0.186915887850467,0.0654205607476635,"Type II",0.067392705996259,107
+"Dyscophus antongilii","Amphibia",0.19047619047619,0.0476190476190476,"Trending toward Type I",0.129824712806038,42
+"Echinops telfairi","Mammalia",0.681818181818182,0.454545454545455,"Type I",0.306837652024113,22
+"Eclectus roratus","Aves",0.136212624584718,0.0664451827242525,"Type II",0.0613509893797753,301
+"Eidolon helvum","Mammalia",0.0634920634920635,0.0238095238095238,"Type II",0.0805684378255,126
+"Elaphe obsoleta","Reptilia",0.419354838709677,0.32258064516129,"Trending toward Type I",0.166860055297227,31
+"Elephas maximus","Mammalia",0.366666666666667,0.0666666666666667,"Trending toward Type I",0.254626888961581,30
+"Elgaria kingii","Reptilia",0.0714285714285714,0.0714285714285714,"Type II",0.0581795214615704,28
+"Enhydra lutris","Mammalia",0.608247422680412,0.371134020618557,"Trending toward Type I",0.223283678906827,97
+"Eolophus roseicapilla","Aves",0.22360248447205,0.0434782608695652,"Type II",0.0528985309787304,161
+"Eos bornea","Aves",0.158415841584158,0.0495049504950495,"Type II",-0.0239831617123566,101
+"Ephippiorhynchus senegalensis","Aves",0.162162162162162,0.135135135135135,"Type II",0.0721231958462996,37
+"Epicrates cenchria","Reptilia",0.380952380952381,0.238095238095238,"Type II",0.0389326880378327,42
+"Equus ferus","Mammalia",0.444444444444444,0.259259259259259,"Trending toward Type I",0.217556273594842,27
+"Equus grevyi","Mammalia",0.289473684210526,0.236842105263158,"Trending toward Type I",0.228099110797856,38
+"Equus quagga","Mammalia",0.291666666666667,0.166666666666667,"Trending toward Type I",0.128794656543345,48
+"Erethizon dorsatum","Mammalia",0.264705882352941,0.235294117647059,"Type II",0.0424865727093072,34
+"Erpeton tentaculatum","Reptilia",0.0158730158730159,0.0158730158730159,"Type II",0.0930242159208645,63
+"Erythrocebus patas","Mammalia",0.477272727272727,0.181818181818182,"Trending toward Type I",0.184013345539665,44
+"Erythrura psittacea","Aves",0.0303030303030303,0.0303030303030303,"Trending toward Type III",-0.217717899627362,33
+"Eublepharis macularius","Reptilia",0.1875,0.0913461538461538,"Type II",0.0962647834643603,208
+"Eudocimus ruber","Aves",0.0545454545454545,0.0181818181818182,"Trending toward Type I",0.12934275883764,110
+"Eudorcas thomsonii","Mammalia",0.419354838709677,0.247311827956989,"Trending toward Type I",0.277578016127214,93
+"Eudromia elegans","Aves",0.027027027027027,0.027027027027027,"Trending toward Type III",-0.150080630123232,37
+"Eudyptes chrysocome","Aves",0.192982456140351,0.140350877192982,"Trending toward Type I",0.194732491057326,57
+"Eudyptula minor","Aves",0.0714285714285714,0.0238095238095238,"Type II",0.03160089743399,42
+"Eulemur collaris","Mammalia",0.0344827586206897,0,"Type II",-0.0794934009751727,29
+"Eulemur coronatus","Mammalia",0.833333333333333,0.833333333333333,"Trending toward Type III",-0.242510093622202,48
+"Eulemur flavifrons","Mammalia",0.369565217391304,0.347826086956522,"Trending toward Type III",-0.161400052345175,46
+"Eulemur mongoz","Mammalia",0.34375,0.25,"Trending toward Type III",-0.233856840566153,32
+"Eumetopias jubatus","Mammalia",0.294117647058824,0.176470588235294,"Type II",0.0952015722689185,34
+"Eunectes murinus","Reptilia",0.0909090909090909,0.0303030303030303,"Type II",0.0847080702295961,33
+"Euphonia violacea","Aves",0.0232558139534884,0,"Type II",-0.04671816439042,43
+"Eurypyga helias","Aves",0.03125,0.03125,"Type II",0.0501392480720486,32
+"Falco peregrinus","Aves",0.285714285714286,0.19047619047619,"Trending toward Type I",0.128320152203794,21
+"Falco sparverius","Aves",0.266666666666667,0.0666666666666667,"Trending toward Type I",0.175002598508892,30
+"Felis catus","Mammalia",0.557971014492754,0.282608695652174,"Trending toward Type I",0.13395803656044,138
+"Felis nigripes","Mammalia",0.35,0.3,"Trending toward Type I",0.228904532633567,20
+"Forpus coelestis","Aves",0.311320754716981,0.235849056603774,"Type II",0.0670030350048225,106
+"Fratercula cirrhata","Aves",0.114285714285714,0,"Type II",-0.043950199812464,35
+"Furcifer pardalis","Reptilia",0.263736263736264,0.164835164835165,"Trending toward Type III",-0.287656765573899,91
+"Galago moholi","Mammalia",0.04,0,"Type III",-0.416873827147579,25
+"Gallicolumba crinigera","Aves",0.291666666666667,0.0416666666666667,"Trending toward Type III",-0.198578378417422,24
+"Gallicolumba luzonica","Aves",0,0,"Trending toward Type III",-0.141186563804988,46
+"Gallus gallus","Aves",0.562753036437247,0.46693657219973,"Type III",-0.401428564665341,741
+"Garrulax leucolophus","Aves",0.172413793103448,0.103448275862069,"Type II",-0.0682937823869549,29
+"Gazella leptoceros","Mammalia",0.111111111111111,0.037037037037037,"Type II",0.0713629605827764,27
+"Gazella spekei","Mammalia",0.0980392156862745,0.0196078431372549,"Type II",0.0497186483335111,51
+"Gekko gecko","Reptilia",0.318181818181818,0.272727272727273,"Type II",0.0835803699373463,22
+"Geochelone elegans","Reptilia",0,0,"Type II",0.0461274398159632,42
+"Geococcyx californianus","Aves",0.315789473684211,0.289473684210526,"Type II",0.0286023936572807,38
+"Geopelia cuneata","Aves",0.25,0.142857142857143,"Type II",-0.00204369159789575,28
+"Geronticus eremita","Aves",0.03125,0,"Trending toward Type I",0.195914530135381,32
+"Giraffa camelopardalis","Mammalia",0.202702702702703,0.121621621621622,"Trending toward Type I",0.165054146860269,74
+"Gonocephalus chamaeleontinus","Reptilia",0.431438127090301,0.210702341137124,"Type III",-0.381979538086291,299
+"Gopherus agassizii","Reptilia",0.119402985074627,0.0895522388059701,"Type II",0.0841512867812723,67
+"Gorilla gorilla","Mammalia",0.321428571428571,0.0892857142857143,"Trending toward Type I",0.208344373037974,168
+"Goura cristata","Aves",0.1,0,"Trending toward Type III",-0.290789722011286,20
+"Goura victoria","Aves",0.0967741935483871,0.032258064516129,"Trending toward Type III",-0.117781407919091,31
+"Grus canadensis","Aves",0.0882352941176471,0.0735294117647059,"Type II",-0.0460130794177798,68
+"Grus japonensis","Aves",0.15,0.1,"Type II",-0.0105698750986868,20
+"Guira guira","Aves",0.0869565217391304,0,"Trending toward Type III",-0.105437838037823,23
+"Gulo gulo","Mammalia",0.642857142857143,0.464285714285714,"Trending toward Type I",0.186327630195574,28
+"Guttera pucherani","Aves",0.0869565217391304,0.0869565217391304,"Type II",-0.0207997238904429,23
+"Gymnogyps californianus","Aves",0.25,0.208333333333333,"Type II",-0.0893730391780039,24
+"Haliaeetus leucocephalus","Aves",0.382978723404255,0.148936170212766,"Trending toward Type I",0.221149025995465,141
+"Halichoerus grypus","Mammalia",0.48,0.28,"Type I",0.312958304306096,25
+"Helarctos malayanus","Mammalia",0.690721649484536,0.597938144329897,"Trending toward Type I",0.295804134540384,97
+"Heloderma horridum","Reptilia",0.425,0.35,"Trending toward Type I",0.151827461363271,40
+"Heloderma suspectum","Reptilia",0.375,0.277777777777778,"Trending toward Type I",0.173821254604494,72
+"Helogale hirtula","Mammalia",0.333333333333333,0.142857142857143,"Trending toward Type I",0.265687525420005,21
+"Hemidactylus frenatus","Reptilia",0.693548387096774,0.258064516129032,"Trending toward Type I",0.153279701769597,62
+"Heterocephalus glaber","Mammalia",0.1,0.0555555555555556,"Type II",0.00864471108470977,90
+"Heterodon nasicus","Reptilia",0.425531914893617,0.191489361702128,"Type II",0.0541328358105793,47
+"Himantopus mexicanus","Aves",0.12,0.04,"Type II",0.0849452635769538,25
+"Hippotragus equinus","Mammalia",0.05,0,"Type II",-0.0130421024797839,20
+"Hippotragus niger","Mammalia",0.355555555555556,0.244444444444444,"Trending toward Type I",0.292801972685098,45
+"Histrionicus histrionicus","Aves",0.2,0.05,"Type II",-0.0885913998671256,20
+"Hydrochoerus hydrochaeris","Mammalia",0.612903225806452,0.39247311827957,"Type I",0.322163269636092,186
+"Hylobates lar","Mammalia",0.297872340425532,0.191489361702128,"Trending toward Type I",0.148783550777517,47
+"Hylobates leucogenys","Mammalia",0.25,0.0714285714285714,"Trending toward Type I",0.214326745217932,28
+"Hypergerus atriceps","Aves",0,0,"Type III",-0.376836677889084,26
+"Hystrix cristata","Mammalia",0.548387096774194,0.225806451612903,"Type II",0.0487145965143126,31
+"Icterus icterus","Aves",0.136363636363636,0.0454545454545455,"Type II",0.0189310130389596,22
+"Iguana iguana","Reptilia",0.184210526315789,0.118421052631579,"Type II",-0.000296391260083406,228
+"Irena cyanogaster","Aves",0.0232558139534884,0.0232558139534884,"Type II",0.080683298600889,43
+"Kobus ellipsiprymnus","Mammalia",0.488888888888889,0.288888888888889,"Trending toward Type I",0.124010453716864,90
+"Kobus megaceros","Mammalia",0.340425531914894,0.212765957446809,"Trending toward Type I",0.230858788141815,47
+"Lachesis melanocephala","Reptilia",0.0545454545454545,0.0181818181818182,"Type II",0.0338512610766077,55
+"Lama glama","Mammalia",0.641379310344828,0.413793103448276,"Trending toward Type I",0.254073521490601,145
+"Lama guanicoe","Mammalia",1,0.692307692307692,"Type I",0.407794765793012,26
+"Lama pacos","Mammalia",0.130434782608696,0.0869565217391304,"Type II",0.0736092359403362,23
+"Lampropeltis alterna","Reptilia",0.761904761904762,0.619047619047619,"Trending toward Type I",0.112957418075928,21
+"Lampropeltis getula","Reptilia",0.618055555555556,0.479166666666667,"Type II",-0.016616259064745,144
+"Lampropeltis triangulum","Reptilia",0.495652173913044,0.330434782608696,"Trending toward Type I",0.264389211479148,115
+"Lampropeltis zonata","Reptilia",0.810810810810811,0.567567567567568,"Trending toward Type I",0.130531305731962,37
+"Lamprotornis superbus","Aves",0,0,"Trending toward Type III",-0.114039227325767,46
+"Larosterna inca","Aves",0.0363636363636364,0.0181818181818182,"Type II",0.0580775152920043,55
+"Leiothrix lutea","Aves",0.0416666666666667,0,"Type II",0.0728698366043429,48
+"Lemur catta","Mammalia",0.472413793103448,0.241379310344828,"Trending toward Type I",0.186849249085765,290
+"Leontopithecus chrysomelas","Mammalia",0.287449392712551,0.109311740890688,"Type II",0.010522313298606,247
+"Leontopithecus midas","Mammalia",0.225806451612903,0.0967741935483871,"Type II",0.014955570416174,31
+"Leopardus pardalis","Mammalia",0.296296296296296,0.185185185185185,"Trending toward Type I",0.279310992206258,54
+"Leptailurus serval","Mammalia",0.55,0.3,"Trending toward Type I",0.223290216321296,60
+"Leptodactylus pentadactylus","Amphibia",0.0454545454545455,0,"Type II",-0.0997420728715001,22
+"Leptoptilos crumenifer","Aves",0.256410256410256,0.179487179487179,"Type II",0.0828116870639566,39
+"Leucopsar rothschildi","Aves",0.160493827160494,0.123456790123457,"Trending toward Type I",0.226234895682947,81
+"Lichanura trivirgata","Reptilia",0.467741935483871,0.258064516129032,"Trending toward Type I",0.178838921458479,62
+"Lithobates catesbeianus","Amphibia",0.107142857142857,0.0714285714285714,"Type II",-0.0865192603824496,28
+"Lithobates pipiens","Amphibia",0.45,0.15,"Trending toward Type I",0.229151117036442,20
+"Lithobates sevosus","Amphibia",0.368421052631579,0.0526315789473684,"Trending toward Type I",0.127752717536957,38
+"Litocranius walleri","Mammalia",0.112676056338028,0.028169014084507,"Type II",0.0968942179670292,142
+"Lonchura oryzivora","Aves",0.409090909090909,0.272727272727273,"Type II",-0.024275638425994,22
+"Lontra canadensis","Mammalia",0.301775147928994,0.183431952662722,"Trending toward Type I",0.189697409387996,169
+"Lophodytes cucullatus","Aves",0.0808080808080808,0.0404040404040404,"Type II",0.097203315459382,99
+"Lophotis gindiana","Aves",0,0,"Trending toward Type III",-0.159823613226217,21
+"Loris tardigradus","Mammalia",0.363636363636364,0.272727272727273,"Trending toward Type III",-0.124435676977702,22
+"Lorius garrulus","Aves",0.0689655172413793,0,"Type II",-0.0280335230295248,29
+"Loxodonta africana","Mammalia",0.0333333333333333,0,"Trending toward Type I",0.229489247300323,30
+"Lycaon pictus","Mammalia",0.705607476635514,0.453271028037383,"Type I",0.302693878991951,214
+"Lynx canadensis","Mammalia",0.55,0.375,"Trending toward Type I",0.240874065339495,40
+"Lynx rufus","Mammalia",0.621212121212121,0.242424242424242,"Trending toward Type I",0.290911762292971,66
+"Macaca fuscata","Mammalia",0.36,0.12,"Trending toward Type I",0.18671126693083,25
+"Macaca mulatta","Mammalia",0.138888888888889,0.0925925925925926,"Type II",0.0589623667039688,108
+"Macaca nigra","Mammalia",0.291666666666667,0,"Type II",0.0999061278219309,24
+"Macaca silenus","Mammalia",0.275,0.05,"Trending toward Type I",0.23559875697788,40
+"Macropus eugenii","Mammalia",0.107142857142857,0.0892857142857143,"Type II",0.0584161995122646,56
+"Macropus fuliginosus","Mammalia",0.25,0.107142857142857,"Trending toward Type I",0.129357272137559,28
+"Madoqua guentheri","Mammalia",0.428571428571429,0.285714285714286,"Trending toward Type I",0.198037044402996,35
+"Malaclemys terrapin","Reptilia",0.681818181818182,0.136363636363636,"Type II",-0.0936282754171508,66
+"Malacochersus tornieri","Reptilia",0.212121212121212,0.151515151515152,"Trending toward Type I",0.146155658929563,33
+"Mandrillus sphinx","Mammalia",0.396694214876033,0.132231404958678,"Trending toward Type I",0.228016225449448,121
+"Mantella aurantiaca","Amphibia",0.170731707317073,0,"Trending toward Type III",-0.16047813655594,41
+"Mantella madagascariensis","Amphibia",0.153846153846154,0,"Type II",0.0669438677311155,26
+"Mareca sibilatrix","Aves",0.19047619047619,0.19047619047619,"Trending toward Type I",0.157864155679291,21
+"Marmaronetta angustirostris","Aves",0.0392156862745098,0.0196078431372549,"Type II",0.0345721754282519,51
+"Mazama americana","Mammalia",0.0967741935483871,0.0645161290322581,"Type II",0.00586300391573613,31
+"Megascops asio","Aves",0.210526315789474,0.140350877192982,"Trending toward Type I",0.107654782612303,57
+"Meleagris gallopavo","Aves",0.216666666666667,0.175,"Type II",-0.0806107492404382,120
+"Melopsittacus undulatus","Aves",0.621730382293763,0.437625754527163,"Type III",-0.397161404624299,994
+"Mergellus albellus","Aves",0.0188679245283019,0,"Type II",-0.0106923862591363,53
+"Mesocricetus auratus","Mammalia",0.708333333333333,0.541666666666667,"Trending toward Type III",-0.178689334998278,24
+"Microcebus murinus","Mammalia",0.7625,0.7375,"Type II",-0.0596278614904205,80
+"Mirza coquereli","Mammalia",0.361111111111111,0.25,"Trending toward Type III",-0.299603451156516,36
+"Momotus momota","Aves",0.121212121212121,0.0909090909090909,"Type II",0.0259207436812708,33
+"Morelia spilota","Reptilia",0.375,0.3125,"Type II",0.0895404605655732,64
+"Morelia viridis","Reptilia",0.147540983606557,0.139344262295082,"Type II",0.0709304530264081,122
+"Muntiacus muntjak","Mammalia",0.333333333333333,0.179487179487179,"Trending toward Type I",0.184380858344345,39
+"Muntiacus reevesi","Mammalia",0.027027027027027,0,"Trending toward Type I",0.1881394943786,37
+"Mus musculus","Mammalia",0.792929292929293,0.439393939393939,"Trending toward Type III",-0.141617551176079,198
+"Musophaga rossae","Aves",0.136363636363636,0,"Trending toward Type III",-0.103329025258882,22
+"Mustela nigripes","Mammalia",0.366279069767442,0.191860465116279,"Trending toward Type I",0.285110820501753,172
+"Mustela putorius","Mammalia",0.853591914777383,0.500546298825458,"Trending toward Type I",0.134142239880448,7322
+"Myiopsitta monachus","Aves",0.401041666666667,0.223958333333333,"Type II",0.0542727317634843,192
+"Myocastor coypus","Mammalia",0.241379310344828,0.137931034482759,"Type II",-0.0316828986222804,29
+"Myrmecophaga tridactyla","Mammalia",0.107142857142857,0.0357142857142857,"Type II",-0.0282736526313624,56
+"Nanger dama","Mammalia",0.149253731343284,0.0373134328358209,"Trending toward Type I",0.172115573560405,134
+"Nanger granti","Mammalia",0.166666666666667,0.125,"Trending toward Type I",0.2013903693355,48
+"Nasua narica","Mammalia",0.586206896551724,0.379310344827586,"Trending toward Type I",0.256629808676316,29
+"Neochmia ruficauda","Aves",0.115384615384615,0.0384615384615385,"Trending toward Type III",-0.156003565078331,26
+"Neofelis nebulosa","Mammalia",0.658333333333333,0.391666666666667,"Trending toward Type I",0.250000745534353,120
+"Neophema splendida","Aves",0.102040816326531,0.0408163265306122,"Trending toward Type III",-0.103388431341018,49
+"Neopsephotus bourkii","Aves",0.0645161290322581,0.0645161290322581,"Type II",-0.0935180995890583,31
+"Neovison vison","Mammalia",0.975,0.075,"Type III",-0.33697940724035,40
+"Nerodia sipedon","Reptilia",0.25,0.2,"Type II",0.0972480708177007,20
+"Nesoenas mayeri","Aves",0.192307692307692,0.115384615384615,"Trending toward Type III",-0.103302462790418,26
+"Netta rufina","Aves",0.116279069767442,0.0697674418604651,"Type II",-0.0117284463491172,43
+"Nettapus coromandelianus","Aves",0,0,"Trending toward Type III",-0.210871114051562,29
+"Notamacropus parma","Mammalia",0.133333333333333,0.1,"Trending toward Type I",0.159545496878622,30
+"Notamacropus rufogriseus","Mammalia",0.0989010989010989,0.0549450549450549,"Trending toward Type III",-0.10726924834009,91
+"Numida meleagris","Aves",0.30379746835443,0.139240506329114,"Type II",0.0680706539994607,79
+"Nycticebus coucang","Mammalia",0.0384615384615385,0.0384615384615385,"Type III",-0.438622162105205,26
+"Nycticebus pygmaeus","Mammalia",0.276923076923077,0.184615384615385,"Trending toward Type I",0.15711219198756,65
+"Nyctimystes infrafrenatus","Amphibia",0.280487804878049,0.0975609756097561,"Type II",0.0407242865241659,82
+"Nymphicus hollandicus","Aves",0.591711435149655,0.3960092095165,"Trending toward Type III",-0.206352003513064,1303
+"Octodon degus","Mammalia",0.509803921568627,0.333333333333333,"Trending toward Type I",0.224615135215801,51
+"Odocoileus hemionus","Mammalia",0.259259259259259,0.148148148148148,"Trending toward Type I",0.119056407282005,27
+"Odocoileus virginianus","Mammalia",0.678832116788321,0.313868613138686,"Trending toward Type I",0.107599726641407,137
+"Okapia johnstoni","Mammalia",0.0857142857142857,0,"Type II",0.0544098984099461,35
+"Ophiophagus hannah","Reptilia",0.470588235294118,0.352941176470588,"Trending toward Type I",0.22039318869233,34
+"Oreamnos americanus","Mammalia",0.326086956521739,0.173913043478261,"Trending toward Type I",0.112658527464943,46
+"Orycteropus afer","Mammalia",0.740740740740741,0.37037037037037,"Trending toward Type I",0.10963432951011,27
+"Oryctolagus cuniculus","Mammalia",0.753982300884956,0.463362831858407,"Trending toward Type I",0.212619588950943,2825
+"Oryx dammah","Mammalia",0.242424242424242,0.136363636363636,"Trending toward Type I",0.247665780988012,66
+"Oryx leucoryx","Mammalia",0.0810810810810811,0.0810810810810811,"Trending toward Type I",0.274351405664933,37
+"Osphranter robustus","Mammalia",0.255555555555556,0.2,"Trending toward Type I",0.175246174900484,90
+"Osphranter rufus","Mammalia",0.168316831683168,0.103960396039604,"Type II",0.0599174770749966,202
+"Otidiphaps nobilis","Aves",0.0416666666666667,0,"Type III",-0.339367022861439,24
+"Otocyon megalotis","Mammalia",0.6,0.5,"Type II",0.0938020200121366,20
+"Ovis aries","Mammalia",0.441025641025641,0.256410256410256,"Trending toward Type I",0.146251699834642,195
+"Ovis canadensis","Mammalia",0.132352941176471,0.0441176470588235,"Type II",0.0930552292443944,68
+"Ovis dalli","Mammalia",0.558823529411765,0.441176470588235,"Trending toward Type I",0.213349488826245,34
+"Oxybelis fulgidus","Reptilia",0.291666666666667,0.0416666666666667,"Trending toward Type I",0.213626138581933,24
+"Oxyura jamaicensis","Aves",0.0859375,0.03125,"Type II",-0.0416931622414937,128
+"Pan troglodytes","Mammalia",0.445344129554656,0.0850202429149798,"Trending toward Type I",0.154551609884025,247
+"Panthera leo","Mammalia",0.747826086956522,0.460869565217391,"Trending toward Type I",0.224655055696881,345
+"Panthera onca","Mammalia",0.633928571428571,0.428571428571429,"Trending toward Type I",0.266457570934815,112
+"Panthera pardus","Mammalia",0.796116504854369,0.480582524271845,"Trending toward Type I",0.277798299712808,206
+"Panthera tigris","Mammalia",0.586111111111111,0.369444444444444,"Trending toward Type I",0.237440927023817,360
+"Panthera uncia","Mammalia",0.665116279069767,0.330232558139535,"Type I",0.32041575463719,215
+"Pantherophis alleghaniensis","Reptilia",0.454545454545455,0.333333333333333,"Trending toward Type I",0.117205943197614,33
+"Pantherophis guttatus","Reptilia",0.421800947867299,0.270142180094787,"Trending toward Type I",0.239048407796447,211
+"Papio papio","Mammalia",0.629032258064516,0.274193548387097,"Trending toward Type I",0.197671247418601,62
+"Parabuteo unicinctus","Aves",0.173913043478261,0.130434782608696,"Type II",-0.0701990107555759,23
+"Paroaria coronata","Aves",0.0232558139534884,0,"Trending toward Type III",-0.12339450878402,43
+"Pavo cristatus","Reptilia",0.294117647058824,0.0882352941176471,"Type II",0.0900358328570817,34
+"Pecari tajacu","Mammalia",0.533333333333333,0.466666666666667,"Trending toward Type I",0.230885522527437,30
+"Pekania pennanti","Mammalia",0.521739130434783,0.260869565217391,"Type III",-0.415388859617821,23
+"Pelecanus erythrorhynchos","Aves",0.129032258064516,0.032258064516129,"Type II",-0.00165860064604917,31
+"Pelecanus occidentalis","Aves",0.12962962962963,0.0555555555555556,"Type II",0.0860750475352439,54
+"Peltophryne lemur","Amphibia",0.15450643776824,0.0643776824034335,"Trending toward Type I",0.111248128465394,233
+"Petaurus breviceps","Mammalia",0.577272727272727,0.336363636363636,"Trending toward Type I",0.129464314415384,220
+"Petrogale xanthopus","Mammalia",0.173076923076923,0.0384615384615385,"Type II",0.0217395569847461,52
+"Phacochoerus africanus","Mammalia",0.615384615384615,0.333333333333333,"Trending toward Type I",0.268294750513258,78
+"Phascolarctos cinereus","Mammalia",0.525423728813559,0.457627118644068,"Trending toward Type I",0.24890188530659,59
+"Phelsuma grandis","Reptilia",0.137931034482759,0.103448275862069,"Type II",0.0899654090667081,29
+"Phelsuma standingi","Reptilia",0,0,"Type II",0.054715686384471,21
+"Phoca vitulina","Mammalia",0.24,0.153333333333333,"Type II",0.0408304332529761,150
+"Phoeniconaias minor","Aves",0.261146496815287,0.0955414012738854,"Trending toward Type I",0.137878969919647,157
+"Phoenicopterus chilensis","Aves",0.105691056910569,0.0609756097560976,"Trending toward Type I",0.126081840214227,246
+"Phoenicopterus roseus","Aves",0.142857142857143,0.0714285714285714,"Trending toward Type I",0.177157305293245,42
+"Phoenicopterus ruber","Aves",0.121212121212121,0.0757575757575758,"Trending toward Type I",0.133358850008248,264
+"Phrynosoma asio","Reptilia",0.0588235294117647,0.0392156862745098,"Trending toward Type III",-0.136515043037053,51
+"Phyllomedusa bicolor","Amphibia",0.195121951219512,0.121951219512195,"Type II",0.0738156178795244,41
+"Pionites leucogaster","Aves",0.133333333333333,0.0888888888888889,"Trending toward Type III",-0.185015433733348,45
+"Pionites melanocephalus","Aves",0.226666666666667,0.16,"Type II",0.0624109125089642,75
+"Pionus senilis","Aves",0.219512195121951,0.146341463414634,"Trending toward Type I",0.172897931884128,41
+"Pipa pipa","Amphibia",0.0727272727272727,0.0363636363636364,"Type II",-0.0304640911788386,55
+"Pithecia pithecia","Mammalia",0.153846153846154,0.0384615384615385,"Type II",0.0615273126031017,52
+"Pitta sordida","Aves",0.0784313725490196,0.0196078431372549,"Type II",0.0470008817694326,51
+"Pituophis catenifer","Reptilia",0.538461538461538,0.435897435897436,"Trending toward Type I",0.132200906254733,78
+"Pituophis melanoleucus","Reptilia",0.32,0.24,"Trending toward Type I",0.158086836781447,25
+"Pituophis ruthveni","Reptilia",0.214285714285714,0.178571428571429,"Type II",0.085977070318442,28
+"Platalea ajaja","Aves",0.184615384615385,0.0384615384615385,"Trending toward Type I",0.110744860260293,130
+"Platalea alba","Aves",0.0975609756097561,0.0487804878048781,"Type II",0.0366803272236441,41
+"Platycercus elegans","Aves",0.121212121212121,0.0606060606060606,"Type II",-0.00338645614173927,33
+"Plestiodon skiltonianus","Reptilia",0.96551724137931,0.517241379310345,"Trending toward Type I",0.114954698532825,29
+"Ploceus castaneiceps","Aves",0.0731707317073171,0.0731707317073171,"Trending toward Type III",-0.115902892670532,41
+"Ploceus melanocephalus","Aves",0,0,"Type II",-0.0704361220358407,38
+"Ploceus velatus","Aves",0.0365853658536585,0.024390243902439,"Type II",-0.0421973422032001,82
+"Podargus strigoides","Aves",0.0681818181818182,0.0454545454545455,"Trending toward Type I",0.135565925353277,44
+"Poephila acuticauda","Aves",0.0535714285714286,0.0357142857142857,"Trending toward Type III",-0.155300963392433,56
+"Pogona vitticeps","Reptilia",0.501149425287356,0.339080459770115,"Type II",-0.00562995034952007,870
+"Poicephalus gulielmi","Aves",0.102564102564103,0.0769230769230769,"Type II",-0.0442400893599469,39
+"Poicephalus meyeri","Aves",0.35,0.2,"Type II",-0.0750919841724519,20
+"Poicephalus senegalus","Aves",0.211267605633803,0.0845070422535211,"Type II",0.050048834062109,71
+"Polihierax semitorquatus","Aves",0.219512195121951,0.024390243902439,"Type II",-0.00475756360656865,41
+"Polyplectron napoleonis","Aves",0.0204081632653061,0,"Type II",-0.0456428638183861,49
+"Pongo abelii","Mammalia",0.25531914893617,0.0638297872340425,"Trending toward Type I",0.219716514859481,94
+"Potamochoerus porcus","Mammalia",0.269230769230769,0.153846153846154,"Trending toward Type I",0.124329459438795,26
+"Potos flavus","Mammalia",0.352941176470588,0.0882352941176471,"Trending toward Type I",0.273428188448894,34
+"Primolius auricollis","Aves",0.266666666666667,0.133333333333333,"Type II",0.0893883355523053,30
+"Prionailurus viverrinus","Mammalia",0.5,0.416666666666667,"Trending toward Type I",0.224522648402672,24
+"Probosciger aterrimus","Aves",0.0540540540540541,0,"Type II",-0.023354035744793,111
+"Procavia capensis","Mammalia",0.192771084337349,0.108433734939759,"Type II",0.0533778363444778,83
+"Procyon lotor","Mammalia",0.330827067669173,0.142857142857143,"Type II",0.0209694623038758,133
+"Propithecus coquereli","Mammalia",0.0666666666666667,0.0333333333333333,"Type II",-0.007904696696302,30
+"Psarisomus dalhousiae","Aves",0,0,"Type II",-0.0404827340665037,20
+"Psittacara rubritorquis","Aves",0.928571428571429,0.75,"Trending toward Type I",0.128938992743366,28
+"Psittacula krameri","Aves",0.275862068965517,0.189655172413793,"Trending toward Type I",0.131736208572361,58
+"Psittacus erithacus","Aves",0.302713987473904,0.167014613778706,"Type II",0.00983327888673208,958
+"Psophia crepitans","Aves",0.03125,0.03125,"Type II",0.00708720501741672,32
+"Pteroglossus aracari","Aves",0.025,0.025,"Trending toward Type I",0.131288235990108,40
+"Pteroglossus viridis","Aves",0.0666666666666667,0.0333333333333333,"Type II",-0.0246393181575931,30
+"Pteronura brasiliensis","Mammalia",0.137931034482759,0.103448275862069,"Trending toward Type III",-0.251644083067038,58
+"Pteropus giganteus","Mammalia",0.0909090909090909,0,"Type II",0.0359993533637587,33
+"Pteropus hypomelanus","Mammalia",0.347826086956522,0.130434782608696,"Trending toward Type I",0.289616504757907,23
+"Pteropus rodricensis","Mammalia",0.0909090909090909,0.0454545454545455,"Trending toward Type I",0.282066292581609,66
+"Ptilinopus jambu","Aves",0.0238095238095238,0,"Type II",0.0977245759896277,42
+"Ptilinopus melanospilus","Aves",0.0526315789473684,0.0263157894736842,"Type II",0.0133826993313834,38
+"Ptilinopus pulchellus","Aves",0.0256410256410256,0.0256410256410256,"Type II",0.0487182680860577,39
+"Puma concolor","Mammalia",0.471204188481675,0.31413612565445,"Trending toward Type I",0.246319196611185,191
+"Pusa hispida","Mammalia",0.150943396226415,0.113207547169811,"Type II",0.0856770792281674,53
+"Pyrrhura molinae","Aves",0.394495412844037,0.220183486238532,"Type II",0.0454150216563884,109
+"Python bivittatus","Reptilia",0.229885057471264,0.14367816091954,"Trending toward Type I",0.16194343699949,174
+"Python curtus","Reptilia",0.2,0.18,"Type II",-0.0574790599282565,50
+"Python regius","Reptilia",0.17032967032967,0.0879120879120879,"Type II",-0.0816367500431536,182
+"Python reticulatus","Reptilia",0.929824561403509,0.754385964912281,"Type I",0.354302179085885,57
+"Pyxis planicauda","Reptilia",0.0882352941176471,0.0294117647058824,"Trending toward Type III",-0.268106728772939,34
+"Ramphastos swainsonii","Aves",0.138157894736842,0.0855263157894737,"Trending toward Type I",0.160223827357993,152
+"Ramphocelus carbo","Aves",0,0,"Type II",-0.0210045321357512,51
+"Rana sierrae","Amphibia",0.15625,0.03125,"Trending toward Type I",0.132718092382223,64
+"Rangifer tarandus","Mammalia",0.230769230769231,0.0576923076923077,"Trending toward Type I",0.161189180274848,52
+"Rattus norvegicus","Mammalia",0.796636085626911,0.319571865443425,"Type III",-0.360304305369481,1308
+"Rhea americana","Aves",0.189655172413793,0.103448275862069,"Type II",0.0281538126880289,58
+"Rhinella marina","Amphibia",0.25,0.175,"Type II",0.0431636934256679,40
+"Rhinoceros unicornis","Mammalia",0.631147540983607,0.434426229508197,"Trending toward Type I",0.232617713935272,122
+"Rhynchopsitta pachyrhyncha","Aves",0.104477611940299,0.0298507462686567,"Type II",0.0197601608559427,67
+"Rollulus rouloul","Aves",0.0204081632653061,0.00680272108843537,"Type II",0.0336870050906052,147
+"Rousettus aegyptiacus","Mammalia",0.262626262626263,0.191919191919192,"Type II",0.0669082571793592,99
+"Rousettus lanosus","Mammalia",0.264705882352941,0.147058823529412,"Trending toward Type I",0.235170761141907,34
+"Saguinus imperator","Mammalia",0.186915887850467,0.0934579439252336,"Trending toward Type I",0.131670018170366,107
+"Saguinus oedipus","Mammalia",0.291208791208791,0.153846153846154,"Trending toward Type I",0.200420968955577,182
+"Saguinus ursula","Mammalia",0.838709677419355,0.0967741935483871,"Type I",0.322260510352604,31
+"Saimiri sciureus","Mammalia",0.331325301204819,0.0783132530120482,"Trending toward Type I",0.180586031618415,166
+"Sanzinia madagascariensis","Reptilia",0.307692307692308,0.269230769230769,"Trending toward Type I",0.136113944883271,52
+"Sarcoramphus papa","Aves",0.0344827586206897,0,"Trending toward Type I",0.152201571064568,29
+"Sauromalus ater","Reptilia",0.269662921348315,0.191011235955056,"Trending toward Type I",0.146600943485296,89
+"Sceloporus cyanogenys","Reptilia",0.228571428571429,0.0285714285714286,"Type II",0.0937373749189497,35
+"Sciurus carolinensis","Mammalia",0.166666666666667,0.0416666666666667,"Type II",-0.0660804366473853,24
+"Sciurus vulgaris","Mammalia",0.357142857142857,0.25,"Type II",0.0590669830080296,28
+"Scopus umbretta","Aves",0.05,0,"Type II",-0.0914952433411422,20
+"Serinus canaria","Aves",0.86,0.54,"Trending toward Type III",-0.131791918022776,50
+"Shinisaurus crocodilurus","Reptilia",0.133333333333333,0.1,"Trending toward Type I",0.150817110614932,30
+"Sicalis flaveola","Aves",0.0666666666666667,0,"Type II",-0.0142747316150635,45
+"Simalia boeleni","Reptilia",0,0,"Trending toward Type I",0.107265077406413,26
+"Sistrurus catenatus","Reptilia",0.327586206896552,0.310344827586207,"Trending toward Type I",0.143675323463177,58
+"Sistrurus miliarius","Reptilia",0.225,0.2,"Type II",0.0990639661034081,40
+"Somateria fischeri","Aves",0.0714285714285714,0.0714285714285714,"Trending toward Type III",-0.197395834991165,28
+"Somateria mollissima","Aves",0.0333333333333333,0.0333333333333333,"Type II",0.0380974132840134,30
+"Spatula cyanoptera","Aves",0.0434782608695652,0,"Type II",0.00835310863428362,23
+"Spatula hottentota","Aves",0.194444444444444,0.166666666666667,"Trending toward Type I",0.115997615537878,36
+"Speothos venaticus","Mammalia",0.64,0.2,"Trending toward Type I",0.149099898336947,25
+"Spheniscus demersus","Aves",0.183673469387755,0.0816326530612245,"Type II",0.0436555867915254,147
+"Spheniscus humboldti","Aves",0.147157190635452,0.117056856187291,"Type II",0.0707748235015122,299
+"Spheniscus magellanicus","Aves",0.0674157303370786,0.0112359550561798,"Trending toward Type I",0.121836693948754,89
+"Spilotes pullatus","Reptilia",0.392857142857143,0.285714285714286,"Trending toward Type I",0.194939140590802,28
+"Spizixos semitorques","Aves",0,0,"Trending toward Type III",-0.255565317855056,28
+"Stellagama stellio","Reptilia",0.294117647058824,0.264705882352941,"Trending toward Type I",0.111873536141014,34
+"Stigmochelys pardalis","Reptilia",0.161290322580645,0.032258064516129,"Trending toward Type III",-0.100702033944838,31
+"Streptopelia capicola","Aves",0.25,0.2,"Trending toward Type I",0.189554045126439,20
+"Streptopelia risoria","Aves",0.619047619047619,0.380952380952381,"Type II",0.0644769984693084,21
+"Strix varia","Aves",0.0869565217391304,0.0869565217391304,"Trending toward Type I",0.12145806746211,23
+"Struthio camelus","Aves",0.380952380952381,0.142857142857143,"Trending toward Type III",-0.122985784605152,21
+"Suricata suricatta","Mammalia",0.41025641025641,0.239316239316239,"Trending toward Type I",0.218875131590012,234
+"Sus scrofa","Mammalia",0.634146341463415,0.378048780487805,"Trending toward Type I",0.193172188549318,82
+"Sylvilagus transitionalis","Mammalia",0.148514851485149,0.0594059405940594,"Type II",-0.0367714184064772,101
+"Symphalangus syndactylus","Mammalia",0.225806451612903,0.0967741935483871,"Trending toward Type I",0.140714206229627,62
+"Taeniopygia bichenovii","Aves",0.0869565217391304,0.0434782608695652,"Type II",-0.0128611022352932,69
+"Taeniopygia guttata","Aves",0.212121212121212,0.136363636363636,"Type II",0.0153880914245721,66
+"Tamandua tetradactyla","Mammalia",0.173913043478261,0.108695652173913,"Type II",0.000174631898520961,46
+"Tangara chilensis","Aves",0,0,"Type II",-0.0385764892514332,21
+"Tapirus bairdii","Mammalia",0.290322580645161,0.225806451612903,"Trending toward Type I",0.220134400345571,31
+"Tapirus indicus","Mammalia",0.266666666666667,0.266666666666667,"Trending toward Type I",0.126747012892192,30
+"Tapirus terrestris","Mammalia",0.222222222222222,0.185185185185185,"Trending toward Type I",0.163684792896353,27
+"Taurotragus derbianus","Mammalia",0.0588235294117647,0.0294117647058824,"Trending toward Type I",0.14663354613956,34
+"Taurotragus oryx","Mammalia",0.25,0.0277777777777778,"Trending toward Type I",0.15295427712851,36
+"Tenrec ecaudatus","Mammalia",0.795918367346939,0.795918367346939,"Trending toward Type I",0.148667650777491,49
+"Terrapene carolina","Reptilia",0.0444444444444444,0.0222222222222222,"Trending toward Type III",-0.157976353213605,90
+"Testudo kleinmanni","Reptilia",0.3,0.15,"Type II",0.00529378188327118,20
+"Thamnophis radix","Reptilia",0.103448275862069,0.0689655172413793,"Type II",0.0323763870808235,29
+"Thamnophis sirtalis","Reptilia",0.388059701492537,0.26865671641791,"Type II",0.0622039376793904,67
+"Theloderma corticale","Amphibia",0.0952380952380952,0.0476190476190476,"Type II",-0.00151781628539183,21
+"Thraupis episcopus","Aves",0.0625,0.0208333333333333,"Trending toward Type III",-0.118522174227767,48
+"Threskiornis aethiopicus","Aves",0.18,0.1,"Trending toward Type I",0.136445063565802,50
+"Tiliqua rugosa","Reptilia",0.444444444444444,0.222222222222222,"Type I",0.313758819522296,27
+"Tiliqua scincoides","Reptilia",0.433333333333333,0.233333333333333,"Type II",0.0626802060736432,60
+"Tolypeutes tricinctus","Mammalia",0.391304347826087,0.260869565217391,"Type II",0.0246589017337274,23
+"Trachemys scripta","Reptilia",0.137931034482759,0.0689655172413793,"Type II",0.080352865768084,58
+"Trachycephalus resinifictrix","Amphibia",0.114285714285714,0.0571428571428571,"Type II",-0.0957667845293323,35
+"Trachypithecus delacouri","Mammalia",0.522727272727273,0.318181818181818,"Trending toward Type I",0.275207631638559,44
+"Trachypithecus francoisi","Mammalia",0.444444444444444,0.277777777777778,"Type II",0.0663522807787246,54
+"Tragelaphus angasii","Mammalia",0.173913043478261,0.130434782608696,"Type II",0.0504863967643863,23
+"Tragelaphus eurycerus","Mammalia",0.345238095238095,0.119047619047619,"Trending toward Type I",0.163189179473946,84
+"Tragelaphus imberbis","Mammalia",0.037037037037037,0,"Type II",0.0515831451315932,54
+"Tragelaphus oryx","Mammalia",0.633333333333333,0.5,"Trending toward Type I",0.276855986893028,30
+"Tragelaphus strepsiceros","Mammalia",0.152777777777778,0.0138888888888889,"Trending toward Type I",0.194580289861132,144
+"Tremarctos ornatus","Mammalia",0.588235294117647,0.352941176470588,"Trending toward Type I",0.227977060590491,51
+"Treron vernans","Aves",0.0952380952380952,0,"Trending toward Type III",-0.185360796645803,21
+"Tribolonotus pseudoponceleti","Reptilia",0.0909090909090909,0.0454545454545455,"Type II",0.0214661404345802,22
+"Trichoglossus forsteni","Aves",0.166666666666667,0,"Type II",-0.0178719415478561,24
+"Trichoglossus haematodus","Aves",0.161676646706587,0.0359281437125748,"Type II",-0.0532020596068599,167
+"Trichoglossus moluccanus","Aves",0.0897435897435897,0.0192307692307692,"Type II",-0.00857884195950553,156
+"Trimeresurus flavomaculatus","Reptilia",0.1,0.1,"Type II",-0.0113862361038398,30
+"Trimeresurus trigonocephalus","Reptilia",0.19047619047619,0.19047619047619,"Trending toward Type I",0.210658438774435,21
+"Tropidolaemus wagleri","Reptilia",0.130434782608696,0.0434782608695652,"Type II",0.0843483930692024,23
+"Tupaia belangeri","Mammalia",0.217391304347826,0.173913043478261,"Trending toward Type I",0.18569973297241,23
+"Turnix nigricollis","Aves",0.178571428571429,0.142857142857143,"Type II",0.0144640606689421,28
+"Tursiops truncatus","Mammalia",0.02322206095791,0.0108853410740203,"Trending toward Type I",0.259743628560855,1378
+"Tympanuchus cupido","Aves",0.0232300884955752,0.0176991150442478,"Trending toward Type III",-0.110876781539165,904
+"Typhlonectes natans","Amphibia",0,0,"Type II",0.00592177583157805,26
+"Tyto nigrobrunnea","Aves",0.340909090909091,0.159090909090909,"Trending toward Type I",0.109808296075652,44
+"Uraeginthus cyanocephalus","Aves",0.024390243902439,0,"Type II",-0.0609223345105629,41
+"Urocolius macrourus","Aves",0.04,0,"Type II",0.0617018639757475,25
+"Urocyon littoralis","Mammalia",0.3125,0.1875,"Trending toward Type I",0.168757567247317,32
+"Uromastyx aegyptia","Reptilia",0.416666666666667,0.388888888888889,"Type II",-0.0937232624664222,36
+"Uroplatus phantasticus","Reptilia",0.107142857142857,0.0714285714285714,"Type II",-0.0886357202353293,28
+"Uroplatus sikorae","Reptilia",0,0,"Type II",0.0450658564958596,39
+"Ursus americanus","Mammalia",0.44,0.32,"Type II",0.0711947253252545,25
+"Ursus arctos","Mammalia",0.840909090909091,0.409090909090909,"Trending toward Type I",0.171832614332932,88
+"Ursus maritimus","Mammalia",0.523809523809524,0.247619047619048,"Type I",0.303385420223495,105
+"Ursus thibetanus","Mammalia",0.518518518518518,0.314814814814815,"Trending toward Type I",0.218905422959204,54
+"Vanellus miles","Aves",0.04,0,"Type II",-0.0736523728357386,25
+"Varanus albigularis","Reptilia",0.130434782608696,0.0869565217391304,"Trending toward Type III",-0.168593599173633,23
+"Varanus beccarii","Reptilia",0.45,0.325,"Trending toward Type I",0.154020719214584,40
+"Varanus exanthematicus","Reptilia",0.322033898305085,0.254237288135593,"Trending toward Type I",0.152901322191909,59
+"Varanus komodoensis","Reptilia",0.357142857142857,0.228571428571429,"Trending toward Type I",0.269630254594481,70
+"Varanus prasinus","Reptilia",0.263157894736842,0.105263157894737,"Trending toward Type I",0.211807259619558,38
+"Varanus salvadorii","Reptilia",0.206896551724138,0.137931034482759,"Type II",0.0663223798153676,29
+"Varecia rubra","Mammalia",0.738532110091743,0.362385321100917,"Trending toward Type III",-0.255680833001266,218
+"Varecia variegata","Mammalia",0.484472049689441,0.192546583850932,"Trending toward Type I",0.266943114779727,161
+"Vicugna pacos","Mammalia",0.984177215189873,0.427215189873418,"Type I",0.306390961574609,316
+"Vulpes lagopus","Mammalia",0.890756302521008,0.445378151260504,"Trending toward Type III",-0.168639842622695,119
+"Vulpes vulpes","Mammalia",0.567567567567568,0.324324324324324,"Trending toward Type I",0.207305417107407,37
+"Vulpes zerda","Mammalia",0.693333333333333,0.586666666666667,"Trending toward Type I",0.28977742045844,75
+"Wallabia bicolor","Mammalia",0.292307692307692,0.0769230769230769,"Type II",0.0220975646849264,65
+"Xenopus laevis","Amphibia",0.36,0.24,"Type II",0.0997881367301639,25
+"Zalophus californianus","Mammalia",0.290540540540541,0.195945945945946,"Trending toward Type I",0.291056790290635,296
+NA,"Amphibia",0,0,"Type II",0.0849708014701073,2
+NA,"Mammalia",0.739130434782609,0.492753623188406,"Type II",0.0849708014701073,69
+NA,"Reptilia",0.181818181818182,0.181818181818182,"Type II",0.0849708014701073,11
