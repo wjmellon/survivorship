@@ -3,6 +3,8 @@ library(dplyr)
 library(Rage)
 library(tibble)
 
+data <- read.csv("records.csv")
+
 # Step 1: Filter dataset
 filtered_data <- data %>%
   filter(Class %in% c("Mammalia", "Reptilia", "Amphibia", "Aves")) %>%
@@ -70,15 +72,17 @@ condensed_data <- prevalence_data %>%
   select(
     Species,
     Class,
+    n,
     neoplasia_prevalence,
     cancer_prevalence,
     survivorship_type,
-    shape_value,
-    n  # Number of individuals per species
+    shape_value 
   )
 
 # Step 5: Inspect the combined data (optional)
 # View(condensed_data)
+
+view(condensed_data)
 
 # Step 6: Save CSV in "Spring 2025" folder with new name
 # Ensure the folder exists
