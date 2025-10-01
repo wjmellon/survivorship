@@ -1,3 +1,4 @@
+# Load required libraries
 library(dplyr)
 library(Rage)
 library(tibble)
@@ -14,7 +15,7 @@ filtered_data <- data %>%
 prevalence_data <- filtered_data %>%
   group_by(Species, Class) %>%
   summarise(
-    n = n(),
+    n = n(),  # Number of individuals per species
     neoplasia_cases = sum(Malignant >= 0, na.rm = TRUE),   # 0 & 1 = neoplasia
     neoplasia_prevalence = neoplasia_cases / n,
     cancer_cases = sum(Malignant == 1, na.rm = TRUE),      # 1 = malignant cancer
@@ -28,7 +29,7 @@ survival_metrics <- filtered_data %>%
   group_by(Species) %>%
   group_map(~{
     df <- .x
-    species_name <- .y$Species   # <-- fixed: correctly pulls species name
+    species_name <- .y$Species
     
     # Compute relative age (0-1) for this species
     df <- df %>%
@@ -48,11 +49,11 @@ survival_metrics <- filtered_data %>%
     
     # Convert to categorical type
     surv_type <- case_when(
-      shape_type >= 0.3 ~ "Type I (late mortality, senescence)",
+      shape_type >= 0.3 ~ "Type I",
       shape_type >= 0.1 & shape_type < 0.3 ~ "Trending toward Type I",
-      shape_type > -0.1 & shape_type < 0.1 ~ "Type II (constant mortality)",
+      shape_type > -0.1 & shape_type < 0.1 ~ "Type II",
       shape_type > -0.3 & shape_type <= -0.1 ~ "Trending toward Type III",
-      shape_type <= -0.3 ~ "Type III (early mortality)"
+      shape_type <= -0.3 ~ "Type III"
     )
     
     tibble(
@@ -72,11 +73,17 @@ condensed_data <- prevalence_data %>%
     neoplasia_prevalence,
     cancer_prevalence,
     survivorship_type,
-    shape_value
+    shape_value,
+    n  # Number of individuals per species
   )
 
-# Step 5: Inspect the combined data
-View(condensed_data)
+# Step 5: Inspect the combined data (optional)
+# View(condensed_data)
 
-# Step 6: Save as CSV
-write.csv(condensed_data, "condensed_data.csv", row.names = FALSE)
+# Step 6: Save CSV in "Spring 2025" folder with new name
+# Ensure the folder exists
+if (!dir.exists("Spring 2025")) {
+  dir.create("Spring 2025")
+}
+
+write.csv(condensed_data, file = "Spring 2025/survivorshipcurve_labeled_eachspecies.csv", row.names = FALSE)
