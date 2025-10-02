@@ -68,6 +68,8 @@ for (sp in unique_species) {
   species_data_filtered <- data %>%
     filter(Necropsy == 1, Infant == 0, Species == sp, age_months != -1)
   
+  if (nrow(species_data_filtered) <= 20) next  # Skip species with <=20 individuals
+  
   species_row <- list(Species = sp)
   
   # Calculate survivorship for each group
@@ -75,6 +77,10 @@ for (sp in unique_species) {
   res_malign   <- calculate_rage_type(species_data_filtered %>% filter(Malignant == 1))
   res_benign   <- calculate_rage_type(species_data_filtered %>% filter(Malignant == 0))
   res_neoplas  <- calculate_rage_type(species_data_filtered %>% filter(Malignant %in% c(0, 1)))
+  
+  # Prevalence calculations
+  neoplasia_prev <- nrow(species_data_filtered %>% filter(Malignant %in% c(0,1))) / nrow(species_data_filtered)
+  malignant_prev <- nrow(species_data_filtered %>% filter(Malignant == 1)) / nrow(species_data_filtered)
   
   # Store results
   species_row$Normal_RAGE     <- res_normal$RAGE_number
@@ -93,6 +99,9 @@ for (sp in unique_species) {
   species_row$Neoplasia_Type  <- res_neoplas$Surv_type
   species_row$Neoplasia_N     <- res_neoplas$N
   
+  species_row$Neoplasia_Prevalence <- neoplasia_prev
+  species_row$Malignant_Prevalence <- malignant_prev
+  
   surv_type_data_species[[sp]] <- species_row
 }
 
@@ -104,6 +113,7 @@ surv_type_table_species <- bind_rows(surv_type_data_species)
 # ------------------------------
 # Save to CSV
 # ------------------------------
-write.csv(surv_type_table_species, "species_survivorship.csv", row.names = FALSE)
+write.csv(surv_type_table_species, "species_survivorship_filtered.csv", row.names = FALSE)
 
-print("✅ Survivorship table saved as 'species_survivorship.csv'")
+print("✅ Filtered survivorship table saved as 'species_survivorship_filtered.csv'")
+
