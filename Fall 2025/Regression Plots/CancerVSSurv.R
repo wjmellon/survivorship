@@ -2,7 +2,7 @@
 library(ggplot2)
 library(dplyr)
 
-data <- read.csv("condensed_data.csv")
+data <- read.csv("Fall 2025/Filtering Data/condensed_data.csv")
 
 
 # Scatterplot with linear regression line
