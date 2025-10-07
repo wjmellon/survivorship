@@ -2,7 +2,7 @@ library(ggplot2)
 library(dplyr)
 
 # Optional: Load your data
-# condensed_data <- read.csv("Spring 2025/survivorshipcurve_labeled_eachspecies.csv")
+condensed_data <- read.csv("Fall 2025/Filtering Data/survivorshipcurve_labeled_eachspecies.csv")
 
 # Ensure factor levels for consistent order and coloring
 condensed_data$survivorship_type <- factor(
