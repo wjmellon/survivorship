@@ -59,6 +59,6 @@ life_tables_all <- do.call(rbind, life_tables)
 view(life_tables_all)
 
 # Save result
-write.csv(life_tables_all, "life_tables_all_species.csv", row.names = FALSE)
+write.csv(life_tables_all, "Fall 2025/Siler/life_tables_all_species.csv", row.names = FALSE)
 
 
