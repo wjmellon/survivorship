@@ -3,7 +3,7 @@ library(dplyr)
 library(Rage)
 library(tibble)
 
-data <- read.csv("cleanPath.min20.062822.csv")
+data <- read.csv("survivorship/Fall 2025/Filtering Data/cleanPath.min20.062822.csv")
 
 # Step 1: Filter dataset
 filtered_clean_data <- data %>%
@@ -91,4 +91,4 @@ final_clean_data <- condensed_data %>%
 
 view(final_clean_data)
 
-write.csv(final_clean_data, "Spring 2025/final_clean_data.csv", row.names = FALSE)
+write.csv(final_clean_data, "Fall 2025/final_clean_data.csv", row.names = FALSE)
