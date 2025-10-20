@@ -3,7 +3,7 @@ library(dplyr)
 library(Rage)
 library(tibble)
 
-data <- read.csv("survivorship/Fall 2025/Filtering Data/cleanPath.min20.062822.csv")
+data <- read.csv("Fall 2025/Filtering Data/cleanPath.min20.062822.csv")
 
 # Step 1: Filter dataset
 filtered_clean_data <- data %>%
@@ -73,6 +73,7 @@ condensed_clean_data <- prevalence_clean_data %>%
     Species,
     Class,
     n,
+    max_longevity,
     neoplasia_prevalence,
     cancer_prevalence,
     survivorship_type,
@@ -91,4 +92,6 @@ final_clean_data <- condensed_data %>%
 
 view(final_clean_data)
 
-write.csv(final_clean_data, "Fall 2025/final_clean_data.csv", row.names = FALSE)
+write.csv(final_clean_data, "Fall 2025/Fall 2025 Clean Data/final_clean_data.csv", row.names = FALSE)
+
+

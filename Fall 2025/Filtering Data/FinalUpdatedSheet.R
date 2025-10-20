@@ -73,6 +73,7 @@ condensed_data <- prevalence_data %>%
     Species,
     Class,
     n,
+    max_longevity,
     neoplasia_prevalence,
     cancer_prevalence,
     survivorship_type,
