@@ -12,9 +12,7 @@ make_life_table <- function(species_name, individual_data, species_data) {
   df <- individual_data %>% filter(Species == species_name)
   
   # Get max age for this species
-  max_age <- species_data %>% 
-    filter(Species == species_name) %>% 
-    pull(max_longevity)
+  max_age <- max(df$age_months, na.rm = TRUE)
   
   # Create 10 equal intervals
   breaks <- seq(0, max_age, length.out = 11)  # 10 intervals → 11 endpoints
