@@ -79,7 +79,7 @@ View(siler_results)
 
 # Merge them by Species
 merged_df <- siler_results %>%
-  left_join(final_clean_mortality_data %>% select(Species, cancer_prevalence, neoplasia_prevalence),
+  left_join(final_clean_mortality_data %>% select(Species, Class, cancer_prevalence, neoplasia_prevalence),
             by = "Species")
 
 View (merged_df)
