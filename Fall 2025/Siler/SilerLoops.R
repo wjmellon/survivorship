@@ -50,7 +50,7 @@ for (sp in species_list) {
   FLAG <- res[7]
   attempt <- 0
   
-  while (FLAG > 0 && attempt < 10) {
+  while (FLAG > 0 && attempt < 20) {
     res <- fitSiler(res[1:5], df_sp$q_x)
     FLAG <- res[7]
     attempt <- attempt + 1
