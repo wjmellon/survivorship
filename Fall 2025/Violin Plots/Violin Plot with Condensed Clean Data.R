@@ -44,6 +44,30 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence, f
   )
 
 
+ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence, fill = survivorship_type)) +
+  geom_violin(trim = FALSE, alpha = 0.9, color = "black") +
+  geom_point(position = position_nudge(x = 0), alpha = 0.4, size = 1.8, color = "black") +
+  stat_summary(fun = median, geom = "point", color = "red", size = 3, shape = 21, fill = "white", stroke = 1.5) +
+  scale_fill_manual(values = custom_colors) +
+  labs(title = "Cancer Prevalence by Survivorship Curve Type", x = "Survivorship Curve Type", y = "Cancer Prevalence") +
+  scale_y_continuous(breaks = c(-0.5, 0, 0.5, 1.0), limits = c(-0.5, 1.5), expand = c(0,0)) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
+    axis.line.x = element_line(size = 1.2, color = "black"),
+    axis.line.y = element_line(size = 1.2, color = "black"),
+    axis.ticks = element_line(size = 1),
+    legend.position = "none",
+    panel.grid = element_blank(),
+    panel.border = element_blank()
+  )
+
+
+
+
+
+
+
 # Plot for Neoplasia Prevalence by Survivorship Curve Type
 ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence, fill = survivorship_type)) +
   geom_violin(trim = FALSE, alpha = 0.9, color = "black") +
