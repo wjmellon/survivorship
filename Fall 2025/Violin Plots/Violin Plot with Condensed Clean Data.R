@@ -31,6 +31,8 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence, f
     x = "Survivorship Curve Type",
     y = "Cancer Prevalence"
   ) +
+  scale_y_continuous(breaks = c(-0.5, 0, 0.5, 1.0),
+                     labels = c("-0.5", "0", "0.5", "1.0")) +
   theme(
     axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),  # straight x-axis labels
     axis.line.x = element_line(size = 1.2, color = "black"),          # bold x-axis line
@@ -40,6 +42,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence, f
     panel.grid = element_blank(),                                     # optional: remove grid
     panel.border = element_blank()
   )
+
 
 # Plot for Neoplasia Prevalence by Survivorship Curve Type
 ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence, fill = survivorship_type)) +
