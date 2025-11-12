@@ -2,6 +2,8 @@ library(dplyr)
 library(fmsb)
 library(readr)
 
+
+
 # Load your life table
 df <- read_csv("Fall 2025/Siler/life_tables_all_species.csv")
 
@@ -76,10 +78,11 @@ siler_results <- do.call(rbind, results_list)
 # View the final parameter table
 View(siler_results)
 
+final_clean_mortality_data <- read_csv("Fall 2025/Fall 2025 Clean Data/final_clean_mortality_data.csv")
 
 # Merge them by Species
 merged_df <- siler_results %>%
-  left_join(final_clean_mortality_data %>% select(Species, Class, cancer_prevalence, neoplasia_prevalence),
+  left_join(final_clean_mortality_data %>% select(Species, Class, n, cancer_prevalence, neoplasia_prevalence),
             by = "Species")
 
 View (merged_df)
