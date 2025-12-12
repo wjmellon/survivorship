@@ -10,6 +10,9 @@ condensed_clean_data$survivorship_type <- factor(
   levels = c("Type III", "Trending toward Type III", "Type II", "Trending toward Type I", "Type I")
 )
 
+aves_data <- condensed_clean_data %>%
+  filter(Class == "Aves")
+
 # Custom fill colors for each group (red replaced)
 custom_colors <- c(
   "Type III" = "#1f77b4",                  # blue
@@ -20,14 +23,14 @@ custom_colors <- c(
 )
 
 # Create the plot
-ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence, fill = survivorship_type)) +
+ggplot(aves_data, aes(x = survivorship_type, y = cancer_prevalence, fill = survivorship_type)) +
   geom_violin(trim = FALSE, alpha = 0.9, color = "black") +
   geom_point(position = position_nudge(x = 0), alpha = 0.4, size = 1.8, color = "black") +
   stat_summary(fun = median, geom = "point", color = "red", size = 3, shape = 21, fill = "white", stroke = 1.5) +
   scale_fill_manual(values = custom_colors) +
   theme_minimal(base_size = 14) +
   labs(
-    title = "Cancer Prevalence by Survivorship Curve Type",
+    title = "Cancer Prevalence by Survivorship Curve Type in Aves",
     x = "Survivorship Curve Type",
     y = "Cancer Prevalence"
   ) +
@@ -69,14 +72,14 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence, f
 
 
 # Plot for Neoplasia Prevalence by Survivorship Curve Type
-ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence, fill = survivorship_type)) +
+ggplot(aves_data, aes(x = survivorship_type, y = neoplasia_prevalence, fill = survivorship_type)) +
   geom_violin(trim = FALSE, alpha = 0.9, color = "black") +
   geom_point(position = position_nudge(x = 0), alpha = 0.4, size = 1.8, color = "black") +
   stat_summary(fun = median, geom = "point", color = "red", size = 3, shape = 21, fill = "white", stroke = 1.5) +
   scale_fill_manual(values = custom_colors) +
   theme_minimal(base_size = 14) +
   labs(
-    title = "Neoplasia Prevalence by Survivorship Curve Type",
+    title = "Neoplasia Prevalence by Survivorship Curve Type in Aves",
     x = "Survivorship Curve Type",
     y = "Neoplasia Prevalence"
   ) +
@@ -91,7 +94,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
   )
 
 # Count the number of species per survivorship category
-category_counts <- condensed_clean_data %>%
+category_counts <- aves_data %>%
   group_by(survivorship_type) %>%
   summarise(num_species = n()) %>%
   arrange(desc(num_species))
