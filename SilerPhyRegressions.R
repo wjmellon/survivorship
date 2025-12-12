@@ -6,9 +6,10 @@ library(caper)
 library(tidyverse)
 library(cowplot)
 library(cowplot)
+library(ggplot2)
 
 ##read in the csv sheet that has your cancer data and your predictor variables
-data <- read.csv("Fall 2025/Siler/siler_parameters_all_species.csv")
+data <- read.csv("Fall 2025/Siler/siler_parameters_all_min50species.csv")
 
 data <- data %>%
   filter(FLAG == "0")
@@ -56,7 +57,7 @@ ggplot(data, aes(x = b3, y = cancer_prevalence, color = Class, size = n)) +
   scale_size_continuous(range = c(1, 5), guide = "none") +  # hide size legend
   geom_abline(intercept = coef(siler_b3_cancer)[1], 
               slope = coef(siler_b3_cancer)[2],
-              color = 'grey', size = 1.2) +
+              color = 'grey', linewidth = 1.2) +
   theme_minimal() +
   labs(
     x = "Change in Mortality Risk in the Senescent Stage (b3)",

@@ -5,6 +5,8 @@ library(readr)
 individual_data <- read.csv("Fall 2025/Filtering Data/cleanPath.min20.062822.csv")
 species_data <- read.csv("Fall 2025/Fall 2025 Clean Data/final_clean_mortality_data.csv")
 
+species_data <- species_data %>%
+  filter(n >= 50)
 
 make_life_table <- function(species_name, individual_data, species_data) {
   
@@ -54,9 +56,9 @@ life_tables <- lapply(species_list, function(sp) {
 # Combine into one dataframe
 life_tables_all <- do.call(rbind, life_tables)
 
-view(life_tables_all)
+View(life_tables_all)
 
 # Save result
-write.csv(life_tables_all, "Fall 2025/Siler/life_tables_all_species.csv", row.names = FALSE)
+write.csv(life_tables_all, "Fall 2025/Siler/life_tables_all_min50species.csv", row.names = FALSE)
 
 

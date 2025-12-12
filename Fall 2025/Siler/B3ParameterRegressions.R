@@ -2,7 +2,7 @@
 library(ggplot2)
 library(dplyr)
 
-data <- read.csv("Fall 2025/Siler/siler_parameters_all_species.csv")
+data <- read.csv("Fall 2025/Siler/siler_parameters_all_min50species.csv")
 
 
 # Scatterplot with linear regression line

@@ -5,7 +5,7 @@ library(readr)
 
 
 # Load your life table
-df <- read_csv("Fall 2025/Siler/life_tables_all_species.csv")
+df <- read_csv("Fall 2025/Siler/life_tables_all_min50species.csv")
 
 # Make sure your column names are correct
 # They must include: Species and q_x
@@ -73,20 +73,20 @@ for (sp in species_list) {
 }
 
 # Combine all species results into one data frame
-siler_results <- do.call(rbind, results_list)
+siler_min50_results <- do.call(rbind, results_list)
 
 # View the final parameter table
-View(siler_results)
+View(siler_min50_results)
 
 final_clean_mortality_data <- read_csv("Fall 2025/Fall 2025 Clean Data/final_clean_mortality_data.csv")
 
 # Merge them by Species
-merged_df <- siler_results %>%
+merged_min50_df <- siler_min50_results %>%
   left_join(final_clean_mortality_data %>% select(Species, Class, n, cancer_prevalence, neoplasia_prevalence),
             by = "Species")
 
-View (merged_df)
+View (merged_min50_df)
 
 # Optionally save to a CSV
-write_csv(merged_df, "Fall 2025/Siler/siler_parameters_all_species.csv")
+write_csv(merged_min50_df, "Fall 2025/Siler/siler_parameters_all_min50species.csv")
 
