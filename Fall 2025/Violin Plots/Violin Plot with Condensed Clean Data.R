@@ -10,8 +10,10 @@ condensed_clean_data$survivorship_type <- factor(
   levels = c("Type III", "Trending toward Type III", "Type II", "Trending toward Type I", "Type I")
 )
 
+mammals_data <- condensed_clean_data %>%
+  filter(Class == "Mammalia")
 
-# Custom fill colors for each group
+# Custom fill colors for each group (red replaced)
 custom_colors <- c(
   "Type III" = "#1f77b4",                  # blue
   "Trending toward Type III" = "#2ca02c",  # green
@@ -21,14 +23,14 @@ custom_colors <- c(
 )
 
 # Plot for Cancer Prevalence by Survivorship Curve Type
-ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence, fill = survivorship_type)) +
+ggplot(mammals_data, aes(x = survivorship_type, y = cancer_prevalence, fill = survivorship_type)) +
   geom_violin(trim = FALSE, alpha = 0.9, color = "black") +
   geom_jitter(width = 0.10, alpha = 0.4, size = 1.8, color = "black") +
   stat_summary(fun = median, geom = "point", color = "red", size = 3, shape = 21, fill = "white", stroke = 1.5) +
   scale_fill_manual(values = custom_colors) +
   theme_minimal(base_size = 14) +
   labs(
-    title = "Cancer Prevalence by Survivorship Curve Type",
+    title = "Cancer Prevalence by Survivorship Curve Type in Mammals",
     x = "Survivorship Curve Type",
     y = "Cancer Prevalence"
   ) +
@@ -45,18 +47,17 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence, f
   )
 
 # Save File
-ggsave(filename='Cancer Violin Plot.png', width=10, height=8, limitsize=FALSE,bg="white")
-
+ggsave(filename='Cancer Violin Plot (Mammals).png', width=10, height=8, limitsize=FALSE,bg="white")
 
 # Plot for Neoplasia Prevalence by Survivorship Curve Type
-ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence, fill = survivorship_type)) +
+ggplot(mammals_data, aes(x = survivorship_type, y = neoplasia_prevalence, fill = survivorship_type)) +
   geom_violin(trim = FALSE, alpha = 0.9, color = "black") +
   geom_jitter(width = 0.10, alpha = 0.4, size = 1.8, color = "black") +
   stat_summary(fun = median, geom = "point", color = "red", size = 3, shape = 21, fill = "white", stroke = 1.5) +
   scale_fill_manual(values = custom_colors) +
   theme_minimal(base_size = 14) +
   labs(
-    title = "Neoplasia Prevalence by Survivorship Curve Type",
+    title = "Neoplasia Prevalence by Survivorship Curve Type in Mammals",
     x = "Survivorship Curve Type",
     y = "Neoplasia Prevalence"
   ) +
@@ -71,7 +72,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
   )
 
 # Save File
-ggsave(filename='Neoplasia Violin Plot.png', width=10, height=8, limitsize=FALSE,bg="white")
+ggsave(filename='Neoplasia Violin Plot (Mammals).png', width=10, height=8, limitsize=FALSE,bg="white")
 
 # Count the number of species per survivorship category
 category_counts <- condensed_clean_data %>%
