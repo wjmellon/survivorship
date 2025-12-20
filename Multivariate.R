@@ -82,7 +82,7 @@ pglsSEyPagel=function(model, data, tree, lambdaInterval=c(0,1),...){
 
 ### Data & Trees
 ```{r}
-Data <- read.csv("min20-2022.05.16.csv")
+Data <- read.csv("Fall 2025/Fall 2025 Clean Data/final_clean_data_w_multivariate.csv")
 tree <- read.tree("min20Fixed516.nwk")
 ```
 
