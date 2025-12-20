@@ -4,6 +4,7 @@ library(Rage)
 library(tibble)
 
 data <- read.csv("Fall 2025/Filtering Data/cleanPath.min20.062822.csv")
+condensed_data <- read.csv("Fall 2025/Fall 2025 Clean Data/condensed_data_with_gt_and_bs.csv")
 
 # Step 1: Filter dataset
 filtered_clean_data <- data %>%
@@ -18,11 +19,13 @@ prevalence_clean_data <- filtered_clean_data %>%
   group_by(Species, Class) %>%
   summarise(
     n = n(),  # Number of individuals per species
+    gestation = mean(Gestation[Gestation != -1], na.rm = TRUE),  # average gestation
+    body_size = mean(adult_weight[adult_weight != -1], na.rm = TRUE),               # average adult weight
     neoplasia_cases = sum(Malignant >= 0, na.rm = TRUE),   # 0 & 1 = neoplasia
     neoplasia_prevalence = neoplasia_cases / n,
     cancer_cases = sum(Malignant == 1, na.rm = TRUE),      # 1 = malignant cancer
     cancer_prevalence = cancer_cases / n,
-    max_longevity = max(age_months, na.rm = TRUE),         # needed for relative age
+    max_longevity = max(age_months, na.rm = TRUE),     # needed for relative age
     .groups = "drop"
   )
 
@@ -74,6 +77,8 @@ condensed_clean_data <- prevalence_clean_data %>%
     Class,
     n,
     max_longevity,
+    gestation,
+    body_size, 
     neoplasia_prevalence,
     cancer_prevalence,
     survivorship_type,
@@ -92,6 +97,6 @@ final_clean_data <- condensed_data %>%
 
 view(final_clean_data)
 
-write.csv(final_clean_data, "Fall 2025/Fall 2025 Clean Data/final_clean_data.csv", row.names = FALSE)
+write.csv(final_clean_data, "Fall 2025/Fall 2025 Clean Data/final_clean_data_w_multivariate.csv", row.names = FALSE)
 
 

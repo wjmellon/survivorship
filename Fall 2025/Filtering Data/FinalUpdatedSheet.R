@@ -18,11 +18,13 @@ prevalence_data <- filtered_data %>%
   group_by(Species, Class) %>%
   summarise(
     n = n(),  # Number of individuals per species
+    gestation = mean(Gestation[Gestation != -1], na.rm = TRUE),  # average gestation
+    body_size = mean(adult_weight[adult_weight != -1], na.rm = TRUE),               # average adult weight
     neoplasia_cases = sum(Malignant >= 0, na.rm = TRUE),   # 0 & 1 = neoplasia
     neoplasia_prevalence = neoplasia_cases / n,
     cancer_cases = sum(Malignant == 1, na.rm = TRUE),      # 1 = malignant cancer
     cancer_prevalence = cancer_cases / n,
-    max_longevity = max(age_months, na.rm = TRUE),         # needed for relative age
+    max_longevity = max(age_months, na.rm = TRUE),    # needed for relative age
     .groups = "drop"
   )
 
@@ -74,6 +76,8 @@ condensed_data <- prevalence_data %>%
     Class,
     n,
     max_longevity,
+    gestation, 
+    body_size, 
     neoplasia_prevalence,
     cancer_prevalence,
     survivorship_type,
@@ -88,8 +92,5 @@ view(condensed_data)
 
 # Step 6: Save CSV in "Spring 2025" folder with new name
 # Ensure the folder exists
-if (!dir.exists("Spring 2025")) {
-  dir.create("Spring 2025")
-}
 
-write.csv(condensed_data, file = "Spring 2025/survivorshipcurve_labeled_eachspecies.csv", row.names = FALSE)
+write.csv(condensed_data, file = "Fall 2025/Fall 2025 Clean Data/condensed_data_with_gt_and_bs.csv", row.names = FALSE)
