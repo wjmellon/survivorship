@@ -1,5 +1,6 @@
 library(dplyr)
 
+# Spot Check Species in 3 Survivorship Types 
 spot_check_data <- read_csv("Fall 2025/Fall 2025 Clean Data/final_clean_mortality_data.csv")
 
 # Define your target points
@@ -21,3 +22,14 @@ closest_type_1 <- closest_to(spot_check_data, 0.5, n = 5)
 View(closest_type_3)
 View(closest_type_2)
 View(closest_type_1)
+
+
+
+# Spot Check Species with Highest b3
+
+data <- read_csv("Fall 2025/Siler/siler_parameters_all_min50species.csv")
+
+data %>%
+  arrange(desc(b3)) %>%
+  slice_head(n = 10) %>%
+  select(Species, b3)
