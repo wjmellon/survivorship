@@ -88,7 +88,7 @@ tree <- read.tree("min20Fixed516.nwk")
 
 Cut in the variables that we need for the complete multivariant regression that includes all sigificant variables. Significant variables include Gestation length, adult weight, litter size, and longevity. Pre-remove all NAs. 
 ```{r}
-cutData <- Data[,c(5,9,10,11,13,30,38,40,42),drop=FALSE]
+cutData <- Data[,c(1,3,4,5,6,9,10),drop=FALSE]
 cutData[cutData < 0] <-NA
 cutData <- na.omit(cutData)
 head(cutData)
@@ -114,56 +114,56 @@ colnames(cutData)[matching_column] <- "common_name"
 Set row names as Species name and extract Standard Error as a vector
 ```{r}
 rownames(cutData)<-cutData$Species
+cutData <- cutData %>%
+  mutate(SE_simple = 1/sqrt(cutData$n))
 SE<-setNames(cutData$SE_simple,cutData$Species)[rownames(cutData)]
 ```
 All significant variable regression
 ```{r}
-mltv1.neo<-pglsSEyPagel(NeoplasiaPrevalence~log10(adult_weight.g.)+ log10(max_longevity.months.)+
-                          +log10(Gestation.months.)
+mltv1.surv<-pglsSEyPagel(shape_value~log10(max_longevity)+ log10(gestation)+
+                          +log10(body_size)
                         ,data=cutData,tree=pruned.tree,se=SE,method = "ML")
 
 ```
 
 ```{r, echo = F}
-mod1 <- tidy(mltv1.neo)
+mod1 <- tidy(mltv1.surv)
 tab1 <-huxtable(mod1)
 print(tab1)
 ```
 Grab R^2 for each life history var
 ```{r}
-r.v.mltv1.neo <- summary(mltv1.neo)$corBeta
-r.v.wgt <- format(r.v.mltv1.neo[2,1])
-r.v.wgt <-signif(as.numeric(r.v.wgt )^2, digits= 2)
-cat("Weight:",r.v.wgt)
-r.v.long <- format(r.v.mltv1.neo[3,1])
-r.v.long<-signif(as.numeric(r.v.long)^2, digits= 2)
+r.v.mltv1.surv <- summary(mltv1.surv)$corBeta
+r.v.long <- format(r.v.mltv1.surv[2,1])
+r.v.long <-signif(as.numeric(r.v.long )^2, digits= 2)
 cat("Longevity:",r.v.long)
-r.v.litter <- format(r.v.mltv1.neo[4,1])
-r.v.litter<-signif(as.numeric(r.v.litter)^2, digits= 2)
-cat("Litters per Year:",r.v.litter)
+r.v.gest <- format(r.v.mltv1.surv[3,1])
+r.v.gest<-signif(as.numeric(r.v.gest)^2, digits= 2)
+cat("Gestation:",r.v.gest)
+r.v.size <- format(r.v.mltv1.surv[4,1])
+r.v.size<-signif(as.numeric(r.v.size)^2, digits= 2)
+cat("Body Size:",r.v.size)
 
 ```
 Combine p values
 ```{r}
-p.v.mltv<-summary(mltv1.neo)$tTable
-p.v.mltvwgt<-signif(p.v.mltv[2,4], digits = 2)
-p.v.mltvlong<-signif(p.v.mltv[3,4], digits = 2)
-p.v.mltvlit<-signif(p.v.mltv[4,4], digits = 2)
+p.v.mltv<-summary(mltv1.surv)$tTable
+p.v.mltvlong<-signif(p.v.mltv[2,4], digits = 2)
+p.v.mltvgest<-signif(p.v.mltv[3,4], digits = 2)
+p.v.mltvsize<-signif(p.v.mltv[4,4], digits = 2)
 
-pvalues<-c(p.v.mltvwgt,p.v.mltvlong,p.v.mltvlit)
+pvalues<-c(p.v.mltvlong,p.v.mltvgest,p.v.mltvsize)
 
 
 
 ```
 Lambda
 ```{r}
-ld.v.mltv<- summary(mltv1.neo)$modelStruct$corStruct
+ld.v.mltv<- summary(mltv1.surv)$modelStruct$corStruct
 ld.v.mltv<- signif(ld.v.mltv[1], digits = 2)
 cat("Lambda:",ld.v.mltv)
 
 ```
-
-
 
 
 
