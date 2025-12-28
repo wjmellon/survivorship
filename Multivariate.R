@@ -154,8 +154,6 @@ p.v.mltvsize<-signif(p.v.mltv[4,4], digits = 2)
 
 pvalues<-c(p.v.mltvlong,p.v.mltvgest,p.v.mltvsize)
 
-
-
 ```
 Lambda
 ```{r}
@@ -164,6 +162,10 @@ ld.v.mltv<- signif(ld.v.mltv[1], digits = 2)
 cat("Lambda:",ld.v.mltv)
 
 ```
+
+
+
+
 
 
 
