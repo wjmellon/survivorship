@@ -1,6 +1,8 @@
 # Load libraries
 library(ggplot2)
 library(dplyr)
+library(mgcv)
+
 
 data <- read.csv("Fall 2025/Siler/siler_parameters_all_species.csv")
 
@@ -42,7 +44,3 @@ ggplot(data, aes(x = b1, y = cancer_prevalence, color = Class)) +
 
 # Run the linear model
 cancer_model <- lm(cancer_prevalence ~ b1, data = data)
-
-# See results
-summary(cancer_model)
-

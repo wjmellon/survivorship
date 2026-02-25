@@ -21,7 +21,10 @@ build_species_df <- function(class_name) {
   cutdata <- cutdata %>% mutate(relative_age = age_months / max_longevity)
   
   time_steps <- seq(0, 1, by = 0.01)
-  species_list <- unique(cutdata$Species)
+  
+  # Only keep species with >= 20 individuals
+  species_counts <- cutdata %>% count(Species)
+  species_list <- species_counts %>% filter(n >= 20) %>% pull(Species)
   
   # Terminal report
   cat("======================\n")
