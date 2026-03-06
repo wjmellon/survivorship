@@ -2,8 +2,8 @@ library(ggplot2)
 library(dplyr)
 library(cowplot)
 
-data <- read.csv("records.csv")
-condensed <- read.csv("Fall 2025/Fall 2025 Clean Data/condensed_data_with_gt_and_bs.csv")
+data <- read.csv("Fall 2025/Filtering Data/cleanPath.min20.062822.csv")
+condensed <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv")
 
 # --- Helper function ---
 build_species_df <- function(class_name) {
@@ -12,7 +12,7 @@ build_species_df <- function(class_name) {
     filter(Class == class_name) %>%
     filter(Infant == 0)
   
-  cutdata <- cutdata[, c(3, 28, 48, 18)]
+  cutdata <- cutdata[, c(4, 29, 49, 19)]
   colnames(cutdata) <- c("age_months", "Species", "max_longevity", "Malignant")
   
   cutdata$age_months[cutdata$age_months <= 0] <- NA
@@ -47,7 +47,7 @@ build_species_df <- function(class_name) {
       Species = sp,
       Class = class_name
     )
-  }))
+  }))0
   
   df <- df %>% filter(proportion_alive > 0)
   
@@ -62,6 +62,8 @@ df_mammalia <- build_species_df("Mammalia")
 df_aves     <- build_species_df("Aves")
 df_reptilia <- build_species_df("Reptilia")
 df_amphibia <- build_species_df("Amphibia")
+
+### Issue here ^ with an increase in number of observations?? 
 
 # --- Combine all ---
 all_df <- bind_rows(df_mammalia, df_aves, df_reptilia, df_amphibia)
