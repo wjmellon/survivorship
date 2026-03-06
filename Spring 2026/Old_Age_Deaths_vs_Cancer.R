@@ -7,7 +7,7 @@ library(ggplot2)
 individual_data <- read.csv("Fall 2025/Filtering Data/cleanPath.min20.062822.csv")
 
 # Load min 20 species data
-species_data <- read.csv("Fall 2025/Fall 2025 Clean Data/final_clean_data_w_multivariate.csv")
+species_data <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv")
 
 # Filter for individuals that are in min 20 species data 
 filtered_individuals <- individual_data %>%
