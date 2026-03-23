@@ -35,7 +35,8 @@ filtered_individuals <- filtered_individuals %>%
     Species.x,
     common_name.x,
     birth_date,
-    necropsy_date
+    necropsy_date,
+    Malignant.x
   )
 
 write.csv(filtered_individuals, "BaSTA_birth_dates.csv", row.names = FALSE)
