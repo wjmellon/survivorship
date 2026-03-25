@@ -1,0 +1,217 @@
+library(ggplot2)
+library(dplyr)
+library(cowplot)
+library(scam)   # install.packages("scam") if needed
+
+data      <- read.csv("Fall 2025/Filtering Data/cleanPath.min20.062822.csv")
+condensed <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv")
+
+# --- Helper function ---
+build_species_df <- function(class_name) {
+  cutdata <- data %>%
+    filter(Necropsy == 1) %>%
+    filter(Class == class_name) %>%
+    filter(Infant == 0)
+  
+  cutdata <- cutdata[, c(4, 29, 19)]
+  colnames(cutdata) <- c("age_months", "Species", "Malignant")
+  
+  cutdata$age_months[cutdata$age_months <= 0] <- NA
+  cutdata <- na.omit(cutdata)
+  
+  cutdata <- cutdata %>%
+    group_by(Species) %>%
+    filter(n() >= 20) %>%
+    mutate(
+      n_species = n(),
+      max_age   = max(age_months, na.rm = TRUE)
+    ) %>%
+    ungroup() %>%
+    mutate(relative_age = age_months / max_age)
+  
+  species_list <- unique(cutdata$Species)
+  
+  # Terminal report
+  cat("======================\n")
+  cat("Class:", class_name, "\n")
+  cat("Number of species:", length(species_list), "\n")
+  cat("Species:\n")
+  for (sp in sort(species_list)) {
+    sp_row <- cutdata %>% filter(Species == sp) %>% slice(1)
+    cat(sprintf("  - %-40s (max observed age: %.1f months, n = %d)\n",
+                sp, sp_row$max_age, sp_row$n_species))
+  }
+  cat("======================\n\n")
+  
+  df <- bind_rows(lapply(species_list, function(sp) {
+    sp_data <- cutdata %>% filter(Species == sp)
+    sp_max  <- unique(sp_data$max_age)
+    sp_n    <- unique(sp_data$n_species)
+    
+    # Extend x-axis by exactly 1 month beyond observed max (in relative units)
+    extra_rel  <- 1 / sp_max
+    max_rel    <- 1 + extra_rel
+    time_steps <- seq(0, max_rel, by = 0.005)
+    
+    n_total  <- nrow(sp_data)
+    alive    <- sapply(time_steps, function(x) sum(sp_data$relative_age > x))
+    
+    if (max(alive) == 0) return(NULL)
+    
+    raw_prop <- alive / n_total
+    
+    # --- scam: monotone decreasing GAM (bs = "mpd") ---
+    # Fit on the raw step-function values; scam enforces the curve can only go down.
+    # We need at least a few unique x values and non-constant y for scam to work.
+    fit_df <- data.frame(y = raw_prop, x = time_steps)
+    
+    # Only fit where there are still individuals alive (drop trailing zeros for fitting,
+    # we'll add them back after prediction)
+    fit_df_nonzero <- fit_df %>% filter(y > 0)
+    
+    smooth_prop <- tryCatch({
+      # k controls wiggliness: higher k = more flexible but still monotone.
+      # k = 10 is a good balance; increase if curves look too stiff.
+      m <- scam(y ~ s(x, bs = "mpd", k = 10),
+                data   = fit_df_nonzero,
+                family = gaussian())
+      pred <- predict(m, newdata = fit_df, type = "response")
+      # Clamp to [0, 1] — scam can occasionally predict slightly outside range
+      pmax(0, pmin(1, pred))
+    }, error = function(e) {
+      # Fallback to raw values if scam fails (e.g. too few unique points)
+      message(sprintf("scam failed for %s, using raw values: %s", sp, e$message))
+      raw_prop
+    })
+    
+    data.frame(
+      relative_age     = time_steps,
+      proportion_alive = smooth_prop,
+      Species          = sp,
+      Class            = class_name,
+      n_species        = sp_n,
+      max_age_months   = sp_max
+    )
+  }))
+  
+  df <- df %>% filter(proportion_alive > 0)
+  
+  # Join survivorship type from condensed
+  df <- df %>%
+    left_join(dplyr::select(condensed, Species, shape_value, survivorship_type),
+              by = "Species")
+  
+  df
+}
+
+# --- Build data ---
+df_mammalia <- build_species_df("Mammalia")
+df_aves     <- build_species_df("Aves")
+df_reptilia <- build_species_df("Reptilia")
+df_amphibia <- build_species_df("Amphibia")
+
+# --- Combine all ---
+all_df <- bind_rows(df_mammalia, df_aves, df_reptilia, df_amphibia)
+
+# --- Bin by n ---
+all_df <- all_df %>%
+  mutate(n_bin = case_when(
+    n_species >= 20 & n_species <= 50 ~ "20-50 individuals",
+    n_species > 50                    ~ "50+ individuals",
+    TRUE                              ~ NA_character_
+  ))
+
+# --- Shared color scale ---
+surv_colors <- c(
+  "Type I"                   = "red",
+  "Trending toward Type I"   = "orange",
+  "Type II"                  = "green",
+  "Trending toward Type III" = "steelblue",
+  "Type III"                 = "blue"
+)
+
+# --- Plot function ---
+# Smoothing is already baked into the data via scam, so geom_line draws it directly
+make_plot <- function(df, title) {
+  ggplot(df, aes(x = relative_age, y = proportion_alive,
+                 group = Species, color = survivorship_type)) +
+    geom_line(linewidth = 0.6, alpha = 0.4) +
+    scale_y_log10(
+      breaks = c(0.001, 0.01, 0.1, 1),
+      labels = c("0.001", "0.01", "0.1", "1")
+    ) +
+    scale_x_continuous(
+      limits = c(0, NA),
+      expand = expansion(mult = c(0, 0.02))
+    ) +
+    scale_color_manual(
+      values   = surv_colors,
+      name     = "Survivorship Type",
+      na.value = "grey60"
+    ) +
+    ggtitle(title) +
+    xlab("Proportion of Maximum Observed Lifespan") +
+    ylab("Proportion Alive (log scale)") +
+    theme_cowplot(12)
+}
+
+# --- Individual class plots ---
+print(make_plot(df_mammalia, "Survivorship: Mammalia"))
+print(make_plot(df_aves,     "Survivorship: Aves"))
+print(make_plot(df_reptilia, "Survivorship: Reptilia"))
+print(make_plot(df_amphibia, "Survivorship: Amphibia"))
+
+# --- Combined: all classes ---
+print(make_plot(all_df, "Survivorship: All Classes"))
+
+# ============================================================
+# --- Binned plots: 20–50 vs 50+ individuals ---
+# ============================================================
+
+make_binned_plot <- function(df_bin, bin_label) {
+  ggplot(df_bin, aes(x = relative_age, y = proportion_alive,
+                     group = Species, color = survivorship_type)) +
+    geom_line(linewidth = 0.6, alpha = 0.4) +
+    scale_y_log10(
+      breaks = c(0.001, 0.01, 0.1, 1),
+      labels = c("0.001", "0.01", "0.1", "1")
+    ) +
+    scale_x_continuous(
+      limits = c(0, NA),
+      expand = expansion(mult = c(0, 0.02))
+    ) +
+    scale_color_manual(
+      values   = surv_colors,
+      name     = "Survivorship Type",
+      na.value = "grey60"
+    ) +
+    ggtitle(paste0("Survivorship Curves: ", bin_label)) +
+    xlab("Proportion of Maximum Observed Lifespan") +
+    ylab("Proportion Alive (log scale)") +
+    theme_cowplot(12)
+}
+
+# Plot bin 1: 20–50 individuals
+df_bin1 <- all_df %>% filter(n_bin == "20-50 individuals")
+if (nrow(df_bin1) > 0) {
+  cat(sprintf("Bin 20-50: %d species\n",
+              length(unique(paste(df_bin1$Species, df_bin1$Class)))))
+  print(make_binned_plot(df_bin1, "Species with 20-50 Individuals"))
+}
+
+# Plot bin 2: 50+ individuals
+df_bin2 <- all_df %>% filter(n_bin == "50+ individuals")
+if (nrow(df_bin2) > 0) {
+  cat(sprintf("Bin 50+: %d species\n",
+              length(unique(paste(df_bin2$Species, df_bin2$Class)))))
+  print(make_binned_plot(df_bin2, "Species with 50+ Individuals"))
+}
+
+# --- Side-by-side panel ---
+p_panel <- plot_grid(
+  make_binned_plot(df_bin1, "n = 20-50"),
+  make_binned_plot(df_bin2, "n = 50+"),
+  nrow = 1,
+  labels = "AUTO"
+)
+print(p_panel)
