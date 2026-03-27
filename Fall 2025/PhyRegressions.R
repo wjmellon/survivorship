@@ -5,14 +5,14 @@ library(geiger)
 library(caper)
 library(tidyverse)
 library(cowplot)
-library(cowplot)
+library(ggplot2)
+library(rr2)
 
 ##read in the csv sheet that has your cancer data and your predictor variables
-data <- read.csv("Fall 2025/Fall 2025 Clean Data/final_clean_mortality_data.csv")
+data <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv")
 
 data <- data %>%
-  mutate(abs_shape = abs(shape_value)) %>%
-  filter(!is.na(ZIMS_Cancer_Mortality))
+  mutate(abs_shape = abs(shape_value))
 
 ##NOTE our PGLs model weighs the regression by Standard error, which we call "SE_simple"
 ## simple standard error is 1/sqrt(samplesize) which in this case is "n" number of necropsies 
@@ -37,39 +37,39 @@ rownames(data)<-data$Species
 SE<-setNames(data$SE_simple,data$Species)[rownames(data)]
 
 
-abs_mortality<-pglsSEyPagel(ZIMS_Cancer_Mortality~abs_shape,data=data,tree=pruned.tree,se=SE,method = "ML")
+abs_cancer<-pglsSEyPagel(cancer_prevalence~abs_shape,data=data,tree=pruned.tree,se=SE,method = "ML")
 
-summary(abs_mortality)
+summary(abs_cancer)
 
 #grab r squared, p value, and lambda from summary so we can plot it 
 
-r.v.abs_mortality <- R2(phy = pruned.tree,abs_mortality)
-r.v.abs_mortality <- format(r.v.abs_mortality[3])
-r.v.abs_mortality <-signif(as.numeric(r.v.abs_mortality), digits= 2)
-ld.v.abs_mortality <- summary(abs_mortality)$modelStruct$corStruct
-ld.v.abs_mortality <- signif(ld.v.abs_mortality[1], digits = 2)
-p.v.abs_mortality <-summary(abs_mortality)$tTable
-p.v.abs_mortality <-signif(p.v.abs_mortality[2,4], digits = 2)
+r.v.abs_cancer <- R2(phy = pruned.tree,abs_cancer)
+r.v.abs_cancer <- format(r.v.abs_cancer[3])
+r.v.abs_cancer <-signif(as.numeric(r.v.abs_cancer), digits= 2)
+ld.v.abs_cancer <- summary(abs_cancer)$modelStruct$corStruct
+ld.v.abs_cancer <- signif(ld.v.abs_cancer[1], digits = 2)
+p.v.abs_cancer <-summary(abs_cancer)$tTable
+p.v.abs_cancer <-signif(p.v.abs_cancer[2,4], digits = 2)
 
 
-ggplot(data, aes(x = abs_shape, y = ZIMS_Cancer_Mortality, color = Class, size = n)) +
+ggplot(data, aes(x = abs_shape, y = cancer_prevalence, color = Class, size = n)) +
   geom_point(alpha = 1) +
   scale_size_continuous(range = c(1, 5), guide = "none") +  # hide size legend
-  geom_abline(intercept = coef(abs_mortality)[1], 
-              slope = coef(abs_mortality)[2],
+  geom_abline(intercept = coef(abs_cancer)[1], 
+              slope = coef(abs_cancer)[2],
               color = 'grey', size = 1.2) +
   theme_minimal() +
   labs(
-    x = "|Survivorship|",
-    y = "Cancer Mortality (%)",
+    x = "Distance from Type II Survivorship",
+    y = "Cancer Prevalence (%)",
     color = "Class"
   ) + 
   labs(
-    title = "Cancer Mortality vs. Absolute Value of Survivorship", 
-    subtitle = bquote(p-value:.(p.v.abs_mortality)~R^2:.(r.v.abs_mortality)~Lambda:.(ld.v.abs_mortality))
+    title = "Cancer Prevalence vs. Distance from Type II Survivorship", 
+    subtitle = bquote(p-value:.(p.v.abs_cancer)~R^2:.(r.v.abs_cancer)~Lambda:.(ld.v.abs_cancer))
   ) +
   theme_cowplot(12)
 
 
 ##you can run this to save the plot to your working directory 
-ggsave(filename='abs_mortality.png', width=10, height=8, limitsize=FALSE,bg="white")
+ggsave(filename='abs_cancer.png', width=10, height=8, limitsize=FALSE,bg="white")
