@@ -37,39 +37,45 @@ rownames(data)<-data$Species
 SE<-setNames(data$SE_simple,data$Species)[rownames(data)]
 
 
-siler_a2_cancer<-pglsSEyPagel(cancer_prevalence~a2,data=data,tree=pruned.tree,se=SE,method = "ML")
+siler_b3_cancer<-pglsSEyPagel(cancer_prevalence~b3,data=data,tree=pruned.tree,se=SE,method = "ML")
 
-summary(siler_a2_cancer)
+summary(siler_b3_cancer)
 
 #grab r squared, p value, and lambda from summary so we can plot it 
 
-r.v.siler_a2_cancer <- R2(phy = pruned.tree,siler_a2_cancer)
-r.v.siler_a2_cancer <- format(r.v.siler_a2_cancer[3])
-r.v.siler_a2_cancer <-signif(as.numeric(r.v.siler_a2_cancer), digits= 2)
-ld.v.siler_a2_cancer <- summary(siler_a2_cancer)$modelStruct$corStruct
-ld.v.siler_a2_cancer <- signif(ld.v.siler_a2_cancer[1], digits = 2)
-p.v.siler_a2_cancer <-summary(siler_a2_cancer)$tTable
-p.v.siler_a2_cancer <-signif(p.v.siler_a2_cancer[2,4], digits = 2)
+r.v.siler_b3_cancer <- R2(phy = pruned.tree,siler_b3_cancer)
+r.v.siler_b3_cancer <- format(r.v.siler_b3_cancer[3])
+r.v.siler_b3_cancer <-signif(as.numeric(r.v.siler_b3_cancer), digits= 2)
+ld.v.siler_b3_cancer <- summary(siler_b3_cancer)$modelStruct$corStruct
+ld.v.siler_b3_cancer <- signif(ld.v.siler_b3_cancer[1], digits = 2)
+p.v.siler_b3_cancer <-summary(siler_b3_cancer)$tTable
+p.v.siler_b3_cancer <-signif(p.v.siler_b3_cancer[2,4], digits = 2)
 
 
-ggplot(data, aes(x = a2, y = cancer_prevalence, color = Class, size = n)) +
+ggplot(data, aes(x = b3, y = cancer_prevalence, color = Class, size = n)) +
   geom_point(alpha = 1) +
+  scale_color_manual(values = c(
+    "Mammalia" = "deeppink4",
+    "Aves" = "darkgoldenrod1",
+    "Reptilia" = "deepskyblue2",
+    "Amphibia" = "deeppink2"
+  )) +
   scale_size_continuous(range = c(1, 5), guide = "none") +  # hide size legend
-  geom_abline(intercept = coef(siler_a2_cancer)[1], 
-              slope = coef(siler_a2_cancer)[2],
+  geom_abline(intercept = coef(siler_b3_cancer)[1], 
+              slope = coef(siler_b3_cancer)[2],
               color = 'grey', linewidth = 1.2) +
   theme_minimal() +
   labs(
-    x = "Mortality Risk in the Prime-Age Stage (a2)",
+    x = "Change in Mortality Risk in the Senescent Stage (b3)",
     y = "Cancer Prevalence (%)",
     color = "Class"
   ) + 
   labs(
-    title = "Cancer Prevalence vs. Mortality Risk in the Prime-Age Stage (a2)", 
-    subtitle = bquote(p-value:.(p.v.siler_a2_cancer)~R^2:.(r.v.siler_a2_cancer)~Lambda:.(ld.v.siler_a2_cancer))
+    title = "Cancer Prevalence vs. Change in Mortality Risk in the Senescent Stage (b3)", 
+    subtitle = bquote(p-value:.(p.v.siler_b3_cancer)~R^2:.(r.v.siler_b3_cancer)~Lambda:.(ld.v.siler_b3_cancer))
   ) +
   theme_cowplot(12)
 
 
 ##you can run this to save the plot to your working directory 
-ggsave(filename='siler_a2_cancer.png', width=10, height=8, limitsize=FALSE,bg="white")
+ggsave(filename='siler_b3_cancer.png', width=10, height=8, limitsize=FALSE,bg="white")
