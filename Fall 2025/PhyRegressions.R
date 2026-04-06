@@ -37,39 +37,45 @@ rownames(data)<-data$Species
 SE<-setNames(data$SE_simple,data$Species)[rownames(data)]
 
 
-abs_cancer<-pglsSEyPagel(cancer_prevalence~abs_shape,data=data,tree=pruned.tree,se=SE,method = "ML")
+abs_neoplasia<-pglsSEyPagel(neoplasia_prevalence~abs_shape,data=data,tree=pruned.tree,se=SE,method = "ML")
 
-summary(abs_cancer)
+summary(abs_neoplasia)
 
 #grab r squared, p value, and lambda from summary so we can plot it 
 
-r.v.abs_cancer <- R2(phy = pruned.tree,abs_cancer)
-r.v.abs_cancer <- format(r.v.abs_cancer[3])
-r.v.abs_cancer <-signif(as.numeric(r.v.abs_cancer), digits= 2)
-ld.v.abs_cancer <- summary(abs_cancer)$modelStruct$corStruct
-ld.v.abs_cancer <- signif(ld.v.abs_cancer[1], digits = 2)
-p.v.abs_cancer <-summary(abs_cancer)$tTable
-p.v.abs_cancer <-signif(p.v.abs_cancer[2,4], digits = 2)
+r.v.abs_neoplasia <- R2(phy = pruned.tree,abs_neoplasia)
+r.v.abs_neoplasia <- format(r.v.abs_neoplasia[3])
+r.v.abs_neoplasia <-signif(as.numeric(r.v.abs_neoplasia), digits= 2)
+ld.v.abs_neoplasia <- summary(abs_neoplasia)$modelStruct$corStruct
+ld.v.abs_neoplasia <- signif(ld.v.abs_neoplasia[1], digits = 2)
+p.v.abs_neoplasia <-summary(abs_neoplasia)$tTable
+p.v.abs_neoplasia <-signif(p.v.abs_neoplasia[2,4], digits = 2)
 
 
-ggplot(data, aes(x = abs_shape, y = cancer_prevalence, color = Class, size = n)) +
+ggplot(data, aes(x = abs_shape, y = neoplasia_prevalence, color = Class, size = n)) +
   geom_point(alpha = 1) +
+  scale_color_manual(values = c(
+    "Mammalia" = "deeppink4",
+    "Aves" = "darkgoldenrod1",
+    "Reptilia" = "deepskyblue2",
+    "Amphibia" = "deeppink2"
+  )) +
   scale_size_continuous(range = c(1, 5), guide = "none") +  # hide size legend
-  geom_abline(intercept = coef(abs_cancer)[1], 
-              slope = coef(abs_cancer)[2],
+  geom_abline(intercept = coef(abs_neoplasia)[1], 
+              slope = coef(abs_neoplasia)[2],
               color = 'grey', size = 1.2) +
   theme_minimal() +
   labs(
     x = "Distance from Type II Survivorship",
-    y = "Cancer Prevalence (%)",
+    y = "Neoplasia Prevalence (%)",
     color = "Class"
   ) + 
   labs(
-    title = "Cancer Prevalence vs. Distance from Type II Survivorship", 
-    subtitle = bquote(p-value:.(p.v.abs_cancer)~R^2:.(r.v.abs_cancer)~Lambda:.(ld.v.abs_cancer))
+    title = "Neoplasia Prevalence vs. Distance from Type II Survivorship", 
+    subtitle = bquote(p-value:.(p.v.abs_neoplasia)~R^2:.(r.v.abs_neoplasia)~Lambda:.(ld.v.abs_neoplasia))
   ) +
   theme_cowplot(12)
 
 
 ##you can run this to save the plot to your working directory 
-ggsave(filename='abs_cancer.png', width=10, height=8, limitsize=FALSE,bg="white")
+ggsave(filename='abs_neoplasia.png', width=10, height=8, limitsize=FALSE,bg="white")
