@@ -13,11 +13,11 @@ condensed_clean_data$survivorship_type <- factor(
 
 # Custom fill colors for each group (red replaced)
 custom_colors <- c(
-  "Type III" = "#1f77b4",                  # blue
-  "Trending toward Type III" = "#2ca02c",  # green
-  "Type II" = "#ff7f0e",                   # orange
-  "Trending toward Type I" = "#9467bd",    # purple
-  "Type I" = "#8c564b"                     # brown 
+  "Type III" = "deeppink4",                  # blue
+  "Trending toward Type III" = "darkgoldenrod1",  # green
+  "Type II" = "deepskyblue2",                   # orange
+  "Trending toward Type I" = "darkgoldenrod1",    # purple
+  "Type I" = "deeppink4"                     # brown 
 )
 
 # Plot for Cancer Prevalence by Survivorship Curve Type
