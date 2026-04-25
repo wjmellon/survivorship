@@ -75,18 +75,21 @@ all_df <- bind_rows(df_mammalia, df_aves, df_reptilia, df_amphibia)
 
 # --- Plot function ---
 make_plot <- function(df, title) {
+  legend_order <- c("Type I", "Trending toward Type I", "Type II", 
+                    "Trending toward Type III", "Type III")
+  df$survivorship_type <- factor(df$survivorship_type, levels = legend_order)
+    
   ggplot(df, aes(x = relative_age, y = proportion_alive,
                  group = Species, color = survivorship_type)) +
-    geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs", k = 5),
-                se = FALSE, linewidth = 0.7) +
+    geom_step(linewidth = 0.6, alpha = 0.7, direction = "hv")+
     scale_y_log10() +
     scale_color_manual(
       values = c(
-        "Type I"                   = "red",
-        "Trending toward Type I"   = "orange",
-        "Type II"                  = "green",
-        "Trending toward Type III" = "steelblue",
-        "Type III"                 = "blue"
+        "Type I"                   = "#8c564b",
+        "Trending toward Type I"   = "#9467bd",
+        "Type II"                  = "#ff7f0e",
+        "Trending toward Type III" = "#2ca02c",
+        "Type III"                 = "#1f77b4"
       ),
       name     = "Survivorship Type",
       na.value = "grey60"
@@ -98,10 +101,10 @@ make_plot <- function(df, title) {
 }
 
 # --- Individual plots ---
-print(make_plot(df_mammalia, "Survivorship: Mammalia"))
-print(make_plot(df_aves,     "Survivorship: Aves"))
-print(make_plot(df_reptilia, "Survivorship: Reptilia"))
-print(make_plot(df_amphibia, "Survivorship: Amphibia"))
+print(make_plot(df_mammalia, "Survivorship Curves of Mammals"))
+print(make_plot(df_aves,     "Survivorship Curves of Aves"))
+print(make_plot(df_reptilia, "Survivorship Curves of Reptiles"))
+print(make_plot(df_amphibia, "Survivorship Curves of Amphibians"))
 
 # --- Combined plot ---
-print(make_plot(all_df, "Survivorship: All Classes"))
+print(make_plot(all_df, "Survivorship Curves of All Species"))
