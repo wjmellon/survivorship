@@ -108,3 +108,6 @@ print(make_plot(df_amphibia, "Survivorship Curves of Amphibians"))
 
 # --- Combined plot ---
 print(make_plot(all_df, "Survivorship Curves of All Species"))
+
+ggsave(filename='survivorship_curve_amphibians.png', width=10, height=8, limitsize=FALSE,bg="white")
+
