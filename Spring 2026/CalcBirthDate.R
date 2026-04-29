@@ -20,12 +20,7 @@ filtered_individuals <- filtered_individuals %>%
 # Calculate birth date from necropsy date 
 individual_birth_dates <- filtered_individuals %>%
   mutate(necropsy_date = dmy(paste(Date, Year))) %>%
-  mutate(birth_date = necropsy_date %m-% months(round(age_months))) %>%
-  mutate(depart_type = case_when(
-    Malignant %in% c(0, -1) ~ "C",
-    Malignant == 1          ~ "D",
-    TRUE                     ~ NA_character_ # Handles any other unexpected values
-  ))
+  mutate(birth_date = necropsy_date %m-% months(round(age_months)))
   
 # Join 2 data sets 
 filtered_individuals <- filtered_individuals %>%
@@ -41,7 +36,6 @@ filtered_individuals <- filtered_individuals %>%
     birth_date,
     necropsy_date,
     Malignant.x,
-    depart_type
   )
 
-write.csv(filtered_individuals, "BaSTA_birth_dates.csv", row.names = FALSE)
+write.csv(filtered_individuals, "Spring 2026/BaSTA_birth_dates.csv", row.names = FALSE)

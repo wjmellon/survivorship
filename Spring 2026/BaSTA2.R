@@ -75,11 +75,11 @@ for (sp in species_list) {
       
       sp_summary <- data.frame(
         Species = sp,
-        a1 = stats_table["a0", "Mean"],
-        b1 = stats_table["a1", "Mean"],
-        a2 = stats_table["c",  "Mean"],
-        a3 = stats_table["b0", "Mean"],
-        b3 = stats_table["b1", "Mean"]
+        a1 = stats_table["a0", "Median"],
+        b1 = stats_table["a1", "Median"],
+        a2 = stats_table["c",  "Median"],
+        a3 = stats_table["b0", "Median"],
+        b3 = stats_table["b1", "Median"]
       )
       
       all_results[[sp]] <- sp_summary
@@ -93,11 +93,10 @@ final_results_df <- do.call(rbind, all_results)
 
 
 # View summary for a specific species later:
-summary(all_results[["Cebuella pygmaea"]])
-
+summary(all_results[["Heterocephalus glaber"]])
 
 # 6. Save to a CSV file
 write.csv(final_results_df, "BaSTA_Results_All_Species.csv", row.names = FALSE)
 
-print("Final dataset created!")
+
 
