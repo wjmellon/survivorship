@@ -85,11 +85,11 @@ make_plot <- function(df, title) {
     scale_y_log10() +
     scale_color_manual(
       values = c(
-        "Type I"                   = "#8c564b",
-        "Trending toward Type I"   = "#9467bd",
-        "Type II"                  = "#ff7f0e",
-        "Trending toward Type III" = "#2ca02c",
-        "Type III"                 = "#1f77b4"
+        "Type I"                   = "red",
+        "Trending toward Type I"   = "purple",
+        "Type II"                  = "blue",
+        "Trending toward Type III" = "green",
+        "Type III"                 = "yellow"
       ),
       name     = "Survivorship Type",
       na.value = "grey60"
