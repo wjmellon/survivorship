@@ -1,200 +1,203 @@
 library(ggplot2)
 library(dplyr)
+library(scales)
+library(cowplot)
 
-# Filter to mammals
+# =========================================================================
+# Mammalia
+# =========================================================================
 mammals_data <- final_clean_mortality_data %>%
-   filter(Class == "Mammalia") %>%
-   mutate(abs_shape = abs(shape_value))
+  filter(Class == "Mammalia") %>%
+  mutate(abs_shape = abs(shape_value))
 
+neoplasia_mammals_model <- lm(neoplasia_prevalence ~ abs_shape, data = mammals_data)
+summary(neoplasia_mammals_model)
 
-# Plot Neoplasia vs |Survivorship| for mammals
-ggplot(mammals_data, aes(x = abs_shape, y = neoplasia_prevalence)) +
-  geom_point(alpha = 1, size = 1, color = "lightblue") +
-  geom_smooth(method = "lm", se = TRUE, color = "black") +
+ggplot(mammals_data, aes(x = abs_shape, y = neoplasia_prevalence, size = n)) +
+  geom_point(alpha = 1, color = "lightblue") +
+  scale_size_continuous(range = c(3, 8), guide = "none") +  # hide size legend
+  geom_abline(
+    intercept = coef(neoplasia_mammals_model)[1],
+    slope = coef(neoplasia_mammals_model)[2],
+    color = 'grey', linewidth = 1.2
+  ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   labs(
     x = "|Survivorship|",
     y = "Neoplasia Prevalence (%)",
     title = "Neoplasia Prevalence vs |Survivorship| (Mammals)"
-  )
+  ) +
+  theme_cowplot(12)
+ggsave(filename = 'neoplasia_mammals.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
 
-# Run the linear model
-neoplasia_mammals_model <- lm(neoplasia_prevalence ~ abs_shape, data = mammals_data)
+cancer_mammals_model <- lm(cancer_prevalence ~ abs_shape, data = mammals_data)
+summary(cancer_mammals_model)
 
-# See results
-summary(neoplasia_mammals_model)
-
-
-# Filter to mammals
-mammals_data <- final_clean_mortality_data %>%
-  filter(Class == "Mammalia") %>%
-  mutate(abs_shape = abs(shape_value))
-
-
-# Plot Neoplasia vs |Survivorship| for mammals
-ggplot(mammals_data, aes(x = abs_shape, y = cancer_prevalence)) +
-  geom_point(alpha = 1, size = 1, color = "lightblue") +
-  geom_smooth(method = "lm", se = TRUE, color = "black") +
+ggplot(mammals_data, aes(x = abs_shape, y = cancer_prevalence, size = n)) +
+  geom_point(alpha = 1, color = "lightblue") +
+  scale_size_continuous(range = c(3, 8), guide = "none") +  # hide size legend
+  geom_abline(
+    intercept = coef(cancer_mammals_model)[1],
+    slope = coef(cancer_mammals_model)[2],
+    color = 'grey', linewidth = 1.2
+  ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   labs(
     x = "|Survivorship|",
     y = "Cancer Prevalence (%)",
     title = "Cancer Prevalence vs |Survivorship| (Mammals)"
-  )
-
-# Run the linear model
-cancer_mammals_model <- lm(cancer_prevalence ~ abs_shape, data = mammals_data)
-
-# See results
-summary(cancer_mammals_model)
+  ) +
+  theme_cowplot(12)
+ggsave(filename = 'cancer_mammals.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
 
 
-
-
-# Filter to Aves
+# =========================================================================
+# Aves
+# =========================================================================
 aves_data <- final_clean_mortality_data %>%
   filter(Class == "Aves") %>%
   mutate(abs_shape = abs(shape_value))
 
+neoplasia_aves_model <- lm(neoplasia_prevalence ~ abs_shape, data = aves_data)
+summary(neoplasia_aves_model)
 
-# Plot Neoplasia vs |Survivorship| for Aves
-ggplot(aves_data, aes(x = abs_shape, y = neoplasia_prevalence)) +
-  geom_point(alpha = 1, size = 1, color = "lightgreen") +
-  geom_smooth(method = "lm", se = TRUE, color = "black") +
+ggplot(aves_data, aes(x = abs_shape, y = neoplasia_prevalence, size = n)) +
+  geom_point(alpha = 1, color = "lightgreen") +
+  scale_size_continuous(range = c(3, 8), guide = "none") +  # hide size legend
+  geom_abline(
+    intercept = coef(neoplasia_aves_model)[1],
+    slope = coef(neoplasia_aves_model)[2],
+    color = 'grey', linewidth = 1.2
+  ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   labs(
     x = "|Survivorship|",
     y = "Neoplasia Prevalence (%)",
     title = "Neoplasia Prevalence vs |Survivorship| (Aves)"
-  )
+  ) +
+  theme_cowplot(12)
+ggsave(filename = 'neoplasia_aves.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
 
-# Run the linear model
-neoplasia_aves_model <- lm(neoplasia_prevalence ~ abs_shape, data = aves_data)
+cancer_aves_model <- lm(cancer_prevalence ~ abs_shape, data = aves_data)
+summary(cancer_aves_model)
 
-# See results
-summary(neoplasia_aves_model)
-
-
-# Filter to Aves
-aves_data <- final_clean_mortality_data %>%
-  filter(Class == "Aves") %>%
-  mutate(abs_shape = abs(shape_value))
-
-
-# Plot Neoplasia vs |Survivorship| for Aves
-ggplot(aves_data, aes(x = abs_shape, y = cancer_prevalence)) +
-  geom_point(alpha = 1, size = 1, color = "lightgreen") +
-  geom_smooth(method = "lm", se = TRUE, color = "black") +
+ggplot(aves_data, aes(x = abs_shape, y = cancer_prevalence, size = n)) +
+  geom_point(alpha = 1, color = "lightgreen") +
+  scale_size_continuous(range = c(3, 8), guide = "none") +  # hide size legend
+  geom_abline(
+    intercept = coef(cancer_aves_model)[1],
+    slope = coef(cancer_aves_model)[2],
+    color = 'grey', linewidth = 1.2
+  ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   labs(
     x = "|Survivorship|",
     y = "Cancer Prevalence (%)",
     title = "Cancer Prevalence vs |Survivorship| (Aves)"
-  )
-
-# Run the linear model
-cancer_aves_model <- lm(cancer_prevalence ~ abs_shape, data = aves_data)
-
-# See results
-summary(cancer_aves_model)
+  ) +
+  theme_cowplot(12)
+ggsave(filename = 'cancer_aves.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
 
 
-
-# Filter to Reptilia
+# =========================================================================
+# Reptilia
+# =========================================================================
 reptilia_data <- final_clean_mortality_data %>%
   filter(Class == "Reptilia") %>%
   mutate(abs_shape = abs(shape_value))
 
+neoplasia_reptilia_model <- lm(neoplasia_prevalence ~ abs_shape, data = reptilia_data)
+summary(neoplasia_reptilia_model)
 
-# Plot Neoplasia vs |Survivorship| for Reptilia
-ggplot(reptilia_data, aes(x = abs_shape, y = neoplasia_prevalence)) +
-  geom_point(alpha = 1, size = 1, color = "purple") +
-  geom_smooth(method = "lm", se = TRUE, color = "black") +
+ggplot(reptilia_data, aes(x = abs_shape, y = neoplasia_prevalence, size = n)) +
+  geom_point(alpha = 1, color = "purple") +
+  scale_size_continuous(range = c(3, 8), guide = "none") +  # hide size legend
+  geom_abline(
+    intercept = coef(neoplasia_reptilia_model)[1],
+    slope = coef(neoplasia_reptilia_model)[2],
+    color = 'grey', linewidth = 1.2
+  ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   labs(
     x = "|Survivorship|",
     y = "Neoplasia Prevalence (%)",
     title = "Neoplasia Prevalence vs |Survivorship| (Reptilia)"
-  )
+  ) +
+  theme_cowplot(12)
+ggsave(filename = 'neoplasia_reptilia.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
 
-# Run the linear model
-neoplasia_reptilia_model <- lm(neoplasia_prevalence ~ abs_shape, data = reptilia_data)
+cancer_reptilia_model <- lm(cancer_prevalence ~ abs_shape, data = reptilia_data)
+summary(cancer_reptilia_model)
 
-# See results
-summary(neoplasia_reptilia_model)
-
-
-# Filter to Reptilia
-reptilia_data <- final_clean_mortality_data %>%
-  filter(Class == "Reptilia") %>%
-  mutate(abs_shape = abs(shape_value))
-
-
-# Plot Neoplasia vs |Survivorship| for Reptilia
-ggplot(reptilia_data, aes(x = abs_shape, y = cancer_prevalence)) +
-  geom_point(alpha = 1, size = 1, color = "purple") +
-  geom_smooth(method = "lm", se = TRUE, color = "black") +
+ggplot(reptilia_data, aes(x = abs_shape, y = cancer_prevalence, size = n)) +
+  geom_point(alpha = 1, color = "purple") +
+  scale_size_continuous(range = c(3, 8), guide = "none") +  # hide size legend
+  geom_abline(
+    intercept = coef(cancer_reptilia_model)[1],
+    slope = coef(cancer_reptilia_model)[2],
+    color = 'grey', linewidth = 1.2
+  ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   labs(
     x = "|Survivorship|",
     y = "Cancer Prevalence (%)",
     title = "Cancer Prevalence vs |Survivorship| (Reptilia)"
-  )
-
-# Run the linear model
-cancer_reptilia_model <- lm(cancer_prevalence ~ abs_shape, data = reptilia_data)
-
-# See results
-summary(cancer_reptilia_model)
+  ) +
+  theme_cowplot(12)
+ggsave(filename = 'cancer_reptilia.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
 
 
-
-
-# Filter to Amphibia
+# =========================================================================
+# Amphibia
+# =========================================================================
 amphibia_data <- final_clean_mortality_data %>%
   filter(Class == "Amphibia") %>%
   mutate(abs_shape = abs(shape_value))
 
+neoplasia_amphibia_model <- lm(neoplasia_prevalence ~ abs_shape, data = amphibia_data)
+summary(neoplasia_amphibia_model)
 
-# Plot Neoplasia vs |Survivorship| for Amphibia
-ggplot(amphibia_data, aes(x = abs_shape, y = neoplasia_prevalence)) +
-  geom_point(alpha = 1, size = 1, color = "orange") +
-  geom_smooth(method = "lm", se = TRUE, color = "black") +
+ggplot(amphibia_data, aes(x = abs_shape, y = neoplasia_prevalence, size = n)) +
+  geom_point(alpha = 1, color = "orange") +
+  scale_size_continuous(range = c(3, 8), guide = "none") +  # hide size legend
+  geom_abline(
+    intercept = coef(neoplasia_amphibia_model)[1],
+    slope = coef(neoplasia_amphibia_model)[2],
+    color = 'grey', linewidth = 1.2
+  ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   labs(
     x = "|Survivorship|",
     y = "Neoplasia Prevalence (%)",
     title = "Neoplasia Prevalence vs |Survivorship| (Amphibia)"
-  )
+  ) +
+  theme_cowplot(12)
+ggsave(filename = 'neoplasia_amphibia.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
 
-# Run the linear model
-neoplasia_amphibia_model <- lm(neoplasia_prevalence ~ abs_shape, data = amphibia_data)
+cancer_amphibia_model <- lm(cancer_prevalence ~ abs_shape, data = amphibia_data)
+summary(cancer_amphibia_model)
 
-# See results
-summary(neoplasia_amphibia_model)
-
-
-# Filter to Amphibia
-amphibia_data <- final_clean_mortality_data %>%
-  filter(Class == "Amphibia") %>%
-  mutate(abs_shape = abs(shape_value))
-
-
-# Plot Neoplasia vs |Survivorship| for Amphibia
-ggplot(amphibia_data, aes(x = abs_shape, y = cancer_prevalence)) +
-  geom_point(alpha = 1, size = 1, color = "orange") +
-  geom_smooth(method = "lm", se = TRUE, color = "black") +
+ggplot(amphibia_data, aes(x = abs_shape, y = cancer_prevalence, size = n)) +
+  geom_point(alpha = 1, color = "orange") +
+  scale_size_continuous(range = c(3, 8), guide = "none") +  # hide size legend
+  geom_abline(
+    intercept = coef(cancer_amphibia_model)[1],
+    slope = coef(cancer_amphibia_model)[2],
+    color = 'grey', linewidth = 1.2
+  ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   labs(
     x = "|Survivorship|",
     y = "Cancer Prevalence (%)",
     title = "Cancer Prevalence vs |Survivorship| (Amphibia)"
-  )
-
-# Run the linear model
-cancer_amphibia_model <- lm(cancer_prevalence ~ abs_shape, data = amphibia_data)
-
-# See results
-summary(cancer_amphibia_model)
-
-
+  ) +
+  theme_cowplot(12)
+ggsave(filename = 'cancer_amphibia.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
