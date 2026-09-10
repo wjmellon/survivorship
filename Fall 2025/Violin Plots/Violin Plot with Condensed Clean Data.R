@@ -10,17 +10,44 @@ condensed_clean_data$survivorship_type <- factor(
   levels = c("Type III", "Trending toward Type III", "Type II", "Trending toward Type I", "Type I")
 )
 
+condensed_clean_data$Class <- factor(condensed_clean_data$Class)
+
+class_colors <- c(
+  "Mammalia" = "purple",
+  "Amphibia" = "blue",
+  "Reptilia" = "darkgreen",
+  "Aves"     = "red"
+)
+
+# Order the fill colors to match the legend's actual key order (factor levels of Class),
+# so the black-outlined legend dots always line up with the right class regardless
+# of how Class's levels happen to be ordered.
+legend_fill <- class_colors[levels(condensed_clean_data$Class)]
+
+legend_guide <- guide_legend(
+  override.aes = list(
+    shape  = 21,             # hollow-with-fill circle, so a border can show
+    colour = "black",        # black outline, legend only
+    fill   = legend_fill,    # keeps the same class colors inside the outline
+    size   = 3,
+    alpha  = 1
+  )
+)
+
 # -------------------------------------------------------------------------
 # Plot 1: Cancer Prevalence by Survivorship Curve Type
 # -------------------------------------------------------------------------
 ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) +
   # Violins are set to a static gray color
-  geom_violin(trim = FALSE, alpha = 0.9, fill = "gray80", color = "black") +
+  geom_violin(trim = FALSE, alpha = 0.9, fill = "lightgray", color = "black") +
   # Jitter points are now colored by the 'Class' column
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
+  # Median point
   stat_summary(fun = median, geom = "point", color = "black", size = 3, shape = 21, fill = "white", stroke = 1.5) +
-  # Automatically applies a distinct red/blue/green/orange palette to the classes
-  scale_color_manual(values = c("Mammalia" = "blue", "Aves" = "red", Reptilia = "darkgreen", Amphibia = "yellow")) + 
+  # Median line across each violin
+  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0, 
+               color = "black", linewidth = 0.7) +
+  scale_color_manual(values = class_colors, guide = legend_guide) +
   theme_minimal(base_size = 14) +
   labs(
     title = "Cancer Prevalence by Survivorship Curve Type",
@@ -49,12 +76,15 @@ ggsave(filename='Cancer Violin Plot.png', width=11, height=8, limitsize=FALSE, b
 # -------------------------------------------------------------------------
 ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence)) +
   # Violins are set to a static gray color
-  geom_violin(trim = FALSE, alpha = 0.9, fill = "gray60", color = "black") +
+  geom_violin(trim = FALSE, alpha = 0.9, fill = "lightgray", color = "black") +
   # Jitter points are now colored by the 'Class' column
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
+  # Median point
   stat_summary(fun = median, geom = "point", color = "black", size = 3, shape = 21, fill = "white", stroke = 1.5) +
-  # Automatically applies a distinct red/blue/green/orange palette to the classes
-  scale_color_manual(values = c("Mammalia" = "blue", "Aves" = "red", Reptilia = "darkgreen", Amphibia = "yellow")) + 
+  # Median line across each violin
+  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0, 
+               color = "black", linewidth = 0.7) +
+  scale_color_manual(values = class_colors, guide = legend_guide) +
   theme_minimal(base_size = 14) +
   labs(
     title = "Neoplasia Prevalence by Survivorship Curve Type",
@@ -88,4 +118,32 @@ category_counts <- condensed_clean_data %>%
 
 for(i in seq_len(nrow(category_counts))) {
   cat(category_counts$survivorship_type[i], "has", category_counts$num_species[i], "species\n")
+}
+
+# -------------------------------------------------------------------------
+# Median Prevalence Per Survivorship Type (console output)
+# -------------------------------------------------------------------------
+median_summary <- condensed_clean_data %>%
+  group_by(survivorship_type) %>%
+  summarise(
+    median_cancer_prevalence    = median(cancer_prevalence, na.rm = TRUE),
+    median_neoplasia_prevalence = median(neoplasia_prevalence, na.rm = TRUE)
+  )
+
+cat("======================\n")
+cat("Median Cancer Prevalence by Survivorship Type\n")
+cat("======================\n")
+for (i in seq_len(nrow(median_summary))) {
+  cat(sprintf("  - %-30s : %.4f\n",
+              median_summary$survivorship_type[i],
+              median_summary$median_cancer_prevalence[i]))
+}
+
+cat("\n======================\n")
+cat("Median Neoplasia Prevalence by Survivorship Type\n")
+cat("======================\n")
+for (i in seq_len(nrow(median_summary))) {
+  cat(sprintf("  - %-30s : %.4f\n",
+              median_summary$survivorship_type[i],
+              median_summary$median_neoplasia_prevalence[i]))
 }
