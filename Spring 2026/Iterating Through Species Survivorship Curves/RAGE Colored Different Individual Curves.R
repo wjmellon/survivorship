@@ -70,38 +70,68 @@ df_aves     <- build_species_df("Aves")
 df_reptilia <- build_species_df("Reptilia")
 df_amphibia <- build_species_df("Amphibia")
 
-# --- Combine all ---
 all_df <- bind_rows(df_mammalia, df_aves, df_reptilia, df_amphibia)
-
-# --- Plot function ---
-make_plot <- function(df, title) {
+library(ggrepel)
+make_plot <- function(df, title, log_y = TRUE, label_types = NULL) {
   legend_order <- c("Type I", "Trending toward Type I", "Type II", 
                     "Trending toward Type III", "Type III")
   df$survivorship_type <- factor(df$survivorship_type, levels = legend_order)
-    
-  ggplot(df, aes(x = relative_age, y = proportion_alive,
-                 group = Species, color = survivorship_type)) +
-    geom_step(linewidth = 0.6, alpha = 0.7, direction = "hv")+
-    scale_y_log10() +
+  
+  # Get the last point of each species' curve for labeling
+  label_df <- df %>%
+    group_by(Species) %>%
+    filter(relative_age == max(relative_age)) %>%
+    slice(1) %>%
+    ungroup()
+  
+  # If label_types is specified, only keep labels for those survivorship types
+  if (!is.null(label_types)) {
+    label_df <- label_df %>% filter(survivorship_type %in% label_types)
+  }
+  
+  p <- ggplot(df, aes(x = relative_age, y = proportion_alive,
+                      group = Species, color = survivorship_type)) +
+    geom_step(linewidth = 0.6, alpha = 0.7, direction = "hv") +
     scale_color_manual(
       values = c(
-        "Type I"                   = "red",
-        "Trending toward Type I"   = "purple",
-        "Type II"                  = "blue",
-        "Trending toward Type III" = "green",
-        "Type III"                 = "yellow"
+        "Type I"                   = "#8c564b",
+        "Trending toward Type I"   = "#9467bd",
+        "Type II"                  = "#ff7f0e",
+        "Trending toward Type III" = "#2ca02c",
+        "Type III"                 = "#1f77b4"
       ),
       name     = "Survivorship Type",
       na.value = "grey60"
     ) +
     ggtitle(title) +
     xlab("Proportion of Maximum Observed Lifespan") +
-    ylab("Proportion Alive (log scale)") +
+    ylab(if (log_y) "Proportion Alive (log scale)" else "Proportion Alive") +
     theme_cowplot(12)
+  
+  # Only add labels if there's something to label
+  if (nrow(label_df) > 0) {
+    p <- p + geom_text_repel(
+      data = label_df,
+      aes(label = Species),
+      size = 2.5,
+      max.overlaps = Inf,
+      segment.size = 0.2,
+      segment.alpha = 0.5,
+      min.segment.length = 0,
+      box.padding = 0.3,
+      show.legend = FALSE,
+      seed = 42
+    )
+  }
+  
+  if (log_y) p <- p + scale_y_log10()
+  
+  p
 }
 
+
 # --- Individual plots ---
-print(make_plot(df_mammalia, "Survivorship Curves of Mammals"))
+print(make_plot(df_mammalia, "Survivorship Curves of Mammals",label_types = "Type III", log_y = FALSE))
 print(make_plot(df_aves,     "Survivorship Curves of Aves"))
 print(make_plot(df_reptilia, "Survivorship Curves of Reptiles"))
 print(make_plot(df_amphibia, "Survivorship Curves of Amphibians"))
@@ -109,5 +139,6 @@ print(make_plot(df_amphibia, "Survivorship Curves of Amphibians"))
 # --- Combined plot ---
 print(make_plot(all_df, "Survivorship Curves of All Species"))
 
-ggsave(filename='survivorship_curve_amphibians.png', width=10, height=8, limitsize=FALSE,bg="white")
+ggsave(filename='survivorship_curve_amphibians.png', width=10, height=8, limitsize=FALSE, bg="white")
+
 
