@@ -146,4 +146,12 @@ for (i in seq_len(nrow(median_summary))) {
   cat(sprintf("  - %-30s : %.4f\n",
               median_summary$survivorship_type[i],
               median_summary$median_neoplasia_prevalence[i]))
+  
+  
+  
+  
+  
 }
+
+
+

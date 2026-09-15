@@ -77,3 +77,176 @@ ggplot(data, aes(x = b3, y = (cancer_prevalence), color = Class, size = n)) +
   ) +
   theme_cowplot(12)
 ggsave(filename = 'siler_b3_cancer.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
+
+
+
+
+# Run PGLS Function 
+library(phytools)
+library(geiger)
+library(caper)
+library(tidyverse)
+library(cowplot)
+library(ggplot2)
+library(rr2)
+library(nlme)
+library(scales)
+
+## Read in the csv sheet
+data <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv")
+data <- data %>%
+  mutate(
+    abs_shape = abs(shape_value),
+    SE_simple = 1 / sqrt(n)
+  )
+
+## Read phylogenetic tree in
+tree <- read.tree("min20Fixed516.nwk")
+
+# Match data to phylogeny and prune
+data$Species <- gsub(" ", "_", data$Species)
+includedSpecies <- data$Species
+pruned.tree <- drop.tip(tree, setdiff(tree$tip.label, includedSpecies))
+pruned.tree <- keep.tip(pruned.tree, pruned.tree$tip.label)
+data$Keep <- data$Species %in% pruned.tree$tip.label
+data <- data[!(data$Keep == FALSE), ]
+rownames(data) <- data$Species
+SE <- setNames(data$SE_simple, data$Species)[rownames(data)]
+
+# Class colors
+class_colors <- c(
+  "Mammalia" = "purple",
+  "Amphibia" = "blue",
+  "Reptilia" = "darkgreen",
+  "Aves"     = "red"
+)
+# Run PGLS Function 
+library(phytools)
+library(geiger)
+library(caper)
+library(tidyverse)
+library(cowplot)
+library(ggplot2)
+library(rr2)
+library(nlme)
+library(scales)
+
+## Read in the csv sheet
+data <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv")
+data <- data %>%
+  mutate(
+    abs_shape = abs(shape_value),
+    SE_simple = 1 / sqrt(n)
+  )
+
+## Read phylogenetic tree in
+tree <- read.tree("min20Fixed516.nwk")
+
+# Match data to phylogeny and prune
+data$Species <- gsub(" ", "_", data$Species)
+includedSpecies <- data$Species
+pruned.tree <- drop.tip(tree, setdiff(tree$tip.label, includedSpecies))
+pruned.tree <- keep.tip(pruned.tree, pruned.tree$tip.label)
+data$Keep <- data$Species %in% pruned.tree$tip.label
+data <- data[!(data$Keep == FALSE), ]
+rownames(data) <- data$Species
+SE <- setNames(data$SE_simple, data$Species)[rownames(data)]
+
+# Class colors
+class_colors <- c(
+  "Mammalia" = "purple",
+  "Amphibia" = "blue",
+  "Reptilia" = "darkgreen",
+  "Aves"     = "red"
+)
+# Run PGLS Function 
+library(phytools)
+library(geiger)
+library(caper)
+library(tidyverse)
+library(cowplot)
+library(ggplot2)
+library(rr2)
+library(nlme)
+library(scales)
+
+## Read in the csv sheet
+data <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv")
+data <- data %>%
+  mutate(
+    abs_shape = abs(shape_value),
+    SE_simple = 1 / sqrt(n)
+  )
+
+## Read phylogenetic tree in
+tree <- read.tree("min20Fixed516.nwk")
+
+# Match data to phylogeny and prune
+data$Species <- gsub(" ", "_", data$Species)
+includedSpecies <- data$Species
+pruned.tree <- drop.tip(tree, setdiff(tree$tip.label, includedSpecies))
+pruned.tree <- keep.tip(pruned.tree, pruned.tree$tip.label)
+data$Keep <- data$Species %in% pruned.tree$tip.label
+data <- data[!(data$Keep == FALSE), ]
+rownames(data) <- data$Species
+SE <- setNames(data$SE_simple, data$Species)[rownames(data)]
+
+# Class colors
+class_colors <- c(
+  "Mammalia" = "purple",
+  "Amphibia" = "blue",
+  "Reptilia" = "darkgreen",
+  "Aves"     = "red"
+)
+
+# --- PGLS Models ---
+abs_shape_neoplasia <- pglsSEyPagel(neoplasia_prevalence ~ abs_shape, data = data, tree = pruned.tree, se = SE, method = "ML")
+abs_shape_cancer <- pglsSEyPagel(cancer_prevalence ~ abs_shape, data = data, tree = pruned.tree, se = SE, method = "ML")
+summary(abs_shape_neoplasia)
+summary(abs_shape_cancer)
+
+# =========================================================================
+# Plot 1: Neoplasia Prevalence
+# =========================================================================
+ggplot(data, aes(x = abs_shape, y = (neoplasia_prevalence), color = Class, size = n)) +
+  geom_point(alpha = 1) +
+  scale_color_manual(values = class_colors) +
+  scale_size_continuous(range = c(3, 8), guide = "none") +  # hide size legend
+  geom_abline(
+    intercept = coef(abs_shape_neoplasia)[1],
+    slope = coef(abs_shape_neoplasia)[2],
+    color = 'grey', linewidth = 1.2
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal() +
+  labs(
+    x = "Distance from Type II Survivorship",
+    y = "Neoplasia Prevalence (%)",
+    color = "Class",
+    title = "Neoplasia Prevalence vs. Distance from Type II Survivorship"
+  ) +
+  theme_cowplot(12)
+ggsave(filename = 'abs_shape_neoplasia.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
+
+# =========================================================================
+# Plot 2: Cancer Prevalence
+# =========================================================================
+ggplot(data, aes(x = abs_shape, y = (cancer_prevalence), color = Class, size = n)) +
+  geom_point(alpha = 1) +
+  scale_color_manual(values = class_colors) +
+  scale_size_continuous(range = c(3, 8), guide = "none") +  # hide size legend
+  geom_abline(
+    intercept = coef(abs_shape_cancer)[1],
+    slope = coef(abs_shape_cancer)[2],
+    color = 'grey', linewidth = 1.2
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal() +
+  labs(
+    x = "Distance from Type II Survivorship",
+    y = "Cancer Prevalence (%)",
+    color = "Class",
+    title = "Cancer Prevalence vs. Distance from Type II Survivorship"
+  ) +
+  theme_cowplot(12)
+ggsave(filename = 'abs_shape_cancer.png', width = 10, height = 8, limitsize = FALSE, bg = "white")
