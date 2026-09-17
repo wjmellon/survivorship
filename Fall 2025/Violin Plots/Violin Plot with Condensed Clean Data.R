@@ -40,13 +40,11 @@ legend_guide <- guide_legend(
 ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) +
   # Violins are set to a static gray color
   geom_violin(trim = FALSE, alpha = 0.9, fill = "lightgray", color = "black") +
-  # Jitter points are now colored by the 'Class' column
+  # Jitter points colored by the 'Class' column - these stay, they're the values
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
-  # Median point
-  stat_summary(fun = median, geom = "point", color = "black", size = 3, shape = 21, fill = "white", stroke = 1.5) +
-  # Median line across each violin
-  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0, 
-               color = "black", linewidth = 0.7) +
+  # Median line across each violin - thicker "dash box" (no median point marker)
+  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 1,
+               color = "black", linewidth = 2.1) +
   scale_color_manual(values = class_colors, guide = legend_guide) +
   theme_minimal(base_size = 14) +
   labs(
@@ -55,15 +53,18 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
     y = "Cancer Prevalence (%)",
     color = "Class"
   ) +
-  scale_y_continuous(breaks = c(-0.5, 0, 0.5, 1.0),
-                     labels = c("-50", "0", "50", "100")) +
+  # Hard stop at y = 0: no expansion below the data floor, so violins
+  # can no longer bleed into negative territory
+  coord_cartesian(ylim = c(0, 1), expand = FALSE, clip = "on") +
+  scale_y_continuous(breaks = c(0, 0.5, 1.0),
+                     labels = c("0", "50", "100")) +
   theme(
-    axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),  
-    axis.line.x = element_line(linewidth = 1.2, color = "black"),          
-    axis.line.y = element_line(linewidth = 1.2, color = "black"),          
-    axis.ticks = element_line(linewidth = 1),                             
-    legend.position = "right", 
-    panel.grid = element_blank(),                                     
+    axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
+    axis.line.x = element_line(linewidth = 1.2, color = "black"),
+    axis.line.y = element_line(linewidth = 1.2, color = "black"),
+    axis.ticks = element_line(linewidth = 1),
+    legend.position = "right",
+    panel.grid = element_blank(),
     panel.border = element_blank()
   )
 
@@ -77,13 +78,11 @@ ggsave(filename='Cancer Violin Plot.png', width=11, height=8, limitsize=FALSE, b
 ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence)) +
   # Violins are set to a static gray color
   geom_violin(trim = FALSE, alpha = 0.9, fill = "lightgray", color = "black") +
-  # Jitter points are now colored by the 'Class' column
+  # Jitter points colored by the 'Class' column - these stay, they're the values
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
-  # Median point
-  stat_summary(fun = median, geom = "point", color = "black", size = 3, shape = 21, fill = "white", stroke = 1.5) +
-  # Median line across each violin
-  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0, 
-               color = "black", linewidth = 0.7) +
+  # Median line across each violin - thicker "dash box" (no median point marker)
+  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 1,
+               color = "black", linewidth = 2.1) +
   scale_color_manual(values = class_colors, guide = legend_guide) +
   theme_minimal(base_size = 14) +
   labs(
@@ -92,14 +91,16 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
     y = "Neoplasia Prevalence (%)",
     color = "Class"
   ) +
-  scale_y_continuous(breaks = c(-0.5, 0, 0.5, 1.0),
-                     labels = c("-50", "0", "50", "100")) +
+  # Hard stop at y = 0: no expansion below the data floor
+  coord_cartesian(ylim = c(0, 1), expand = FALSE, clip = "on") +
+  scale_y_continuous(breaks = c(0, 0.5, 1.0),
+                     labels = c("0", "50", "100")) +
   theme(
     axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
     axis.line.x = element_line(linewidth = 1.2, color = "black"),
     axis.line.y = element_line(linewidth = 1.2, color = "black"),
     axis.ticks = element_line(linewidth = 1),
-    legend.position = "right", 
+    legend.position = "right",
     panel.grid = element_blank(),
     panel.border = element_blank()
   )
@@ -146,12 +147,4 @@ for (i in seq_len(nrow(median_summary))) {
   cat(sprintf("  - %-30s : %.4f\n",
               median_summary$survivorship_type[i],
               median_summary$median_neoplasia_prevalence[i]))
-  
-  
-  
-  
-  
 }
-
-
-
