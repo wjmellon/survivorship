@@ -1,6 +1,6 @@
-"Survivorship_Type","Number_of_Species"
-"Type I",6
-"Trending toward Type I",51
-"Type II",31
-"Trending toward Type III",7
-"Type III",5
+"survivorship_type","Number_of_Species","Number_of_Mammalian_Species","Number_of_Reptilian_Species","Number_of_Amphibian_Species","Number_of_Avian_Species"
+"Type I",6,6,0,0,0
+"Trending toward Type I",51,38,6,0,7
+"Type II",31,14,8,2,7
+"Trending toward Type III",7,3,2,0,2
+"Type III",5,2,1,0,2
