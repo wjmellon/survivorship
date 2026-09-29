@@ -43,8 +43,8 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
   # Jitter points colored by the 'Class' column - these stay, they're the values
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
   # Median line across each violin - thicker "dash box" (no median point marker)
-  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 1,
-               color = "black", linewidth = 2.1) +
+  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0,
+               color = "black", linewidth = 2.5) +
   scale_color_manual(values = class_colors, guide = legend_guide) +
   theme_minimal(base_size = 14) +
   labs(
@@ -55,7 +55,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
   ) +
   # Hard stop at y = 0: no expansion below the data floor, so violins
   # can no longer bleed into negative territory
-  coord_cartesian(ylim = c(0, 1), expand = FALSE, clip = "on") +
+  coord_cartesian(xlim = c(0.2, 5.8), ylim = c(0, 1), expand = FALSE, clip = "on") +
   scale_y_continuous(breaks = c(0, 0.5, 1.0),
                      labels = c("0", "50", "100")) +
   theme(
@@ -81,8 +81,8 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
   # Jitter points colored by the 'Class' column - these stay, they're the values
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
   # Median line across each violin - thicker "dash box" (no median point marker)
-  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 1,
-               color = "black", linewidth = 2.1) +
+  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0,
+               color = "black", linewidth = 2.5) +
   scale_color_manual(values = class_colors, guide = legend_guide) +
   theme_minimal(base_size = 14) +
   labs(
@@ -92,7 +92,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
     color = "Class"
   ) +
   # Hard stop at y = 0: no expansion below the data floor
-  coord_cartesian(ylim = c(0, 1), expand = FALSE, clip = "on") +
+  coord_cartesian(xlim = c(0.2, 5.8), ylim = c(0, 1), expand = FALSE, clip = "on") +
   scale_y_continuous(breaks = c(0, 0.5, 1.0),
                      labels = c("0", "50", "100")) +
   theme(
