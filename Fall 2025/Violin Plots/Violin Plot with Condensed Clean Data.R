@@ -13,10 +13,10 @@ condensed_clean_data$survivorship_type <- factor(
 condensed_clean_data$Class <- factor(condensed_clean_data$Class)
 
 class_colors <- c(
-  "Mammalia" = "purple",
-  "Amphibia" = "blue",
-  "Reptilia" = "darkgreen",
-  "Aves"     = "red"
+  "Amphibia" = "#F8766D",
+  "Aves"     = "#7CAE00",
+  "Mammalia" = "#00BFC4",
+  "Reptilia" = "#C77CFF"
 )
 
 # Order the fill colors to match the legend's actual key order (factor levels of Class),
@@ -26,9 +26,7 @@ legend_fill <- class_colors[levels(condensed_clean_data$Class)]
 
 legend_guide <- guide_legend(
   override.aes = list(
-    shape  = 21,             # hollow-with-fill circle, so a border can show
-    colour = "black",        # black outline, legend only
-    fill   = legend_fill,    # keeps the same class colors inside the outline
+    shape  = 16,             # hollow-with-fill circle, so a border can show     # black outline, legend only  # keeps the same class colors inside the outline
     size   = 3,
     alpha  = 1
   )
@@ -43,7 +41,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
   # Jitter points colored by the 'Class' column - these stay, they're the values
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
   # Median line across each violin - thicker "dash box" (no median point marker)
-  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0,
+  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0.5,
                color = "black", linewidth = 2.5) +
   scale_color_manual(values = class_colors, guide = legend_guide) +
   theme_minimal(base_size = 14) +
@@ -81,7 +79,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
   # Jitter points colored by the 'Class' column - these stay, they're the values
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
   # Median line across each violin - thicker "dash box" (no median point marker)
-  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0,
+  stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0.5,
                color = "black", linewidth = 2.5) +
   scale_color_manual(values = class_colors, guide = legend_guide) +
   theme_minimal(base_size = 14) +
