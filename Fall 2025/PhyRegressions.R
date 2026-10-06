@@ -20,10 +20,22 @@ class_colors <- c(
   "Reptilia" = "#C77CFF"
 )
 
+# Minimum species a class needs to get its own PGLS + plot.
+# Pagel's lambda is unreliable with very few tips, so small classes
+# (probably Amphibia) are skipped and reported in the console.
+MIN_SPECIES <- 10
+
+# Which subsets to run: "All" = every species, then one per class
+subsets <- c("All", names(class_colors))
+
+# Collects stats for every model fit
+all_results <- list()
+
 # -------------------------------------------------------------------------
-# Helper: prune data + tree so they match
+# Helper: drop rows missing x / y / n, then prune data + tree so they match
 # -------------------------------------------------------------------------
-prep_data <- function(data, tree) {
+prep_data <- function(data, tree, xvar, yvar) {
+  data <- data[complete.cases(data[, c(xvar, yvar, "n")]), ]
   data$Species <- gsub(" ", "_", data$Species)
   pruned.tree <- drop.tip(tree, setdiff(tree$tip.label, data$Species))
   data <- data[data$Species %in% pruned.tree$tip.label, ]
@@ -33,20 +45,63 @@ prep_data <- function(data, tree) {
 }
 
 # -------------------------------------------------------------------------
-# Helper: plot one PGLS model
-#   - size legend uses fixed clean breaks (1,000 / 2,500 / 5,000 / 7,500)
-#     so every figure has the same scale
+# Helper: fit PGLS on one subset (All or a single class) and plot it
+#   - one grey regression line (same format as before)
+#   - same colors, legend, dot sizes, size breaks for every plot
 # -------------------------------------------------------------------------
-pgls_plot <- function(data, xvar, yvar, model, xlab, ylab, title, file) {
+pgls_plot <- function(data, tree, xvar, yvar, xlab, ylab, title, file,
+                      subset = "All") {
   
-  p <- ggplot(data, aes(x = .data[[xvar]], y = .data[[yvar]],
-                        color = Class, size = n)) +
+  if (subset != "All") data <- data[data$Class == subset, ]
+  prep <- prep_data(data, tree, xvar, yvar)
+  label <- paste0(yvar, " ~ ", xvar, " | ", subset)
+  cat("\n==========", label, "==========\n")
+  
+  if (nrow(prep$data) < MIN_SPECIES) {
+    cat("  - Skipping (only", nrow(prep$data), "species)\n")
+    return(invisible(NULL))
+  }
+  
+  form  <- as.formula(paste(yvar, "~", xvar))
+  model <- tryCatch(
+    pglsSEyPagel(form, data = prep$data, tree = prep$tree,
+                 se = prep$SE, method = "ML"),
+    error = function(e) {
+      message("  ! PGLS failed: ", conditionMessage(e))
+      NULL
+    }
+  )
+  if (is.null(model)) return(invisible(NULL))
+  print(summary(model))
+  
+  # Stats for the summary table
+  tt <- summary(model)$tTable
+  all_results[[label]] <<- tibble(
+    subset    = subset,
+    x         = xvar,
+    y         = yvar,
+    n_species = nrow(prep$data),
+    intercept = tt[1, 1],
+    slope     = tt[2, 1],
+    p_value   = tt[2, 4],
+    R2        = tryCatch(as.numeric(R2(phy = prep$tree, model)[3]),
+                         error = function(e) NA),
+    lambda    = tryCatch(as.numeric(summary(model)$modelStruct$corStruct[1]),
+                         error = function(e) NA)
+  )
+  
+  # Title / filename get the class name added for class-specific plots
+  if (subset != "All") {
+    title <- paste0(title, " (", subset, ")")
+    file  <- sub("\\.png$", paste0("_", subset, ".png"), file)
+  }
+  
+  p <- ggplot(prep$data, aes(x = .data[[xvar]], y = .data[[yvar]],
+                             color = Class, size = n)) +
     geom_point(alpha = 1) +
     scale_color_manual(values = class_colors) +
-    # Fixed, evenly spaced breaks shared by ALL plots (n ranges 34-7322).
-    # Dot AREA is proportional to n, so the scale is linear.
     scale_size_continuous(
-      range    = c(1.5, 8),   # 1.5 floor so n = 34 species stay visible
+      range    = c(3, 8),
       breaks   = c(1000, 2500, 5000, 7500),
       labels   = scales::comma,
       limits   = c(0, 7500),
@@ -72,60 +127,67 @@ pgls_plot <- function(data, xvar, yvar, model, xlab, ylab, title, file) {
   invisible(p)
 }
 
+outcomes <- c(neoplasia_prevalence = "Neoplasia", cancer_prevalence = "Cancer")
+
 # #########################################################################
 # PART 1: DISTANCE FROM TYPE II SURVIVORSHIP (abs_shape)
 # #########################################################################
 data <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv") %>%
   mutate(abs_shape = abs(shape_value),
          SE_simple = 1 / sqrt(n))
+summary(data$n)   # sanity check
 
-prep <- prep_data(data, tree)
-data <- prep$data; pruned.tree <- prep$tree; SE <- prep$SE
-summary(data$n)   # sanity check: these are the n values the legend uses
-
-abs_shape_neoplasia <- pglsSEyPagel(neoplasia_prevalence ~ abs_shape, data = data,
-                                    tree = pruned.tree, se = SE, method = "ML")
-abs_shape_cancer    <- pglsSEyPagel(cancer_prevalence ~ abs_shape, data = data,
-                                    tree = pruned.tree, se = SE, method = "ML")
-summary(abs_shape_neoplasia)
-summary(abs_shape_cancer)
-
-pgls_plot(data, "abs_shape", "neoplasia_prevalence", abs_shape_neoplasia,
-          "Distance from Type II Survivorship", "Neoplasia Prevalence (%)",
-          "Neoplasia Prevalence vs. Distance from Type II Survivorship",
-          "abs_shape_neoplasia.png")
-
-pgls_plot(data, "abs_shape", "cancer_prevalence", abs_shape_cancer,
-          "Distance from Type II Survivorship", "Cancer Prevalence (%)",
-          "Cancer Prevalence vs. Distance from Type II Survivorship",
-          "abs_shape_cancer.png")
+for (s in subsets) {
+  for (yvar in names(outcomes)) {
+    pgls_plot(data, tree, "abs_shape", yvar,
+              "Distance from Type II Survivorship",
+              paste0(outcomes[[yvar]], " Prevalence (%)"),
+              paste0(outcomes[[yvar]], " Prevalence vs. Distance from Type II Survivorship"),
+              paste0("abs_shape_", tolower(outcomes[[yvar]]), ".png"),
+              subset = s)
+  }
+}
 
 # #########################################################################
-# PART 2: SILER b3 (Change in Mortality Risk in the Senescent Stage)
+# PART 2: ALL SILER PARAMETERS
 # #########################################################################
 data <- read.csv("Fall 2025/Siler/siler_parameters_all_min50species.csv") %>%
   filter(FLAG == "0") %>%
   mutate(SE_simple = 1 / sqrt(n))
-
-prep <- prep_data(data, tree)
-data <- prep$data; pruned.tree <- prep$tree; SE <- prep$SE
 summary(data$n)   # sanity check
 
-siler_b3_neoplasia <- pglsSEyPagel(neoplasia_prevalence ~ b3, data = data,
-                                   tree = pruned.tree, se = SE, method = "ML")
-siler_b3_cancer    <- pglsSEyPagel(cancer_prevalence ~ b3, data = data,
-                                   tree = pruned.tree, se = SE, method = "ML")
-summary(siler_b3_neoplasia)
-summary(siler_b3_cancer)
+# Siler parameters -> axis labels. Edit names here if your columns differ.
+siler_params <- c(
+  a1 = "Initial Juvenile Mortality Risk (a1)",
+  b1 = "Rate of Decline in Juvenile Mortality Risk (b1)",
+  a2 = "Age-Independent Mortality Risk (a2)",
+  a3 = "Initial Senescent Mortality Risk (a3)",
+  b3 = "Change in Mortality Risk in the Senescent Stage (b3)"
+)
 
-pgls_plot(data, "b3", "neoplasia_prevalence", siler_b3_neoplasia,
-          "Change in Mortality Risk in the Senescent Stage (b3)",
-          "Neoplasia Prevalence (%)",
-          "Neoplasia Prevalence vs. Change in Mortality Risk in the Senescent Stage (b3)",
-          "siler_b3_neoplasia.png")
+missing <- setdiff(names(siler_params), names(data))
+if (length(missing) > 0) {
+  cat("Not found in Siler CSV, skipping:", paste(missing, collapse = ", "), "\n")
+  siler_params <- siler_params[names(siler_params) %in% names(data)]
+}
 
-pgls_plot(data, "b3", "cancer_prevalence", siler_b3_cancer,
-          "Change in Mortality Risk in the Senescent Stage (b3)",
-          "Cancer Prevalence (%)",
-          "Cancer Prevalence vs. Change in Mortality Risk in the Senescent Stage (b3)",
-          "siler_b3_cancer.png")
+for (param in names(siler_params)) {
+  for (s in subsets) {
+    for (yvar in names(outcomes)) {
+      pgls_plot(data, tree, param, yvar,
+                siler_params[[param]],
+                paste0(outcomes[[yvar]], " Prevalence (%)"),
+                paste0(outcomes[[yvar]], " Prevalence vs. ", siler_params[[param]]),
+                paste0("siler_", param, "_", tolower(outcomes[[yvar]]), ".png"),
+                subset = s)
+    }
+  }
+}
+
+# #########################################################################
+# SUMMARY TABLE: every model (All + each class)
+# #########################################################################
+results_table <- bind_rows(all_results) %>%
+  mutate(across(c(intercept, slope, p_value, R2, lambda), ~ signif(.x, 3)))
+print(results_table, n = Inf)
+write.csv(results_table, "pgls_results_by_class.csv", row.names = FALSE)
