@@ -11,33 +11,59 @@
 # =========================================================================
 
 library(dplyr)
-library(writexl)  
+library(writexl)
 
 # ---- Settings -----------------------------------------------------------
-input_file  <- "Fall 2025/Filtering Data/cleanPath.min20.062822.csv"  # change if needed
+input_file  <- "Fall 2025/Filtering Data/cleanPath.min20.062822.csv"
 output_file <- "species_prevalence.xlsx"
 
-only_necropsies <- TRUE   # keep only Necropsy == 1
-exclude_infants <- TRUE   # drop Infant == 1
-min_n           <- 20      
+only_necropsies <- TRUE
+exclude_infants <- TRUE
+min_n           <- 20
 
 # ---- Read data ----------------------------------------------------------
-# read.csv for .csv; if your file is tab-separated use read.delim instead
 raw <- read.csv(input_file, stringsAsFactors = FALSE)
 cat("Rows read:", nrow(raw), "\n")
 
 df <- raw
-if (only_necropsies) df <- df %>% filter(Necropsy == 1)
-if (exclude_infants) df <- df %>% filter(Infant != 1 | is.na(Infant))
-df <- df %>% filter(!is.na(Species), Species != "", !is.na(Malignant))
+
+# Keep only necropsies
+if (only_necropsies) {
+  df <- df %>% filter(Necropsy == 1)
+}
+
+# Exclude infants
+if (exclude_infants) {
+  df <- df %>% filter(Infant != 1 | is.na(Infant))
+}
+
+# Keep only positive Year values
+df <- df %>%
+  filter(!is.na(Year), Year > 0)
+
+# Keep valid Species and Malignant values
+df <- df %>%
+  filter(
+    !is.na(Species),
+    Species != "",
+    !is.na(Malignant)
+  )
+
 cat("Rows after filters:", nrow(df), "\n")
 
 # ---- One row per animal -------------------------------------------------
 # An animal can show up on multiple rows (e.g. more than one tumor).
 # Collapse by ID so each animal is counted once, keeping its "worst" result:
 #   any malignant -> 1, else any benign -> 0, else -1
+
 animals <- df %>%
-  mutate(ID = ifelse(is.na(ID), paste0("row", row_number()), as.character(ID))) %>%
+  mutate(
+    ID = ifelse(
+      is.na(ID),
+      paste0("row", row_number()),
+      as.character(ID)
+    )
+  ) %>%
   group_by(Species, ID) %>%
   summarise(
     Class     = first(Class),
@@ -46,7 +72,10 @@ animals <- df %>%
   )
 
 dupes <- nrow(df) - nrow(animals)
-if (dupes > 0) cat("Collapsed", dupes, "duplicate rows (same animal ID)\n")
+
+if (dupes > 0) {
+  cat("Collapsed", dupes, "duplicate rows (same animal ID)\n")
+}
 
 # ---- Prevalence per species ---------------------------------------------
 prevalence <- animals %>%
@@ -68,4 +97,5 @@ print(head(prevalence, 10))
 
 # ---- Write Excel --------------------------------------------------------
 write_xlsx(prevalence, output_file)
+
 cat("Saved:", output_file, "\n")

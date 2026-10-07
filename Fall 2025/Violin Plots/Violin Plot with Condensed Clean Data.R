@@ -1,8 +1,26 @@
 library(ggplot2)
 library(dplyr)
 
-# Optional: Load your data
+select <- dplyr::select   # in case MASS is loaded and masks dplyr::select
+
+# Survivorship types (Species, survivorship_type) come from here
 condensed_clean_data <- read.csv("Fall 2025/Fall 2025 Clean Data/final_clean_data.csv")
+
+# NEW: prevalence + Class come from the prevalence dataset
+prevalence_data <- read.csv("species-cancer-prevalence-data.csv", check.names = FALSE) %>%
+  mutate(Species = gsub(" ", "_", Species)) %>%
+  select(Species, Class,
+         neoplasia_prevalence = NeoplasiaPrevalence,
+         cancer_prevalence    = MalignancyPrevalence)
+
+# Drop old prevalence / Class columns, then join in the new values
+condensed_clean_data <- condensed_clean_data %>%
+  mutate(Species = gsub(" ", "_", Species)) %>%
+  select(-any_of(c("Class", "neoplasia_prevalence", "cancer_prevalence",
+                   "NeoplasiaPrevalence", "MalignancyPrevalence"))) %>%
+  inner_join(prevalence_data, by = "Species")
+
+cat("Species after merge:", nrow(condensed_clean_data), "\n")
 
 # Ensure factor levels for consistent order
 condensed_clean_data$survivorship_type <- factor(
@@ -19,14 +37,11 @@ class_colors <- c(
   "Reptilia" = "#C77CFF"
 )
 
-# Order the fill colors to match the legend's actual key order (factor levels of Class),
-# so the black-outlined legend dots always line up with the right class regardless
-# of how Class's levels happen to be ordered.
 legend_fill <- class_colors[levels(condensed_clean_data$Class)]
 
 legend_guide <- guide_legend(
   override.aes = list(
-    shape  = 16,             # hollow-with-fill circle, so a border can show     # black outline, legend only  # keeps the same class colors inside the outline
+    shape  = 16,
     size   = 3,
     alpha  = 1
   )
@@ -36,11 +51,8 @@ legend_guide <- guide_legend(
 # Plot 1: Cancer Prevalence by Survivorship Curve Type
 # -------------------------------------------------------------------------
 ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) +
-  # Violins are set to a static gray color
   geom_violin(trim = FALSE, alpha = 0.9, fill = "lightgray", color = "black") +
-  # Jitter points colored by the 'Class' column - these stay, they're the values
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
-  # Median line across each violin - thicker "dash box" (no median point marker)
   stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0.5,
                color = "black", linewidth = 2.5) +
   scale_color_manual(values = class_colors, guide = legend_guide) +
@@ -51,8 +63,6 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
     y = "Cancer Prevalence (%)",
     color = "Class"
   ) +
-  # Hard stop at y = 0: no expansion below the data floor, so violins
-  # can no longer bleed into negative territory
   coord_cartesian(xlim = c(0.2, 5.8), ylim = c(0, 1), expand = FALSE, clip = "on") +
   scale_y_continuous(breaks = c(0, 0.5, 1.0),
                      labels = c("0", "50", "100")) +
@@ -66,7 +76,6 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
     panel.border = element_blank()
   )
 
-# Save File
 ggsave(filename='Cancer Violin Plot.png', width=11, height=8, limitsize=FALSE, bg="white")
 
 
@@ -74,11 +83,8 @@ ggsave(filename='Cancer Violin Plot.png', width=11, height=8, limitsize=FALSE, b
 # Plot 2: Neoplasia Prevalence by Survivorship Curve Type
 # -------------------------------------------------------------------------
 ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence)) +
-  # Violins are set to a static gray color
   geom_violin(trim = FALSE, alpha = 0.9, fill = "lightgray", color = "black") +
-  # Jitter points colored by the 'Class' column - these stay, they're the values
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
-  # Median line across each violin - thicker "dash box" (no median point marker)
   stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0.5,
                color = "black", linewidth = 2.5) +
   scale_color_manual(values = class_colors, guide = legend_guide) +
@@ -89,7 +95,6 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
     y = "Neoplasia Prevalence (%)",
     color = "Class"
   ) +
-  # Hard stop at y = 0: no expansion below the data floor
   coord_cartesian(xlim = c(0.2, 5.8), ylim = c(0, 1), expand = FALSE, clip = "on") +
   scale_y_continuous(breaks = c(0, 0.5, 1.0),
                      labels = c("0", "50", "100")) +
@@ -103,7 +108,6 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
     panel.border = element_blank()
   )
 
-# Save File
 ggsave(filename='Neoplasia Violin Plot.png', width=11, height=8, limitsize=FALSE, bg="white")
 
 
@@ -116,7 +120,8 @@ category_counts <- condensed_clean_data %>%
   arrange(desc(num_species))
 
 for(i in seq_len(nrow(category_counts))) {
-  cat(category_counts$survivorship_type[i], "has", category_counts$num_species[i], "species\n")
+  cat(as.character(category_counts$survivorship_type[i]), "has",
+      category_counts$num_species[i], "species\n")
 }
 
 # -------------------------------------------------------------------------
@@ -134,7 +139,7 @@ cat("Median Cancer Prevalence by Survivorship Type\n")
 cat("======================\n")
 for (i in seq_len(nrow(median_summary))) {
   cat(sprintf("  - %-30s : %.4f\n",
-              median_summary$survivorship_type[i],
+              as.character(median_summary$survivorship_type[i]),
               median_summary$median_cancer_prevalence[i]))
 }
 
@@ -143,6 +148,6 @@ cat("Median Neoplasia Prevalence by Survivorship Type\n")
 cat("======================\n")
 for (i in seq_len(nrow(median_summary))) {
   cat(sprintf("  - %-30s : %.4f\n",
-              median_summary$survivorship_type[i],
+              as.character(median_summary$survivorship_type[i]),
               median_summary$median_neoplasia_prevalence[i]))
 }

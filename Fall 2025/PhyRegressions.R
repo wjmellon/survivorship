@@ -1,18 +1,21 @@
-# Run PGLS Function
+# =========================================================================
+# PGLS: Neoplasia / Malignancy Prevalence vs. Life-History Variables
+#   Prevalence, n, SE_simple, Class -> species-cancer-prevalence-data.csv
+#   abs_shape                        -> Spring 2026/final_clean_data_w_multivariate.csv
+#   Siler params                     -> Fall 2025/Siler/siler_parameters_all_min50species.csv
+# =========================================================================
+
 library(phytools)
 library(geiger)
 library(caper)
 library(tidyverse)
 library(cowplot)
-library(ggplot2)
 library(rr2)
 library(nlme)
 library(scales)
 
-## Read phylogenetic tree in
 tree <- read.tree("min20Fixed516.nwk")
 
-# Class colors (ggplot default hue palette, so they match your earlier figures)
 class_colors <- c(
   "Amphibia" = "#F8766D",
   "Aves"     = "#7CAE00",
@@ -20,40 +23,105 @@ class_colors <- c(
   "Reptilia" = "#C77CFF"
 )
 
-# Minimum species a class needs to get its own PGLS + plot.
-# Pagel's lambda is unreliable with very few tips, so small classes
-# (probably Amphibia) are skipped and reported in the console.
 MIN_SPECIES <- 10
-
-# Which subsets to run: "All" = every species, then one per class
-subsets <- c("All", names(class_colors))
-
-# Collects stats for every model fit
+subsets     <- c("All", names(class_colors))
 all_results <- list()
 
 # -------------------------------------------------------------------------
-# Helper: drop rows missing x / y / n, then prune data + tree so they match
+# pglsSEyPagel: PGLS with Pagel's lambda + known measurement error in y
+#   V = sig2 * C(lambda) + diag(SE^2), lambda & sig2 fit by ML,
+#   then refit as an nlme::gls (fixed corr + fixed variance weights)
+#   so summary(), coef(), and rr2::R2 all work as usual.
+# -------------------------------------------------------------------------
+pglsSEyPagel <- function(model, data, tree, se, method = "ML") {
+  data <- data[tree$tip.label, ]
+  se   <- se[tree$tip.label]
+  y    <- model.response(model.frame(model, data))
+  X    <- model.matrix(model, data)
+  C    <- vcv(tree)
+  n    <- length(y)
+  
+  lam_C <- function(lambda) { L <- C * lambda; diag(L) <- diag(C); L }
+  
+  negLL <- function(par) {
+    sig2 <- exp(par[1]); lambda <- par[2]
+    V  <- sig2 * lam_C(lambda) + diag(se^2, n)
+    Vi <- tryCatch(solve(V), error = function(e) NULL)
+    if (is.null(Vi)) return(1e10)
+    b  <- solve(t(X) %*% Vi %*% X, t(X) %*% Vi %*% y)
+    r  <- y - X %*% b
+    0.5 * (as.numeric(determinant(V)$modulus) + sum(r * (Vi %*% r)) + n * log(2 * pi))
+  }
+  
+  fit <- optim(c(log(var(y) + 1e-8), 0.5), negLL, method = "L-BFGS-B",
+               lower = c(-30, 0), upper = c(10, 1))
+  sig2   <- exp(fit$par[1]); lambda <- fit$par[2]
+  
+  V  <- sig2 * lam_C(lambda) + diag(se^2, n)
+  vd <- diag(V)
+  R  <- cov2cor(V)
+  
+  data$.vd <- vd
+  m <- gls(model, data = data, method = method,
+           weights     = varFixed(~ .vd),
+           correlation = corSymm(R[lower.tri(R)], form = ~ 1, fixed = TRUE))
+  m$lambda <- lambda
+  m$sig2   <- sig2
+  m$logLik_ME <- -fit$value
+  m
+}
+
+# -------------------------------------------------------------------------
+# Prevalence data (single source of truth for response, n, SE, Class)
+# -------------------------------------------------------------------------
+prevalence_data <- read.csv("species-cancer-prevalence-data.csv", check.names = FALSE) %>%
+  mutate(Species = gsub(" ", "_", Species),
+         n       = RecordsWithDenominators) %>%
+  distinct(Species, .keep_all = TRUE) %>%
+  select(Species, Class, NeoplasiaPrevalence, MalignancyPrevalence, n, SE_simple)
+
+# If prevalence is stored as 0-100, convert to proportions (so % axis is right)
+if (max(prevalence_data$NeoplasiaPrevalence, na.rm = TRUE) > 1) {
+  prevalence_data <- prevalence_data %>%
+    mutate(NeoplasiaPrevalence  = NeoplasiaPrevalence / 100,
+           MalignancyPrevalence = MalignancyPrevalence / 100)
+  cat("Prevalence looked like percents -> converted to proportions.\n")
+}
+
+# Drop any old copies of these columns, then attach the new ones
+drop_cols <- c("Class", "neoplasia_prevalence", "cancer_prevalence",
+               "NeoplasiaPrevalence", "MalignancyPrevalence",
+               "SE_simple", "n", "RecordsWithDenominators")
+
+add_prevalence <- function(df) {
+  df %>%
+    mutate(Species = gsub(" ", "_", Species)) %>%
+    select(-any_of(drop_cols)) %>%
+    inner_join(prevalence_data, by = "Species")
+}
+
+outcomes <- c(NeoplasiaPrevalence = "Neoplasia", MalignancyPrevalence = "Malignancy")
+
+# -------------------------------------------------------------------------
+# Helper: clean + match data and tree
 # -------------------------------------------------------------------------
 prep_data <- function(data, tree, xvar, yvar) {
-  data <- data[complete.cases(data[, c(xvar, yvar, "n")]), ]
-  data$Species <- gsub(" ", "_", data$Species)
+  data <- data[complete.cases(data[, c(xvar, yvar, "n", "SE_simple")]), ]
+  data <- data[data$Species %in% tree$tip.label, ]
   pruned.tree <- drop.tip(tree, setdiff(tree$tip.label, data$Species))
-  data <- data[data$Species %in% pruned.tree$tip.label, ]
   rownames(data) <- data$Species
-  SE <- setNames(data$SE_simple, data$Species)[rownames(data)]
+  data <- data[pruned.tree$tip.label, ]
+  SE <- setNames(data$SE_simple, data$Species)
   list(data = data, tree = pruned.tree, SE = SE)
 }
 
 # -------------------------------------------------------------------------
-# Helper: fit PGLS on one subset (All or a single class) and plot it
-#   - one grey regression line (same format as before)
-#   - same colors, legend, dot sizes, size breaks for every plot
+# Helper: fit + plot one subset
 # -------------------------------------------------------------------------
-pgls_plot <- function(data, tree, xvar, yvar, xlab, ylab, title, file,
-                      subset = "All") {
+pgls_plot <- function(data, tree, xvar, yvar, xlab, ylab, title, file, subset = "All") {
   
   if (subset != "All") data <- data[data$Class == subset, ]
-  prep <- prep_data(data, tree, xvar, yvar)
+  prep  <- prep_data(data, tree, xvar, yvar)
   label <- paste0(yvar, " ~ ", xvar, " | ", subset)
   cat("\n==========", label, "==========\n")
   
@@ -64,17 +132,13 @@ pgls_plot <- function(data, tree, xvar, yvar, xlab, ylab, title, file,
   
   form  <- as.formula(paste(yvar, "~", xvar))
   model <- tryCatch(
-    pglsSEyPagel(form, data = prep$data, tree = prep$tree,
-                 se = prep$SE, method = "ML"),
-    error = function(e) {
-      message("  ! PGLS failed: ", conditionMessage(e))
-      NULL
-    }
+    pglsSEyPagel(form, data = prep$data, tree = prep$tree, se = prep$SE, method = "ML"),
+    error = function(e) { message("  ! PGLS failed: ", conditionMessage(e)); NULL }
   )
   if (is.null(model)) return(invisible(NULL))
   print(summary(model))
+  cat("  lambda =", round(model$lambda, 3), "\n")
   
-  # Stats for the summary table
   tt <- summary(model)$tTable
   all_results[[label]] <<- tibble(
     subset    = subset,
@@ -84,58 +148,48 @@ pgls_plot <- function(data, tree, xvar, yvar, xlab, ylab, title, file,
     intercept = tt[1, 1],
     slope     = tt[2, 1],
     p_value   = tt[2, 4],
-    R2        = tryCatch(as.numeric(R2(phy = prep$tree, model)[3]),
-                         error = function(e) NA),
-    lambda    = tryCatch(as.numeric(summary(model)$modelStruct$corStruct[1]),
-                         error = function(e) NA)
+    R2        = tryCatch(as.numeric(R2(phy = prep$tree, model)[3]), error = function(e) NA),
+    lambda    = model$lambda
   )
   
-  # Title / filename get the class name added for class-specific plots
   if (subset != "All") {
     title <- paste0(title, " (", subset, ")")
     file  <- sub("\\.png$", paste0("_", subset, ".png"), file)
   }
   
+  n_max <- max(7500, max(prep$data$n, na.rm = TRUE))
+  
   p <- ggplot(prep$data, aes(x = .data[[xvar]], y = .data[[yvar]],
                              color = Class, size = n)) +
     geom_point(alpha = 1) +
     scale_color_manual(values = class_colors) +
-    scale_size_continuous(
-      range    = c(3, 8),
-      breaks   = c(1000, 2500, 5000, 7500),
-      labels   = scales::comma,
-      limits   = c(0, 7500),
-      name     = "Sample Size (n)"
-    ) +
-    guides(
-      color = guide_legend(override.aes = list(size = 4), order = 1),
-      size  = guide_legend(override.aes = list(color = "grey40"), order = 2)
-    ) +
-    geom_abline(
-      intercept = coef(model)[1],
-      slope     = coef(model)[2],
-      color = "grey", linewidth = 1.2
-    ) +
+    scale_size_continuous(range = c(3, 8),
+                          breaks = c(20, 100, 250, 500),
+                          labels = scales::comma,
+                          limits = c(0, n_max),
+                          name   = "Sample Size (n)") +
+    guides(color = guide_legend(override.aes = list(size = 4), order = 1),
+           size  = guide_legend(override.aes = list(color = "grey40"), order = 2)) +
+    geom_abline(intercept = coef(model)[1], slope = coef(model)[2],
+                color = "grey", linewidth = 1.2) +
     scale_y_continuous(labels = scales::percent) +
     labs(x = xlab, y = ylab, color = "Class", title = title) +
     theme_cowplot(12) +
     theme(legend.position = "right")
   
   print(p)
-  ggsave(filename = file, plot = p, width = 10, height = 8,
-         limitsize = FALSE, bg = "white")
+  ggsave(file, p, width = 10, height = 8, limitsize = FALSE, bg = "white")
   invisible(p)
 }
 
-outcomes <- c(neoplasia_prevalence = "Neoplasia", cancer_prevalence = "Cancer")
-
 # #########################################################################
-# PART 1: DISTANCE FROM TYPE II SURVIVORSHIP (abs_shape)
+# PART 1: DISTANCE FROM TYPE II SURVIVORSHIP
 # #########################################################################
 data <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv") %>%
-  mutate(abs_shape = abs(shape_value),
-         SE_simple = 1 / sqrt(n))
-summary(data$n)   # sanity check
+  mutate(abs_shape = abs(shape_value)) %>%
+  add_prevalence()
+cat("Shape + prevalence species:", nrow(data), "\n")
+print(summary(data$n))
 
 for (s in subsets) {
   for (yvar in names(outcomes)) {
@@ -149,14 +203,14 @@ for (s in subsets) {
 }
 
 # #########################################################################
-# PART 2: ALL SILER PARAMETERS
+# PART 2: SILER PARAMETERS
 # #########################################################################
 data <- read.csv("Fall 2025/Siler/siler_parameters_all_min50species.csv") %>%
-  filter(FLAG == "0") %>%
-  mutate(SE_simple = 1 / sqrt(n))
-summary(data$n)   # sanity check
+  filter(as.character(FLAG) == "0") %>%
+  add_prevalence()
+cat("Siler + prevalence species:", nrow(data), "\n")
+print(summary(data$n))
 
-# Siler parameters -> axis labels. Edit names here if your columns differ.
 siler_params <- c(
   a1 = "Initial Juvenile Mortality Risk (a1)",
   b1 = "Rate of Decline in Juvenile Mortality Risk (b1)",
@@ -185,9 +239,12 @@ for (param in names(siler_params)) {
 }
 
 # #########################################################################
-# SUMMARY TABLE: every model (All + each class)
+# SUMMARY TABLE
 # #########################################################################
+if (length(all_results) == 0) stop("No models fit - check the console for '! PGLS failed' messages.")
+
 results_table <- bind_rows(all_results) %>%
   mutate(across(c(intercept, slope, p_value, R2, lambda), ~ signif(.x, 3)))
 print(results_table, n = Inf)
 write.csv(results_table, "pgls_results_by_class.csv", row.names = FALSE)
+cat("\nDone. Results saved to pgls_results_by_class.csv\n")
