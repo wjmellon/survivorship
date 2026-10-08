@@ -90,3 +90,5 @@ for (sp in species_list) {
 # Combine all loop outputs into one complete dataframe
 surv_summary <- bind_rows(results_list)
 
+write.csv(surv_summary, "Survivorship_Types_Min20.csv", row.names = FALSE)
+
