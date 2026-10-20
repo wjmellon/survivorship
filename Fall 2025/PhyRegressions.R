@@ -1,7 +1,7 @@
 # =========================================================================
 # PGLS: Neoplasia / Malignancy Prevalence vs. Life-History Variables
 #   Prevalence, n, SE_simple, Class -> species-cancer-prevalence-data.csv
-#   abs_shape                        -> Spring 2026/final_clean_data_w_multivariate.csv
+#   abs_shape                        -> Survivorship_Types_Min20.csv (recalculated Rage)
 #   Siler params                     -> Fall 2025/Siler/siler_parameters_all_min50species.csv
 # =========================================================================
 
@@ -185,8 +185,10 @@ pgls_plot <- function(data, tree, xvar, yvar, xlab, ylab, title, file, subset = 
 # #########################################################################
 # PART 1: DISTANCE FROM TYPE II SURVIVORSHIP
 # #########################################################################
-data <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv") %>%
-  mutate(abs_shape = abs(shape_value)) %>%
+# Recalculated Rage shape values (from RecalculatingRageNumbers.R)
+data <- read.csv("Survivorship_Types_Min20.csv") %>%
+  mutate(shape_value = shape_type,
+         abs_shape   = abs(shape_type)) %>%
   add_prevalence()
 cat("Shape + prevalence species:", nrow(data), "\n")
 print(summary(data$n))

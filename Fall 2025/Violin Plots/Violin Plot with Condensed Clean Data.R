@@ -3,8 +3,18 @@ library(dplyr)
 
 select <- dplyr::select   # in case MASS is loaded and masks dplyr::select
 
-# Survivorship types (Species, survivorship_type) come from here
-condensed_clean_data <- read.csv("Fall 2025/Fall 2025 Clean Data/final_clean_data.csv")
+# Survivorship types come from the recalculated Rage values (RecalculatingRageNumbers.R)
+condensed_clean_data <- read.csv("Survivorship_Types_Min20.csv") %>%
+  mutate(
+    shape_value = shape_type,
+    survivorship_type = case_when(
+      grepl("^Type I \\(",  surv_type) ~ "Type I",
+      grepl("^Type II \\(", surv_type) ~ "Type II",
+      grepl("^Type III \\(", surv_type) ~ "Type III",
+      TRUE ~ surv_type   # "Trending toward Type I" / "Trending toward Type III"
+    )
+  ) %>%
+  select(Species, shape_value, survivorship_type)
 
 # NEW: prevalence + Class come from the prevalence dataset
 prevalence_data <- read.csv("species-cancer-prevalence-data.csv", check.names = FALSE) %>%
@@ -27,6 +37,9 @@ condensed_clean_data$survivorship_type <- factor(
   condensed_clean_data$survivorship_type,
   levels = c("Type III", "Trending toward Type III", "Type II", "Trending toward Type I", "Type I")
 )
+# Drop categories with no species (recalculated data may have no Type III)
+condensed_clean_data$survivorship_type <- droplevels(condensed_clean_data$survivorship_type)
+n_types <- nlevels(condensed_clean_data$survivorship_type)
 
 condensed_clean_data$Class <- factor(condensed_clean_data$Class)
 
@@ -63,7 +76,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
     y = "Cancer Prevalence (%)",
     color = "Class"
   ) +
-  coord_cartesian(xlim = c(0.2, 5.8), ylim = c(0, 1), expand = FALSE, clip = "on") +
+  coord_cartesian(xlim = c(0.2, n_types + 0.8), ylim = c(0, 1), expand = FALSE, clip = "on") +
   scale_y_continuous(breaks = c(0, 0.5, 1.0),
                      labels = c("0", "50", "100")) +
   theme(
@@ -95,7 +108,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
     y = "Neoplasia Prevalence (%)",
     color = "Class"
   ) +
-  coord_cartesian(xlim = c(0.2, 5.8), ylim = c(0, 1), expand = FALSE, clip = "on") +
+  coord_cartesian(xlim = c(0.2, n_types + 0.8), ylim = c(0, 1), expand = FALSE, clip = "on") +
   scale_y_continuous(breaks = c(0, 0.5, 1.0),
                      labels = c("0", "50", "100")) +
   theme(
