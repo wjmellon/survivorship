@@ -32,13 +32,23 @@ condensed_clean_data <- condensed_clean_data %>%
 
 cat("Species after merge:", nrow(condensed_clean_data), "\n")
 
+# Only plot Type II, Trending toward Type I, and Type I.
+# Type III / Trending toward Type III are dropped (0 and 1 species after the Rage recalculation).
+dropped <- condensed_clean_data %>%
+  filter(survivorship_type %in% c("Type III", "Trending toward Type III"))
+if (nrow(dropped) > 0) {
+  cat("Dropping", nrow(dropped), "Type III / Trending toward Type III species:",
+      paste(dropped$Species, collapse = ", "), "\n")
+}
+
+condensed_clean_data <- condensed_clean_data %>%
+  filter(survivorship_type %in% c("Type II", "Trending toward Type I", "Type I"))
+
 # Ensure factor levels for consistent order
 condensed_clean_data$survivorship_type <- factor(
   condensed_clean_data$survivorship_type,
-  levels = c("Type III", "Trending toward Type III", "Type II", "Trending toward Type I", "Type I")
+  levels = c("Type II", "Trending toward Type I", "Type I")
 )
-# Drop categories with no species (recalculated data may have no Type III)
-condensed_clean_data$survivorship_type <- droplevels(condensed_clean_data$survivorship_type)
 n_types <- nlevels(condensed_clean_data$survivorship_type)
 
 condensed_clean_data$Class <- factor(condensed_clean_data$Class)

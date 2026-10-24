@@ -4,7 +4,17 @@ library(cowplot)
 library(ggrepel)
 
 data      <- read.csv("Fall 2025/Filtering Data/cleanPath.min20.062822.csv")
-condensed <- read.csv("Spring 2026/final_clean_data_w_multivariate.csv")
+# Recalculated Rage values (RecalculatingRageNumbers.R) -> colors
+condensed <- read.csv("Survivorship_Types_Min20.csv") %>%
+  mutate(
+    shape_value = shape_type,
+    survivorship_type = case_when(
+      grepl("^Type I \\(",   surv_type) ~ "Type I",
+      grepl("^Type II \\(",  surv_type) ~ "Type II",
+      grepl("^Type III \\(", surv_type) ~ "Type III",
+      TRUE ~ surv_type   # "Trending toward Type I" / "Trending toward Type III"
+    )
+  )
 
 # --- Helper function ---
 build_species_df <- function(class_name) {
@@ -77,7 +87,7 @@ make_plot <- function(df, title, log_y = TRUE, label_types = NULL,
                       show_legend = TRUE, show_labels = TRUE) {
   legend_order <- c("Type I", "Trending toward Type I", "Type II",
                     "Trending toward Type III", "Type III")
-  df$survivorship_type <- factor(df$survivorship_type, levels = legend_order)
+  df$survivorship_type <- droplevels(factor(df$survivorship_type, levels = legend_order))
   
   label_df <- df %>%
     group_by(Species) %>%
@@ -131,7 +141,7 @@ make_plot <- function(df, title, log_y = TRUE, label_types = NULL,
 }
 
 # --- Standalone plots (unchanged behavior, own legends/labels) ---
-p_mammalia <- make_plot(df_mammalia, "Survivorship Curves of Mammals", log_y = TRUE, label_types = "Type III")
+p_mammalia <- make_plot(df_mammalia, "Survivorship Curves of Mammals", log_y = TRUE, label_types = "Trending toward Type III")
 p_aves     <- make_plot(df_aves,     "Survivorship Curves of Aves",     log_y = TRUE)
 p_reptilia <- make_plot(df_reptilia, "Survivorship Curves of Reptiles", log_y = TRUE)
 p_amphibia <- make_plot(df_amphibia, "Survivorship Curves of Amphibians", log_y = TRUE)

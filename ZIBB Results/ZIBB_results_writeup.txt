@@ -1,0 +1,117 @@
+ZIBB-PGLMM results (Brownian motion phylogeny)
+Beta = log-odds slope per 1 SD of the predictor. Significant (*) = 95% credible interval excludes 0.
+Ppositive = posterior probability that beta > 0. Cancer prevalence = malignancy.
+
+======================================================================
+Distance from Type II Survivorship
+======================================================================
+All species (n = 93 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.452 (95% Credible Interval: [0.258, 0.643]; Probability of positive effect, Ppositive = 1.000). *
+  B. Cancer prevalence: Posterior beta median = 0.427 (95% Credible Interval: [0.218, 0.634]; Probability of positive effect, Ppositive = 1.000). *
+
+Mammalia (n = 60 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.310 (95% Credible Interval: [0.087, 0.529]; Probability of positive effect, Ppositive = 0.995). *
+  B. Cancer prevalence: Posterior beta median = 0.274 (95% Credible Interval: [0.037, 0.511]; Probability of positive effect, Ppositive = 0.987). *
+
+Aves (n = 14 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.391 (95% Credible Interval: [-0.177, 0.996]; Probability of positive effect, Ppositive = 0.917).
+  B. Cancer prevalence: Posterior beta median = 0.334 (95% Credible Interval: [-0.351, 1.058]; Probability of positive effect, Ppositive = 0.838).
+
+Reptilia (n = 17 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.575 (95% Credible Interval: [0.051, 1.119]; Probability of positive effect, Ppositive = 0.985). *
+  B. Cancer prevalence: Posterior beta median = 0.607 (95% Credible Interval: [0.079, 1.126]; Probability of positive effect, Ppositive = 0.988). *
+
+======================================================================
+Initial Juvenile Mortality Risk (a1)
+======================================================================
+All species (n = 72 species)
+  A. Neoplasia prevalence: Posterior beta median = -0.032 (95% Credible Interval: [-0.231, 0.177]; Probability of positive effect, Ppositive = 0.372).
+  B. Cancer prevalence: Posterior beta median = 0.103 (95% Credible Interval: [-0.113, 0.358]; Probability of positive effect, Ppositive = 0.821).
+
+Mammalia (n = 47 species)
+  A. Neoplasia prevalence: Posterior beta median = -0.109 (95% Credible Interval: [-0.337, 0.135]; Probability of positive effect, Ppositive = 0.180).
+  B. Cancer prevalence: Posterior beta median = 0.002 (95% Credible Interval: [-0.242, 0.271]; Probability of positive effect, Ppositive = 0.506).
+
+Aves (n = 13 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.204 (95% Credible Interval: [-0.360, 0.833]; Probability of positive effect, Ppositive = 0.773).
+  B. Cancer prevalence: Posterior beta median = 0.506 (95% Credible Interval: [-0.185, 1.343]; Probability of positive effect, Ppositive = 0.925).
+
+Reptilia (n = 11 species)
+  A. Neoplasia prevalence: Posterior beta median = -0.361 (95% Credible Interval: [-1.133, 0.371]; Probability of positive effect, Ppositive = 0.165).
+  B. Cancer prevalence: Posterior beta median = -0.474 (95% Credible Interval: [-1.224, 0.267]; Probability of positive effect, Ppositive = 0.103).
+
+======================================================================
+Rate of Decline in Juvenile Mortality Risk (b1)
+======================================================================
+All species (n = 72 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.053 (95% Credible Interval: [-0.219, 0.255]; Probability of positive effect, Ppositive = 0.683).
+  B. Cancer prevalence: Posterior beta median = 0.068 (95% Credible Interval: [-0.226, 0.277]; Probability of positive effect, Ppositive = 0.711).
+
+Mammalia (n = 47 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.102 (95% Credible Interval: [-0.150, 0.351]; Probability of positive effect, Ppositive = 0.792).
+  B. Cancer prevalence: Posterior beta median = 0.144 (95% Credible Interval: [-0.132, 0.413]; Probability of positive effect, Ppositive = 0.858).
+
+Aves (n = 13 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.037 (95% Credible Interval: [-0.659, 0.543]; Probability of positive effect, Ppositive = 0.552).
+  B. Cancer prevalence: Posterior beta median = 0.043 (95% Credible Interval: [-0.733, 0.617]; Probability of positive effect, Ppositive = 0.554).
+
+Reptilia (n = 11 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.862 (95% Credible Interval: [0.196, 1.504]; Probability of positive effect, Ppositive = 0.992). *
+  B. Cancer prevalence: Posterior beta median = 0.916 (95% Credible Interval: [0.239, 1.567]; Probability of positive effect, Ppositive = 0.995). *
+
+======================================================================
+Age-Independent Mortality Risk (a2)
+======================================================================
+All species (n = 72 species)
+  A. Neoplasia prevalence: Posterior beta median = -0.061 (95% Credible Interval: [-0.270, 0.127]; Probability of positive effect, Ppositive = 0.269).
+  B. Cancer prevalence: Posterior beta median = -0.130 (95% Credible Interval: [-0.351, 0.078]; Probability of positive effect, Ppositive = 0.110).
+
+Mammalia (n = 47 species)
+  A. Neoplasia prevalence: Posterior beta median = -0.072 (95% Credible Interval: [-0.324, 0.171]; Probability of positive effect, Ppositive = 0.271).
+  B. Cancer prevalence: Posterior beta median = -0.151 (95% Credible Interval: [-0.418, 0.096]; Probability of positive effect, Ppositive = 0.116).
+
+Aves (n = 13 species)
+  A. Neoplasia prevalence: Posterior beta median = -0.302 (95% Credible Interval: [-0.732, 0.283]; Probability of positive effect, Ppositive = 0.122).
+  B. Cancer prevalence: Posterior beta median = -0.401 (95% Credible Interval: [-0.891, 0.203]; Probability of positive effect, Ppositive = 0.078).
+
+Reptilia (n = 11 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.107 (95% Credible Interval: [-0.569, 0.949]; Probability of positive effect, Ppositive = 0.620).
+  B. Cancer prevalence: Posterior beta median = 0.192 (95% Credible Interval: [-0.490, 1.080]; Probability of positive effect, Ppositive = 0.702).
+
+======================================================================
+Initial Senescent Mortality Risk (a3)
+======================================================================
+All species (n = 72 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.144 (95% Credible Interval: [-0.054, 0.329]; Probability of positive effect, Ppositive = 0.928).
+  B. Cancer prevalence: Posterior beta median = 0.109 (95% Credible Interval: [-0.134, 0.314]; Probability of positive effect, Ppositive = 0.822).
+
+Mammalia (n = 47 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.161 (95% Credible Interval: [-0.078, 0.383]; Probability of positive effect, Ppositive = 0.915).
+  B. Cancer prevalence: Posterior beta median = 0.120 (95% Credible Interval: [-0.169, 0.380]; Probability of positive effect, Ppositive = 0.808).
+
+Aves (n = 13 species)
+  A. Neoplasia prevalence: Posterior beta median = -0.060 (95% Credible Interval: [-0.595, 0.436]; Probability of positive effect, Ppositive = 0.407).
+  B. Cancer prevalence: Posterior beta median = 0.034 (95% Credible Interval: [-0.676, 0.657]; Probability of positive effect, Ppositive = 0.543).
+
+Reptilia (n = 11 species)
+  A. Neoplasia prevalence: Posterior beta median = -0.301 (95% Credible Interval: [-1.161, 0.403]; Probability of positive effect, Ppositive = 0.207).
+  B. Cancer prevalence: Posterior beta median = -0.318 (95% Credible Interval: [-1.173, 0.416]; Probability of positive effect, Ppositive = 0.201).
+
+======================================================================
+Change in Mortality Risk in the Senescent Stage (b3)
+======================================================================
+All species (n = 72 species)
+  A. Neoplasia prevalence: Posterior beta median = -0.311 (95% Credible Interval: [-0.597, -0.044]; Probability of positive effect, Ppositive = 0.011). *
+  B. Cancer prevalence: Posterior beta median = -0.347 (95% Credible Interval: [-0.655, -0.055]; Probability of positive effect, Ppositive = 0.009). *
+
+Mammalia (n = 47 species)
+  A. Neoplasia prevalence: Posterior beta median = -0.372 (95% Credible Interval: [-0.695, -0.082]; Probability of positive effect, Ppositive = 0.006). *
+  B. Cancer prevalence: Posterior beta median = -0.298 (95% Credible Interval: [-0.646, -0.002]; Probability of positive effect, Ppositive = 0.025). *
+
+Aves (n = 13 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.114 (95% Credible Interval: [-0.546, 0.696]; Probability of positive effect, Ppositive = 0.649).
+  B. Cancer prevalence: Posterior beta median = -0.233 (95% Credible Interval: [-1.160, 0.650]; Probability of positive effect, Ppositive = 0.296).
+
+Reptilia (n = 11 species)
+  A. Neoplasia prevalence: Posterior beta median = 0.009 (95% Credible Interval: [-0.709, 0.748]; Probability of positive effect, Ppositive = 0.511).
+  B. Cancer prevalence: Posterior beta median = 0.043 (95% Credible Interval: [-0.708, 0.789]; Probability of positive effect, Ppositive = 0.553).
