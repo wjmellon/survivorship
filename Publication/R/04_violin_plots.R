@@ -21,7 +21,7 @@ plot_data <- read.csv("results/rage_shape_values.csv") %>%
   mutate(survivorship_type = factor(survivorship_type, levels = type_levels),
          Class = factor(Class))
 
-violin <- function(yvar, ylab, title, file) {
+violin <- function(yvar, ylab, title, file, tag) {
   p <- ggplot(plot_data, aes(x = survivorship_type, y = .data[[yvar]])) +
     geom_violin(trim = FALSE, alpha = 0.9, fill = "lightgray", color = "black") +
     geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
@@ -32,18 +32,20 @@ violin <- function(yvar, ylab, title, file) {
     coord_cartesian(xlim = c(0.2, length(type_levels) + 0.8), ylim = c(0, 1),
                     expand = FALSE, clip = "on") +
     scale_y_continuous(breaks = c(0, 0.5, 1), labels = c("0", "50", "100")) +
-    labs(title = title, x = "Survivorship Curve Type", y = ylab, color = "Class") +
+    labs(title = title, x = "Survivorship Curve Type", y = ylab, color = "Class", tag = tag) +
     theme_minimal(base_size = 14) +
     theme(axis.line = element_line(linewidth = 1.2, color = "black"),
           axis.ticks = element_line(linewidth = 1),
-          panel.grid = element_blank())
+          panel.grid = element_blank(),
+          plot.tag = element_text(face = "bold", size = 20),
+          plot.tag.position = c(0.01, 0.99))
   ggsave(file.path("results/figures", file), p, width = 11, height = 8, bg = "white")
 }
 
 violin("cancer_prevalence", "Cancer Prevalence (%)",
-       "Cancer Prevalence by Survivorship Curve Type", "violin_cancer.png")
+       "Cancer Prevalence by Survivorship Curve Type", "violin_cancer.png", "B")
 violin("neoplasia_prevalence", "Neoplasia Prevalence (%)",
-       "Neoplasia Prevalence by Survivorship Curve Type", "violin_neoplasia.png")
+       "Neoplasia Prevalence by Survivorship Curve Type", "violin_neoplasia.png", "A")
 
 summary_table <- plot_data %>%
   group_by(survivorship_type) %>%

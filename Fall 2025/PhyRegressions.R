@@ -174,8 +174,11 @@ pgls_plot <- function(data, tree, xvar, yvar, xlab, ylab, title, file, subset = 
                 color = "grey", linewidth = 1.2) +
     scale_y_continuous(labels = scales::percent) +
     labs(x = xlab, y = ylab, color = "Class", title = title) +
+    labs(tag = if (yvar == "NeoplasiaPrevalence") "A" else "B") +
     theme_cowplot(12) +
-    theme(legend.position = "right")
+    theme(legend.position = "right",
+          plot.tag = element_text(face = "bold", size = 20),
+          plot.tag.position = c(0.01, 0.99))
   
   print(p)
   ggsave(file, p, width = 10, height = 8, limitsize = FALSE, bg = "white")

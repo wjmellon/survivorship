@@ -190,7 +190,10 @@ zibb_fit <- function(pred_df, xvar, yvar, subset) {
     labs(x = info$label, y = paste0(outcomes[[yvar]], " Prevalence (%)"),
          title = paste0(outcomes[[yvar]], " Prevalence vs. ", info$label,
                         if (subset != "All") paste0(" (", subset, ")"))) +
-    theme_cowplot(12)
+    theme_cowplot(12) +
+    labs(tag = if (yvar == "NeoplasiaWithDenominators") "A" else "B") +
+    theme(plot.tag = element_text(face = "bold", size = 20),
+          plot.tag.position = c(0.01, 0.99))
 
   tag <- paste0(info$file, "_", tolower(outcomes[[yvar]]), if (subset != "All") paste0("_", subset))
   ggsave(file.path(out_dir, "plots", paste0(tag, ".png")), p,

@@ -82,6 +82,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
   theme_minimal(base_size = 14) +
   labs(
     title = "Cancer Prevalence by Survivorship Curve Type",
+    tag = "B",
     x = "Survivorship Curve Type",
     y = "Cancer Prevalence (%)",
     color = "Class"
@@ -96,7 +97,9 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
     axis.ticks = element_line(linewidth = 1),
     legend.position = "right",
     panel.grid = element_blank(),
-    panel.border = element_blank()
+    panel.border = element_blank(),
+    plot.tag = element_text(face = "bold", size = 20),
+    plot.tag.position = c(0.01, 0.99)
   )
 
 ggsave(filename='Cancer Violin Plot.png', width=11, height=8, limitsize=FALSE, bg="white")
@@ -114,6 +117,7 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
   theme_minimal(base_size = 14) +
   labs(
     title = "Neoplasia Prevalence by Survivorship Curve Type",
+    tag = "A",
     x = "Survivorship Curve Type",
     y = "Neoplasia Prevalence (%)",
     color = "Class"
@@ -128,7 +132,9 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
     axis.ticks = element_line(linewidth = 1),
     legend.position = "right",
     panel.grid = element_blank(),
-    panel.border = element_blank()
+    panel.border = element_blank(),
+    plot.tag = element_text(face = "bold", size = 20),
+    plot.tag.position = c(0.01, 0.99)
   )
 
 ggsave(filename='Neoplasia Violin Plot.png', width=11, height=8, limitsize=FALSE, bg="white")
