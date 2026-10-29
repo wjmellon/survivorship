@@ -272,7 +272,7 @@ zibb_fit <- function(pred_df, xvar, yvar, subset) {
                             name = "Necropsies (n)") +
       guides(color = guide_legend(override.aes = list(size = 4), order = 1),
              size  = guide_legend(override.aes = list(color = "grey40"), order = 2)) +
-      scale_y_continuous(labels = scales::percent) +
+      scale_y_continuous(labels = function(x) x * 100) +
       labs(x = info$label, y = paste0(outcomes[[yvar]], " Prevalence (%)"), title = ttl,
            subtitle = sprintf("ZIBB-PGLMM (%s): OR per SD = %.2f [%.2f, %.2f], P(direction) = %.3f",
                               phylo_model, exp(s_b[1]), exp(s_b[2]), exp(s_b[3]), pd)) +
@@ -280,7 +280,7 @@ zibb_fit <- function(pred_df, xvar, yvar, subset) {
       labs(tag = if (yvar == "NeoplasiaWithDenominators") "A" else "B") +
       theme(legend.position = "right",
             plot.tag = element_text(face = "bold", size = 20),
-            plot.tag.position = c(0.01, 0.99))
+            plot.tag.position = "topleft")
     print(p)
     ggsave(file.path(out_dir, "plots", paste0("zibb_", tag, ".png")), p,
            width = 10, height = 8, limitsize = FALSE, bg = "white")

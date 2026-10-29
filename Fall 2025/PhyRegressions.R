@@ -120,6 +120,7 @@ prep_data <- function(data, tree, xvar, yvar) {
 # -------------------------------------------------------------------------
 pgls_plot <- function(data, tree, xvar, yvar, xlab, ylab, title, file, subset = "All") {
   
+  n_all <- data$n
   if (subset != "All") data <- data[data$Class == subset, ]
   prep  <- prep_data(data, tree, xvar, yvar)
   label <- paste0(yvar, " ~ ", xvar, " | ", subset)
@@ -157,32 +158,64 @@ pgls_plot <- function(data, tree, xvar, yvar, xlab, ylab, title, file, subset = 
     file  <- sub("\\.png$", paste0("_", subset, ".png"), file)
   }
   
-  n_max <- max(7500, max(prep$data$n, na.rm = TRUE))
+  n_lim  <- range(n_all, na.rm = TRUE)
+  n_brks <- c(20, 50, 100, 250, 500)
+  n_brks <- n_brks[n_brks >= n_lim[1] & n_brks <= n_lim[2]]
   
   p <- ggplot(prep$data, aes(x = .data[[xvar]], y = .data[[yvar]],
                              color = Class, size = n)) +
     geom_point(alpha = 1) +
     scale_color_manual(values = class_colors) +
-    scale_size_continuous(range = c(3, 8),
-                          breaks = c(20, 100, 250, 500),
+    scale_size_continuous(range  = c(1.5, 7),
+                          breaks = n_brks,
                           labels = scales::comma,
-                          limits = c(0, n_max),
-                          name   = "Sample Size (n)") +
+                          limits = n_lim,
+                          name   = "Necropsies") +
     guides(color = guide_legend(override.aes = list(size = 4), order = 1),
            size  = guide_legend(override.aes = list(color = "grey40"), order = 2)) +
     geom_abline(intercept = coef(model)[1], slope = coef(model)[2],
                 color = "grey", linewidth = 1.2) +
-    scale_y_continuous(labels = scales::percent) +
-    labs(x = xlab, y = ylab, color = "Class", title = title) +
-    labs(tag = if (yvar == "NeoplasiaPrevalence") "A" else "B") +
+    scale_y_continuous(labels = function(x) x * 100) +
+    labs(x = xlab, y = ylab, color = NULL) +
+    labs(tag = if (xvar == "b3" && subset == "Mammalia") {
+      if (yvar == "NeoplasiaPrevalence") "C" else "D"
+    } else {
+      if (yvar == "NeoplasiaPrevalence") "A" else "B"
+    }) +
     theme_cowplot(12) +
     theme(legend.position = "right",
           plot.tag = element_text(face = "bold", size = 20),
-          plot.tag.position = c(0.01, 0.99))
+          plot.tag.position = "topleft")
   
   print(p)
   ggsave(file, p, width = 10, height = 8, limitsize = FALSE, bg = "white")
+  plot_store[[paste(xvar, subset, yvar, sep = "|")]] <<- p
   invisible(p)
+}
+
+plot_store <- list()
+
+save_panel <- function(plots, file, ncol = 2) {
+  plots <- Filter(Negate(is.null), plots)
+  if (length(plots) == 0) return(invisible(NULL))
+  legend <- get_legend(plots[[1]] + theme(legend.box.margin = margin(0, 0, 0, 12)))
+  panels <- lapply(plots, function(p) p + theme(legend.position = "none"))
+  grid   <- plot_grid(plotlist = panels, ncol = ncol, align = "hv")
+  out    <- plot_grid(grid, legend, ncol = 2, rel_widths = c(1, 0.15))
+  nrow   <- ceiling(length(panels) / ncol)
+  ggsave(file, out, width = 9 * ncol + 2, height = 7.5 * nrow, limitsize = FALSE, bg = "white")
+  invisible(out)
+}
+
+make_panels <- function(xvar, prefix) {
+  for (s in subsets) {
+    panel_file <- paste0(prefix, if (s != "All") paste0("_", s), "_panel.png")
+    tryCatch(
+      save_panel(list(plot_store[[paste(xvar, s, "NeoplasiaPrevalence", sep = "|")]],
+                      plot_store[[paste(xvar, s, "MalignancyPrevalence", sep = "|")]]),
+                 panel_file),
+      error = function(e) message("  ! Panel failed (", panel_file, "): ", conditionMessage(e)))
+  }
 }
 
 # #########################################################################
@@ -206,6 +239,7 @@ for (s in subsets) {
               subset = s)
   }
 }
+make_panels("abs_shape", "abs_shape")
 
 # #########################################################################
 # PART 2: SILER PARAMETERS
@@ -242,6 +276,15 @@ for (param in names(siler_params)) {
     }
   }
 }
+
+for (param in names(siler_params)) make_panels(param, paste0("siler_", param))
+
+tryCatch(save_panel(list(plot_store[["b3|All|NeoplasiaPrevalence"]],
+                plot_store[["b3|All|MalignancyPrevalence"]],
+                plot_store[["b3|Mammalia|NeoplasiaPrevalence"]],
+                plot_store[["b3|Mammalia|MalignancyPrevalence"]]),
+           "siler_b3_All_Mammalia_panel.png"),
+         error = function(e) message("  ! Panel failed (siler_b3_All_Mammalia_panel.png): ", conditionMessage(e)))
 
 # #########################################################################
 # SUMMARY TABLE

@@ -186,14 +186,14 @@ zibb_fit <- function(pred_df, xvar, yvar, subset) {
                           name = "Necropsies (n)") +
     guides(color = guide_legend(override.aes = list(size = 4), order = 1),
            size  = guide_legend(override.aes = list(color = "grey40"), order = 2)) +
-    scale_y_continuous(labels = percent) +
+    scale_y_continuous(labels = function(x) x * 100) +
     labs(x = info$label, y = paste0(outcomes[[yvar]], " Prevalence (%)"),
          title = paste0(outcomes[[yvar]], " Prevalence vs. ", info$label,
                         if (subset != "All") paste0(" (", subset, ")"))) +
     theme_cowplot(12) +
     labs(tag = if (yvar == "NeoplasiaWithDenominators") "A" else "B") +
     theme(plot.tag = element_text(face = "bold", size = 20),
-          plot.tag.position = c(0.01, 0.99))
+          plot.tag.position = "topleft")
 
   tag <- paste0(info$file, "_", tolower(outcomes[[yvar]]), if (subset != "All") paste0("_", subset))
   ggsave(file.path(out_dir, "plots", paste0(tag, ".png")), p,

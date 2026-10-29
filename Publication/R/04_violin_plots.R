@@ -38,7 +38,7 @@ violin <- function(yvar, ylab, title, file, tag) {
           axis.ticks = element_line(linewidth = 1),
           panel.grid = element_blank(),
           plot.tag = element_text(face = "bold", size = 20),
-          plot.tag.position = c(0.01, 0.99))
+          plot.tag.position = "topleft")
   ggsave(file.path("results/figures", file), p, width = 11, height = 8, bg = "white")
 }
 

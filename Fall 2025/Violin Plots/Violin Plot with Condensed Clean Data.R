@@ -73,7 +73,7 @@ legend_guide <- guide_legend(
 # -------------------------------------------------------------------------
 # Plot 1: Cancer Prevalence by Survivorship Curve Type
 # -------------------------------------------------------------------------
-ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) +
+p_cancer <- ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) +
   geom_violin(trim = FALSE, alpha = 0.9, fill = "lightgray", color = "black") +
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
   stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0.5,
@@ -81,11 +81,10 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
   scale_color_manual(values = class_colors, guide = legend_guide) +
   theme_minimal(base_size = 14) +
   labs(
-    title = "Cancer Prevalence by Survivorship Curve Type",
     tag = "B",
     x = "Survivorship Curve Type",
     y = "Cancer Prevalence (%)",
-    color = "Class"
+    color = NULL
   ) +
   coord_cartesian(xlim = c(0.2, n_types + 0.8), ylim = c(0, 1), expand = FALSE, clip = "on") +
   scale_y_continuous(breaks = c(0, 0.5, 1.0),
@@ -99,16 +98,16 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = cancer_prevalence)) 
     panel.grid = element_blank(),
     panel.border = element_blank(),
     plot.tag = element_text(face = "bold", size = 20),
-    plot.tag.position = c(0.01, 0.99)
+    plot.tag.position = "topleft"
   )
 
-ggsave(filename='Cancer Violin Plot.png', width=11, height=8, limitsize=FALSE, bg="white")
+ggsave(filename='Cancer Violin Plot.png', plot=p_cancer, width=11, height=8, limitsize=FALSE, bg="white")
 
 
 # -------------------------------------------------------------------------
 # Plot 2: Neoplasia Prevalence by Survivorship Curve Type
 # -------------------------------------------------------------------------
-ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence)) +
+p_neoplasia <- ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence)) +
   geom_violin(trim = FALSE, alpha = 0.9, fill = "lightgray", color = "black") +
   geom_jitter(aes(color = Class), width = 0.10, alpha = 0.7, size = 1.8) +
   stat_summary(fun = median, geom = "crossbar", width = 0.4, fatten = 0.5,
@@ -116,11 +115,10 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
   scale_color_manual(values = class_colors, guide = legend_guide) +
   theme_minimal(base_size = 14) +
   labs(
-    title = "Neoplasia Prevalence by Survivorship Curve Type",
     tag = "A",
     x = "Survivorship Curve Type",
     y = "Neoplasia Prevalence (%)",
-    color = "Class"
+    color = NULL
   ) +
   coord_cartesian(xlim = c(0.2, n_types + 0.8), ylim = c(0, 1), expand = FALSE, clip = "on") +
   scale_y_continuous(breaks = c(0, 0.5, 1.0),
@@ -134,10 +132,18 @@ ggplot(condensed_clean_data, aes(x = survivorship_type, y = neoplasia_prevalence
     panel.grid = element_blank(),
     panel.border = element_blank(),
     plot.tag = element_text(face = "bold", size = 20),
-    plot.tag.position = c(0.01, 0.99)
+    plot.tag.position = "topleft"
   )
 
-ggsave(filename='Neoplasia Violin Plot.png', width=11, height=8, limitsize=FALSE, bg="white")
+ggsave(filename='Neoplasia Violin Plot.png', plot=p_neoplasia, width=11, height=8, limitsize=FALSE, bg="white")
+
+legend <- cowplot::get_legend(p_neoplasia + theme(legend.box.margin = margin(0, 0, 0, 12)))
+violin_panel <- cowplot::plot_grid(
+  cowplot::plot_grid(p_neoplasia + theme(legend.position = "none"),
+                     p_cancer + theme(legend.position = "none"),
+                     ncol = 2, align = "hv"),
+  legend, ncol = 2, rel_widths = c(1, 0.12))
+ggsave(filename='Violin Plot Panel.png', plot=violin_panel, width=20, height=8, limitsize=FALSE, bg="white")
 
 
 # -------------------------------------------------------------------------
