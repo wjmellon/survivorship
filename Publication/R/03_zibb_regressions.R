@@ -55,7 +55,7 @@ prevalence_data <- read.csv("data/species-cancer-prevalence-data.csv", check.nam
 shape_data <- read.csv("results/rage_shape_values.csv") %>%
   mutate(.species = fix_names(Species)) %>%
   distinct(.species, .keep_all = TRUE) %>%
-  select(.species, abs_shape)
+  select(.species, shape_value)
 
 siler_data <- read.csv("results/siler_parameters.csv") %>%
   filter(as.character(FLAG) == "0") %>%
@@ -64,7 +64,7 @@ siler_data <- read.csv("results/siler_parameters.csv") %>%
   select(.species, a1, b1, a2, a3, b3)
 
 predictor_list <- list(
-  abs_shape = list(data = shape_data, label = "Distance from Type II Survivorship", file = "abs_shape"),
+  shape_value = list(data = shape_data, label = "Rage Value", file = "rage_value"),
   a1 = list(data = siler_data, label = "Initial Juvenile Mortality Risk (a1)", file = "siler_a1"),
   b1 = list(data = siler_data, label = "Rate of Decline in Juvenile Mortality Risk (b1)", file = "siler_b1"),
   a2 = list(data = siler_data, label = "Age-Independent Mortality Risk (a2)", file = "siler_a2"),

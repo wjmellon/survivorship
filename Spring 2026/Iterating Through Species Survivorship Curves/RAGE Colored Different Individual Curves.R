@@ -84,7 +84,8 @@ all_df <- bind_rows(df_mammalia, df_aves, df_reptilia, df_amphibia)
 # --- Plot builder ---
 # show_legend/show_labels let us build clean, label-free, legend-free panels for the grid
 make_plot <- function(df, title, log_y = TRUE, label_types = NULL,
-                      show_legend = TRUE, show_labels = TRUE) {
+                      show_legend = TRUE, show_labels = TRUE,
+                      show_x = TRUE, show_y = TRUE) {
   legend_order <- c("Type I", "Trending toward Type I", "Type II",
                     "Trending toward Type III", "Type III")
   df$survivorship_type <- droplevels(factor(df$survivorship_type, levels = legend_order))
@@ -136,6 +137,8 @@ make_plot <- function(df, title, log_y = TRUE, label_types = NULL,
   if (log_y) p <- p + scale_y_log10()
   
   if (!show_legend) p <- p + theme(legend.position = "none")
+  if (!show_x) p <- p + xlab(NULL)
+  if (!show_y) p <- p + ylab(NULL)
   
   p
 }
@@ -158,10 +161,15 @@ ggsave(filename = "survivorship_curve_amphibians.png", plot = p_amphibia,
 
 # --- 4-panel figure: All Species, Mammalia, Aves, Reptilia ---
 # no species labels, no per-panel legends -- legend pulled out and shared
-panel_all      <- make_plot(all_df,      "All Species", log_y = TRUE, show_legend = FALSE, show_labels = FALSE)
-panel_mammalia <- make_plot(df_mammalia, "Mammals",      log_y = TRUE, show_legend = FALSE, show_labels = FALSE)
-panel_aves     <- make_plot(df_aves,     "Aves",         log_y = TRUE, show_legend = FALSE, show_labels = FALSE)
-panel_reptilia <- make_plot(df_reptilia, "Reptiles",     log_y = TRUE, show_legend = FALSE, show_labels = FALSE)
+# no per-panel axis titles -- one shared x title and one shared y title for the whole grid
+panel_all      <- make_plot(all_df,      "All Species", log_y = TRUE, show_legend = FALSE, show_labels = FALSE,
+                            show_x = FALSE, show_y = FALSE)
+panel_mammalia <- make_plot(df_mammalia, "Mammals",     log_y = TRUE, show_legend = FALSE, show_labels = FALSE,
+                            show_x = FALSE, show_y = FALSE)
+panel_reptilia <- make_plot(df_reptilia, "Reptiles",    log_y = TRUE, show_legend = FALSE, show_labels = FALSE,
+                            show_x = FALSE, show_y = FALSE)
+panel_aves     <- make_plot(df_aves,     "Aves",        log_y = TRUE, show_legend = FALSE, show_labels = FALSE,
+                            show_x = FALSE, show_y = FALSE)
 
 # extra top margin on each panel so the A/B/C/D tag has room and doesn't sit on the axis/title
 pad_top <- theme(plot.margin = margin(t = 18, r = 8, b = 6, l = 6))
@@ -183,8 +191,16 @@ grid_2x2 <- plot_grid(
   ncol = 2, align = "hv"
 )
 
+y_title <- ggdraw() + draw_label("Proportion Alive (log scale)", angle = 90, size = 16)
+x_title <- ggdraw() + draw_label("Proportion of Maximum Observed Lifespan", size = 16)
+
+grid_y  <- plot_grid(y_title, grid_2x2, ncol = 2, rel_widths = c(0.04, 1))
+grid_xy <- plot_grid(grid_y,
+                     plot_grid(NULL, x_title, ncol = 2, rel_widths = c(0.04, 1)),
+                     ncol = 1, rel_heights = c(1, 0.04))
+
 p_combined <- plot_grid(
-  grid_2x2, shared_legend,
+  grid_xy, shared_legend,
   ncol = 2, rel_widths = c(1, 0.22)   # widen/narrow this to taste
 )
 

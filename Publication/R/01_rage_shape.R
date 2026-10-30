@@ -40,7 +40,6 @@ rage <- cutdata %>%
     .groups = "drop"
   ) %>%
   mutate(survivorship_type = classify(shape_value),
-         shape_value = round(shape_value, 3),
-         abs_shape = abs(shape_value))
+         shape_value = round(shape_value, 3))
 
 write.csv(rage, "results/rage_shape_values.csv", row.names = FALSE)

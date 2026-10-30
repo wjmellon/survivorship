@@ -6,7 +6,7 @@
 #   just loops it over every graph in PhyRegressions.R and exports one CSV.
 #
 #   Cases, Necropsies, Class      -> species-cancer-prevalence-data.csv
-#   abs_shape (recalculated Rage) -> Survivorship_Types_Min20.csv
+#   shape_value (Rage value)      -> Survivorship_Types_Min20.csv
 #   Siler params (FLAG == 0)      -> Fall 2025/Siler/siler_parameters_all_min50species.csv
 #   Stan models                   -> Fall 2025/ZIBB stan/
 #
@@ -103,9 +103,9 @@ prevalence_data <- read.csv("species-cancer-prevalence-data.csv", check.names = 
 # Predictors: one entry per graph family in PhyRegressions.R
 # -------------------------------------------------------------------------
 shape_data <- read.csv("Survivorship_Types_Min20.csv") %>%
-  mutate(.species = fix_names(Species), abs_shape = abs(shape_type)) %>%
+  mutate(.species = fix_names(Species), shape_value = shape_type) %>%
   distinct(.species, .keep_all = TRUE) %>%
-  select(.species, abs_shape)
+  select(.species, shape_value)
 
 siler_data <- read.csv("Fall 2025/Siler/siler_parameters_all_min50species.csv") %>%
   filter(as.character(FLAG) == "0") %>%
@@ -114,7 +114,7 @@ siler_data <- read.csv("Fall 2025/Siler/siler_parameters_all_min50species.csv") 
   select(.species, a1, b1, a2, a3, b3)
 
 predictor_list <- list(
-  abs_shape = list(data = shape_data, label = "Distance from Type II Survivorship", file = "abs_shape"),
+  shape_value = list(data = shape_data, label = "Rage Value", file = "rage_value"),
   a1 = list(data = siler_data, label = "Initial Juvenile Mortality Risk (a1)",                 file = "siler_a1"),
   b1 = list(data = siler_data, label = "Rate of Decline in Juvenile Mortality Risk (b1)",      file = "siler_b1"),
   a2 = list(data = siler_data, label = "Age-Independent Mortality Risk (a2)",                  file = "siler_a2"),

@@ -37,14 +37,15 @@ build_curves <- function(class_name) {
     left_join(rage, by = "Species")
 }
 
-curve_plot <- function(df, title, show_legend = FALSE) {
+curve_plot <- function(df, title, show_legend = FALSE, show_x = TRUE, show_y = TRUE) {
   df$survivorship_type <- droplevels(factor(df$survivorship_type, levels = type_levels))
   p <- ggplot(df, aes(relative_age, proportion_alive, group = Species, color = survivorship_type)) +
     geom_step(linewidth = 0.6, alpha = 0.7, direction = "hv") +
     scale_color_manual(values = type_colors, name = "Survivorship Type", na.value = "grey60") +
     scale_y_log10() +
-    labs(title = title, x = "Proportion of Maximum Observed Lifespan",
-         y = "Proportion Alive (log scale)") +
+    labs(title = title,
+         x = if (show_x) "Proportion of Maximum Observed Lifespan" else NULL,
+         y = if (show_y) "Proportion Alive (log scale)" else NULL) +
     theme_cowplot(12) +
     theme(plot.margin = margin(t = 18, r = 8, b = 6, l = 6))
   if (!show_legend) p <- p + theme(legend.position = "none")
@@ -58,8 +59,10 @@ amphibia <- build_curves("Amphibia")
 all_df   <- bind_rows(mammals, birds, reptiles, amphibia)
 
 grid <- plot_grid(
-  curve_plot(all_df, "All Species"), curve_plot(mammals, "Mammals"),
-  curve_plot(reptiles, "Reptiles"), curve_plot(birds, "Aves"),
+  curve_plot(all_df, "All Species", show_x = FALSE, show_y = FALSE),
+  curve_plot(mammals, "Mammals", show_x = FALSE, show_y = FALSE),
+  curve_plot(reptiles, "Reptiles", show_x = FALSE, show_y = FALSE),
+  curve_plot(birds, "Aves", show_x = FALSE, show_y = FALSE),
   labels = c("A", "B", "C", "D"), label_size = 14,
   label_x = 0.02, label_y = 0.98, hjust = 0, vjust = 1,
   ncol = 2, align = "hv"
@@ -68,5 +71,12 @@ legend <- get_legend(curve_plot(all_df, "", show_legend = TRUE) +
                        theme(legend.box.margin = margin(0, 0, 0, 12)))
 
 ggsave("results/figures/survivorship_curves_4panel.png",
-       plot_grid(grid, legend, ncol = 2, rel_widths = c(1, 0.22)),
+       plot_grid(
+         plot_grid(
+           plot_grid(ggdraw() + draw_label("Proportion Alive (log scale)", angle = 90, size = 16),
+                     grid, ncol = 2, rel_widths = c(0.04, 1)),
+           plot_grid(NULL, ggdraw() + draw_label("Proportion of Maximum Observed Lifespan", size = 16),
+                     ncol = 2, rel_widths = c(0.04, 1)),
+           ncol = 1, rel_heights = c(1, 0.04)),
+         legend, ncol = 2, rel_widths = c(1, 0.22)),
        width = 16, height = 12, bg = "white")

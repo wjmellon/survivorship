@@ -1,7 +1,7 @@
 # =========================================================================
 # PGLS: Neoplasia / Malignancy Prevalence vs. Life-History Variables
 #   Prevalence, n, SE_simple, Class -> species-cancer-prevalence-data.csv
-#   abs_shape                        -> Survivorship_Types_Min20.csv (recalculated Rage)
+#   shape_value (Rage value)         -> Survivorship_Types_Min20.csv (recalculated Rage)
 #   Siler params                     -> Fall 2025/Siler/siler_parameters_all_min50species.csv
 # =========================================================================
 
@@ -219,27 +219,26 @@ make_panels <- function(xvar, prefix) {
 }
 
 # #########################################################################
-# PART 1: DISTANCE FROM TYPE II SURVIVORSHIP
+# PART 1: RAGE SURVIVORSHIP SHAPE VALUE
 # #########################################################################
 # Recalculated Rage shape values (from RecalculatingRageNumbers.R)
 data <- read.csv("Survivorship_Types_Min20.csv") %>%
-  mutate(shape_value = shape_type,
-         abs_shape   = abs(shape_type)) %>%
+  mutate(shape_value = shape_type) %>%
   add_prevalence()
 cat("Shape + prevalence species:", nrow(data), "\n")
 print(summary(data$n))
 
 for (s in subsets) {
   for (yvar in names(outcomes)) {
-    pgls_plot(data, tree, "abs_shape", yvar,
-              "Distance from Type II Survivorship",
+    pgls_plot(data, tree, "shape_value", yvar,
+              "Rage Value",
               paste0(outcomes[[yvar]], " Prevalence (%)"),
-              paste0(outcomes[[yvar]], " Prevalence vs. Distance from Type II Survivorship"),
-              paste0("abs_shape_", tolower(outcomes[[yvar]]), ".png"),
+              paste0(outcomes[[yvar]], " Prevalence vs. Rage Value"),
+              paste0("rage_value_", tolower(outcomes[[yvar]]), ".png"),
               subset = s)
   }
 }
-make_panels("abs_shape", "abs_shape")
+make_panels("shape_value", "rage_value")
 
 # #########################################################################
 # PART 2: SILER PARAMETERS
@@ -279,11 +278,35 @@ for (param in names(siler_params)) {
 
 for (param in names(siler_params)) make_panels(param, paste0("siler_", param))
 
-tryCatch(save_panel(list(plot_store[["b3|All|NeoplasiaPrevalence"]],
-                plot_store[["b3|All|MalignancyPrevalence"]],
-                plot_store[["b3|Mammalia|NeoplasiaPrevalence"]],
-                plot_store[["b3|Mammalia|MalignancyPrevalence"]]),
-           "siler_b3_All_Mammalia_panel.png"),
+# b3 2x2 panel (A/B = All, C/D = Mammalia): one shared x title, one shared y title,
+# column headers say which outcome each column is
+save_panel_shared <- function(plots, file, xlab, ylab, col_titles) {
+  legend <- get_legend(plots[[1]] + theme(legend.box.margin = margin(0, 0, 0, 12)))
+  panels <- lapply(plots, function(p) p + labs(x = NULL, y = NULL) +
+                     theme(legend.position = "none"))
+  heads  <- lapply(col_titles, function(t) ggdraw() + draw_label(t, fontface = "bold", size = 18))
+  grid   <- plot_grid(plot_grid(plotlist = heads, ncol = 2),
+                      plot_grid(plotlist = panels, ncol = 2, align = "hv"),
+                      ncol = 1, rel_heights = c(0.05, 1))
+  y_title <- ggdraw() + draw_label(ylab, angle = 90, size = 18)
+  x_title <- ggdraw() + draw_label(xlab, size = 18)
+  grid_y  <- plot_grid(y_title, grid, ncol = 2, rel_widths = c(0.04, 1))
+  grid_xy <- plot_grid(grid_y,
+                       plot_grid(NULL, x_title, ncol = 2, rel_widths = c(0.04, 1)),
+                       ncol = 1, rel_heights = c(1, 0.04))
+  out <- plot_grid(grid_xy, legend, ncol = 2, rel_widths = c(1, 0.15))
+  ggsave(file, out, width = 20, height = 16, limitsize = FALSE, bg = "white")
+  invisible(out)
+}
+
+tryCatch(save_panel_shared(list(plot_store[["b3|All|NeoplasiaPrevalence"]],
+                                plot_store[["b3|All|MalignancyPrevalence"]],
+                                plot_store[["b3|Mammalia|NeoplasiaPrevalence"]],
+                                plot_store[["b3|Mammalia|MalignancyPrevalence"]]),
+                           "siler_b3_All_Mammalia_panel.png",
+                           xlab = siler_params[["b3"]],
+                           ylab = "Prevalence (%)",
+                           col_titles = c("Neoplasia", "Malignancy")),
          error = function(e) message("  ! Panel failed (siler_b3_All_Mammalia_panel.png): ", conditionMessage(e)))
 
 # #########################################################################
